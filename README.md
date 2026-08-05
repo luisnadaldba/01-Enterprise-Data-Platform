@@ -36,6 +36,8 @@ The project combines database architecture, data engineering, cloud technologies
 
 \- Cloud Platforms
 
+\- Build a production-like enterprise platform from scratch
+
 
 
 \## Repository Structure
