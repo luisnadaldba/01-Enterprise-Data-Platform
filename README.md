@@ -1,8 +1,8 @@
-\# Atlas Engineering - Enterprise Data Platform
+# Atlas Engineering - Enterprise Data Platform
 
 
 
-\## Overview
+## Overview
 
 
 
@@ -14,33 +14,33 @@ The project combines database architecture, data engineering, cloud technologies
 
 
 
-\## Objectives
+## Objectives
 
 
 
-\- Learn software architecture
+- Learn software architecture
 
-\- Learn data engineering
+- Learn data engineering
 
-\- Improve technical documentation
+- Improve technical documentation
 
-\- Master Git
+- Master Git
 
-\- SQL Server
+- SQL Server
 
-\- PostgreSQL
+- PostgreSQL
 
-\- Docker
+- Docker
 
-\- REST APIs
+- REST APIs
 
-\- Cloud Platforms
+- Cloud Platforms
 
-\- Build a production-like enterprise platform from scratch
+- Build a production-like enterprise platform from scratch
 
 
 
-\## Repository Structure
+## Repository Structure
 
 
 
@@ -48,7 +48,7 @@ The project combines database architecture, data engineering, cloud technologies
 
 
 
-\## Roadmap
+## Roadmap
 
 
 
@@ -56,7 +56,7 @@ The project combines database architecture, data engineering, cloud technologies
 
 
 
-\## Documentation
+## Documentation
 
 
 
