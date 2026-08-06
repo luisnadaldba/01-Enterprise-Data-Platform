@@ -18,7 +18,7 @@ The project combines database architecture, data engineering, cloud technologies
 
 
 
-- Learn software architecture
+- Master software architecture and Git
 
 - Learn data engineering
 
