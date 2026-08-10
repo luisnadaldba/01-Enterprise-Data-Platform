@@ -4,7 +4,7 @@
    ============================================================================
 
    Script Name   : 02-Create-AtlasCommerce-Schema.sql
-   Version       : 1.0.0
+   Version       : 1.1.0
    Target        : AtlasCommerce
    Purpose       : Create and validate business domain schemas
    Rerunnable    : Yes
@@ -35,7 +35,7 @@
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
-DECLARE @ScriptVersion nvarchar(20)  = N'1.0.0';
+DECLARE @ScriptVersion nvarchar(20)  = N'1.1.0';
 DECLARE @ScriptName    sysname       = N'02-Create-AtlasCommerce-Schema.sql';
 DECLARE @DatabaseName  sysname       = N'AtlasCommerce';
 DECLARE @StartTime     datetime2(0)  = SYSDATETIME();
@@ -126,11 +126,12 @@ CREATE TABLE #ExpectedSchemas
 
 INSERT INTO #ExpectedSchemas (SchemaName)
 VALUES
-    (N'reference'),
-    (N'customer'),
     (N'catalog'),
-    (N'sales'),
-    (N'inventory');
+    (N'customer'),
+    (N'inventory'),
+    (N'metadata'),
+    (N'reference'),
+    (N'sales');
 
 DECLARE @SchemaName sysname;
 
@@ -270,7 +271,7 @@ DEALLOCATE MissingSchemaCursor;
 
 IF @MissingSchemaCount > 0
 BEGIN
-    THROW 50013,
+    ;THROW 50013,
         'Post-deployment validation failed. One or more expected schemas are missing.',
         1;
 END;
@@ -279,4 +280,3 @@ PRINT N'[•] Schema deployment validated        : SUCCESS';
 
 DROP TABLE IF EXISTS #MissingSchemas;
 DROP TABLE IF EXISTS #ExpectedSchemas;
-
