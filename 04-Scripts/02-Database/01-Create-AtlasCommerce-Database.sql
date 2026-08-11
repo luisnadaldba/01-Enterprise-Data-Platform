@@ -1,4 +1,4 @@
-/******************************************************************************
+AtlasCommerce/******************************************************************************
  Project      : Atlas Commerce
  Repository   : Atlas Engineering / Enterprise Data Platform
  Script       : 01-Create-AtlasCommerce-Database.sql
@@ -179,9 +179,6 @@ DECLARE @PrimaryMaxSizeMB     int = 512;
 DECLARE @DataInitialSizeMB    int = 256;
 DECLARE @DataMaxSizeMB        int = 1536;
 
-DECLARE @PartitionFileInitialSizeMB int = 128;
-DECLARE @PartitionFileMaxSizeMB     int = 1536;
-
 DECLARE @LogInitialSizeMB     int = 256;
 DECLARE @LogMaxSizeMB         int = 2048;
 
@@ -193,7 +190,7 @@ PRINT N'------------------------------------------------------------------------
 PRINT N'    Data path                    : ' + @DataPath;
 PRINT N'    Log path                     : ' + @LogPath;
 PRINT N'    File growth                  : ' + CONVERT(nvarchar(20), @FileGrowthMB) + N' MB';
-PRINT N'    Local storage budget         : Approximately 10 GB maximum';
+PRINT N'    Base database storage budget : Approximately 4 GB maximum';
 
 DECLARE @DataPathExists int;
 DECLARE @LogPathExists  int;
@@ -234,10 +231,6 @@ PRINT N' DATABASE CREATION';
 PRINT N'------------------------------------------------------------------------------';
 PRINT N'    PRIMARY                       : AtlasCommerce.mdf';
 PRINT N'    FG_CORE                       : AtlasCommerce_Core.ndf';
-PRINT N'    FG_P01                        : AtlasCommerce_P01.ndf';
-PRINT N'    FG_P02                        : AtlasCommerce_P02.ndf';
-PRINT N'    FG_P03                        : AtlasCommerce_P03.ndf';
-PRINT N'    FG_P04                        : AtlasCommerce_P04.ndf';
 PRINT N'    LOG                           : AtlasCommerce_log.ldf';
 
 DECLARE @PrimaryFile nvarchar(520) =
@@ -245,18 +238,6 @@ DECLARE @PrimaryFile nvarchar(520) =
 
 DECLARE @CoreFile nvarchar(520) =
     @DataPath + N'AtlasCommerce_Core.ndf';
-
-DECLARE @P01File nvarchar(520) =
-    @DataPath + N'AtlasCommerce_P01.ndf';
-
-DECLARE @P02File nvarchar(520) =
-    @DataPath + N'AtlasCommerce_P02.ndf';
-
-DECLARE @P03File nvarchar(520) =
-    @DataPath + N'AtlasCommerce_P03.ndf';
-
-DECLARE @P04File nvarchar(520) =
-    @DataPath + N'AtlasCommerce_P04.ndf';
 
 DECLARE @LogFile nvarchar(520) =
     @LogPath + N'AtlasCommerce_log.ldf';
@@ -268,10 +249,6 @@ BEGIN
     SELECT @ExistingPhysicalFiles =
           ISNULL((SELECT file_exists FROM sys.dm_os_file_exists(@PrimaryFile)), 0)
         + ISNULL((SELECT file_exists FROM sys.dm_os_file_exists(@CoreFile)), 0)
-        + ISNULL((SELECT file_exists FROM sys.dm_os_file_exists(@P01File)), 0)
-        + ISNULL((SELECT file_exists FROM sys.dm_os_file_exists(@P02File)), 0)
-        + ISNULL((SELECT file_exists FROM sys.dm_os_file_exists(@P03File)), 0)
-        + ISNULL((SELECT file_exists FROM sys.dm_os_file_exists(@P04File)), 0)
         + ISNULL((SELECT file_exists FROM sys.dm_os_file_exists(@LogFile)), 0);
 
     IF @ExistingPhysicalFiles > 0
@@ -318,42 +295,6 @@ SET @Sql =
         FILEGROWTH = ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'MB
     ),
 
-    FILEGROUP [FG_P01]
-    (
-        NAME = N''AtlasCommerce_P01'',
-        FILENAME = N''' + REPLACE(@P01File, '''', '''''') + N''',
-        SIZE = ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'MB,
-        MAXSIZE = ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N'MB,
-        FILEGROWTH = ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'MB
-    ),
-
-    FILEGROUP [FG_P02]
-    (
-        NAME = N''AtlasCommerce_P02'',
-        FILENAME = N''' + REPLACE(@P02File, '''', '''''') + N''',
-        SIZE = ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'MB,
-        MAXSIZE = ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N'MB,
-        FILEGROWTH = ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'MB
-    ),
-
-    FILEGROUP [FG_P03]
-    (
-        NAME = N''AtlasCommerce_P03'',
-        FILENAME = N''' + REPLACE(@P03File, '''', '''''') + N''',
-        SIZE = ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'MB,
-        MAXSIZE = ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N'MB,
-        FILEGROWTH = ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'MB
-    ),
-
-    FILEGROUP [FG_P04]
-    (
-        NAME = N''AtlasCommerce_P04'',
-        FILENAME = N''' + REPLACE(@P04File, '''', '''''') + N''',
-        SIZE = ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'MB,
-        MAXSIZE = ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N'MB,
-        FILEGROWTH = ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'MB
-    )
-
     LOG ON
     (
         NAME = N''AtlasCommerce_log'',
@@ -399,11 +340,7 @@ SET @ValidationSql =
     (
         VALUES
             (N''PRIMARY''),
-            (N''FG_CORE''),
-            (N''FG_P01''),
-            (N''FG_P02''),
-            (N''FG_P03''),
-            (N''FG_P04'')
+            (N''FG_CORE'')
     ) AS Expected(FilegroupName)
     WHERE NOT EXISTS
     (
@@ -423,7 +360,7 @@ SET @ValidationSql =
             1;
     END;
 
-    PRINT N''[•] Filegroup structure validated     : PRIMARY, FG_CORE, FG_P01-P04'';';
+    PRINT N''[•] Filegroup structure validated     : PRIMARY, FG_CORE'';';
 
 EXEC sys.sp_executesql @ValidationSql;
 
@@ -438,10 +375,6 @@ SET @ValidationSql =
         VALUES
             (N''AtlasCommerce'',      N''ROWS'', N''PRIMARY''),
             (N''AtlasCommerce_Core'', N''ROWS'', N''FG_CORE''),
-            (N''AtlasCommerce_P01'',  N''ROWS'', N''FG_P01''),
-            (N''AtlasCommerce_P02'',  N''ROWS'', N''FG_P02''),
-            (N''AtlasCommerce_P03'',  N''ROWS'', N''FG_P03''),
-            (N''AtlasCommerce_P04'',  N''ROWS'', N''FG_P04''),
             (N''AtlasCommerce_log'',  N''LOG'',  NULL)
     ) AS Expected(LogicalName, FileType, FilegroupName)
     WHERE NOT EXISTS
@@ -471,7 +404,7 @@ SET @ValidationSql =
             1;
     END;
 
-    PRINT N''[•] Logical file structure validated  : 7 files correctly assigned'';';
+    PRINT N''[•] Logical file structure validated  : 3 files correctly assigned'';';
 
 EXEC sys.sp_executesql @ValidationSql;
 
@@ -486,10 +419,6 @@ SET @ValidationSql =
         VALUES
             (N''AtlasCommerce'',      N''' + REPLACE(@PrimaryFile, '''', '''''') + N'''),
             (N''AtlasCommerce_Core'', N''' + REPLACE(@CoreFile,    '''', '''''') + N'''),
-            (N''AtlasCommerce_P01'',  N''' + REPLACE(@P01File,     '''', '''''') + N'''),
-            (N''AtlasCommerce_P02'',  N''' + REPLACE(@P02File,     '''', '''''') + N'''),
-            (N''AtlasCommerce_P03'',  N''' + REPLACE(@P03File,     '''', '''''') + N'''),
-            (N''AtlasCommerce_P04'',  N''' + REPLACE(@P04File,     '''', '''''') + N'''),
             (N''AtlasCommerce_log'',  N''' + REPLACE(@LogFile,     '''', '''''') + N''')
     ) AS Expected(LogicalName, PhysicalName)
     WHERE NOT EXISTS
@@ -511,7 +440,7 @@ SET @ValidationSql =
             1;
     END;
 
-    PRINT N''[•] Physical file paths validated     : 7 files correctly located'';';
+    PRINT N''[•] Physical file paths validated     : 3 files correctly located'';';
 
 EXEC sys.sp_executesql @ValidationSql;
 
@@ -526,10 +455,6 @@ SET @ValidationSql =
         VALUES
             (N''AtlasCommerce'',      ' + CONVERT(nvarchar(20), @PrimaryMaxSizeMB)       + N', ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'),
             (N''AtlasCommerce_Core'', ' + CONVERT(nvarchar(20), @DataMaxSizeMB)          + N', ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'),
-            (N''AtlasCommerce_P01'',  ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N', ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'),
-            (N''AtlasCommerce_P02'',  ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N', ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'),
-            (N''AtlasCommerce_P03'',  ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N', ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'),
-            (N''AtlasCommerce_P04'',  ' + CONVERT(nvarchar(20), @PartitionFileMaxSizeMB) + N', ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'),
             (N''AtlasCommerce_log'',  ' + CONVERT(nvarchar(20), @LogMaxSizeMB)           + N', ' + CONVERT(nvarchar(20), @FileGrowthMB) + N')
     ) AS Expected(LogicalName, MaxSizeMB, GrowthMB)
     WHERE NOT EXISTS
@@ -568,10 +493,6 @@ SET @ValidationSql =
         VALUES
             (N''AtlasCommerce'',      ' + CONVERT(nvarchar(20), @PrimaryInitialSizeMB)       + N'),
             (N''AtlasCommerce_Core'', ' + CONVERT(nvarchar(20), @DataInitialSizeMB)          + N'),
-            (N''AtlasCommerce_P01'',  ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'),
-            (N''AtlasCommerce_P02'',  ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'),
-            (N''AtlasCommerce_P03'',  ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'),
-            (N''AtlasCommerce_P04'',  ' + CONVERT(nvarchar(20), @PartitionFileInitialSizeMB) + N'),
             (N''AtlasCommerce_log'',  ' + CONVERT(nvarchar(20), @LogInitialSizeMB)           + N')
     ) AS Expected(LogicalName, MinimumSizeMB)
     WHERE NOT EXISTS
