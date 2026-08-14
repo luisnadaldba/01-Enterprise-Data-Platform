@@ -76,6 +76,14 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\catalog.ProductVariantAttributeValue.sql
     :r $(DataModelRoot)\01-Tables\catalog.ProductVariantPrice.sql
 
+    :r $(DataModelRoot)\01-Tables\customer.Customer.sql
+
+    :r $(DataModelRoot)\01-Tables\reference.Address.sql
+    :r $(DataModelRoot)\01-Tables\reference.AdministrativeDivision.sql
+    :r $(DataModelRoot)\01-Tables\reference.City.sql
+    :r $(DataModelRoot)\01-Tables\reference.Country.sql
+    :r $(DataModelRoot)\01-Tables\reference.Status.sql
+
     :r $(DataModelRoot)\01-Tables\sales.Transaction.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionChannel.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionItem.sql
@@ -100,6 +108,12 @@ BEGIN TRY
     :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariant.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariantAttributeValue.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariantPrice.Documentation.sql
+
+    :r $(DataModelRoot)\02-Object-Documentation\reference.Address.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\reference.AdministrativeDivision.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\reference.City.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\reference.Country.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\reference.Status.Documentation.sql
 
     :r $(DataModelRoot)\02-Object-Documentation\sales.Transaction.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionChannel.Documentation.sql
@@ -126,6 +140,12 @@ BEGIN TRY
     :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariantAttributeValue.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariantPrice.Seed.sql
 
+    :r $(DataModelRoot)\03-Seed-Data\reference.Address.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\reference.AdministrativeDivision.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\reference.City.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\reference.Country.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\reference.Status.Seed.sql
+
     :r $(DataModelRoot)\03-Seed-Data\sales.Transaction.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\sales.TransactionChannel.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\sales.TransactionItem.Seed.sql
@@ -149,6 +169,12 @@ BEGIN TRY
     :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductVariant.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductVariantPrice.Defaults.sql
 
+    :r $(DataModelRoot)\04-Default-Constraints\reference.Address.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\reference.AdministrativeDivision.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\reference.City.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\reference.Country.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\reference.Status.Defaults.sql
+
     :r $(DataModelRoot)\04-Default-Constraints\sales.Transaction.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionChannel.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionItem.Defaults.sql
@@ -165,6 +191,8 @@ BEGIN TRY
 
     :r $(DataModelRoot)\05-Check-Constraints\catalog.ProductImage.Checks.sql
     :r $(DataModelRoot)\05-Check-Constraints\catalog.ProductVariantPrice.Checks.sql
+
+    :r $(DataModelRoot)\05-Check-Constraints\reference.Address.Checks.sql
 
     :r $(DataModelRoot)\05-Check-Constraints\sales.Transaction.Checks.sql
     :r $(DataModelRoot)\05-Check-Constraints\sales.TransactionItem.Checks.sql
@@ -185,6 +213,11 @@ BEGIN TRY
     :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductAttributeValue.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductVariant.Uniques.sql
 
+    :r $(DataModelRoot)\06-Unique-Constraints\reference.Address.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\reference.AdministrativeDivision.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\reference.City.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\reference.Country.Uniques.sql
+
     :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionChannel.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionStatus.Uniques.sql
 
@@ -203,6 +236,10 @@ BEGIN TRY
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariant.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariantAttributeValue.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariantPrice.ForeignKeys.sql
+
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.Address.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.AdministrativeDivision.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.City.ForeignKeys.sql
 
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.Transaction.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.TransactionItem.ForeignKeys.sql
@@ -249,7 +286,13 @@ BEGIN TRY
     :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariant.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariantAttributeValue.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariantPrice.FinalValidation.sql
-    
+
+    :r $(DataModelRoot)\10-Final-Validation\reference.Address.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\reference.AdministrativeDivision.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\reference.City.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\reference.Country.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\reference.Status.FinalValidation.sql
+
     :r $(DataModelRoot)\10-Final-Validation\sales.Transaction.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionChannel.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionItem.FinalValidation.sql
