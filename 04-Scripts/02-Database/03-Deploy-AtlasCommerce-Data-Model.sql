@@ -77,12 +77,13 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\catalog.ProductVariantPrice.sql
 
     :r $(DataModelRoot)\01-Tables\customer.Customer.sql
+    :r $(DataModelRoot)\01-Tables\customer.CustomerType.sql
 
     :r $(DataModelRoot)\01-Tables\reference.Address.sql
     :r $(DataModelRoot)\01-Tables\reference.AdministrativeDivision.sql
     :r $(DataModelRoot)\01-Tables\reference.City.sql
     :r $(DataModelRoot)\01-Tables\reference.Country.sql
-    :r $(DataModelRoot)\01-Tables\reference.Status.sql
+    -- r $(DataModelRoot)\01-Tables\reference.Status.sql
 
     :r $(DataModelRoot)\01-Tables\sales.Transaction.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionChannel.sql
@@ -108,6 +109,9 @@ BEGIN TRY
     :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariant.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariantAttributeValue.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariantPrice.Documentation.sql
+
+    :r $(DataModelRoot)\02-Object-Documentation\customer.Customer.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerType.Documentation.sql
 
     :r $(DataModelRoot)\02-Object-Documentation\reference.Address.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.AdministrativeDivision.Documentation.sql
@@ -140,6 +144,9 @@ BEGIN TRY
     :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariantAttributeValue.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariantPrice.Seed.sql
 
+    :r $(DataModelRoot)\03-Seed-Data\customer.Customer.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\customer.CustomerType.Seed.sql
+
     :r $(DataModelRoot)\03-Seed-Data\reference.Address.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.AdministrativeDivision.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.City.Seed.sql
@@ -169,6 +176,9 @@ BEGIN TRY
     :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductVariant.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductVariantPrice.Defaults.sql
 
+    :r $(DataModelRoot)\04-Default-Constraints\customer.Customer.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerType.Defaults.sql
+
     :r $(DataModelRoot)\04-Default-Constraints\reference.Address.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.AdministrativeDivision.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.City.Defaults.sql
@@ -192,6 +202,8 @@ BEGIN TRY
     :r $(DataModelRoot)\05-Check-Constraints\catalog.ProductImage.Checks.sql
     :r $(DataModelRoot)\05-Check-Constraints\catalog.ProductVariantPrice.Checks.sql
 
+    :r $(DataModelRoot)\05-Check-Constraints\customer.Customer.Checks.sql
+
     :r $(DataModelRoot)\05-Check-Constraints\reference.Address.Checks.sql
 
     :r $(DataModelRoot)\05-Check-Constraints\sales.Transaction.Checks.sql
@@ -212,6 +224,8 @@ BEGIN TRY
     :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductAttribute.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductAttributeValue.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductVariant.Uniques.sql
+
+    :r $(DataModelRoot)\06-Unique-Constraints\customer.CustomerType.Uniques.sql
 
     :r $(DataModelRoot)\06-Unique-Constraints\reference.Address.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\reference.AdministrativeDivision.Uniques.sql
@@ -237,6 +251,8 @@ BEGIN TRY
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariantAttributeValue.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariantPrice.ForeignKeys.sql
 
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.Customer.ForeignKeys.sql
+
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.Address.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.AdministrativeDivision.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.City.ForeignKeys.sql
@@ -254,6 +270,8 @@ BEGIN TRY
     :r $(DataModelRoot)\08-Indexes\catalog.ProductImage.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\catalog.ProductVariant.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\catalog.ProductVariantPrice.Indexes.sql
+
+    :r $(DataModelRoot)\08-Indexes\costumer.Costumer.Indexes.sql
 
     :r $(DataModelRoot)\08-Indexes\sales.Transaction.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\sales.TransactionItem.Indexes.sql
@@ -286,6 +304,9 @@ BEGIN TRY
     :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariant.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariantAttributeValue.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariantPrice.FinalValidation.sql
+
+    :r $(DataModelRoot)\10-Final-Validation\customer.Customer.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\customer.CustomerType.FinalValidation.sql
 
     :r $(DataModelRoot)\10-Final-Validation\reference.Address.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.AdministrativeDivision.FinalValidation.sql
