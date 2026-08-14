@@ -64,7 +64,22 @@ BEGIN TRY
     PRINT N'';
 
     :r $(DataModelRoot)\01-Tables\metadata.TablePrefix.sql
+
+    :r $(DataModelRoot)\01-Tables\catalog.Brand.sql
+    :r $(DataModelRoot)\01-Tables\catalog.Category.sql
+    :r $(DataModelRoot)\01-Tables\catalog.Product.sql
+    :r $(DataModelRoot)\01-Tables\catalog.ProductAttribute.sql
+    :r $(DataModelRoot)\01-Tables\catalog.ProductAttributeValue.sql
+    :r $(DataModelRoot)\01-Tables\catalog.ProductCategory.sql
+    :r $(DataModelRoot)\01-Tables\catalog.ProductImage.sql
+    :r $(DataModelRoot)\01-Tables\catalog.ProductVariant.sql
+    :r $(DataModelRoot)\01-Tables\catalog.ProductVariantAttributeValue.sql
+    :r $(DataModelRoot)\01-Tables\catalog.ProductVariantPrice.sql
+
     :r $(DataModelRoot)\01-Tables\sales.Transaction.sql
+    :r $(DataModelRoot)\01-Tables\sales.TransactionChannel.sql
+    :r $(DataModelRoot)\01-Tables\sales.TransactionItem.sql
+    :r $(DataModelRoot)\01-Tables\sales.TransactionStatus.sql
 
     /*==========================================================================
         OBJECT DOCUMENTATION
@@ -75,6 +90,22 @@ BEGIN TRY
 
     :r $(DataModelRoot)\02-Object-Documentation\metadata.TablePrefix.Documentation.sql
 
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.Brand.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.Category.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.Product.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductAttribute.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductAttributeValue.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductCategory.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductImage.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariant.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariantAttributeValue.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariantPrice.Documentation.sql
+
+    :r $(DataModelRoot)\02-Object-Documentation\sales.Transaction.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionChannel.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionItem.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionStatus.Documentation.sql
+
     /*==========================================================================
         SEED DATA
     ==========================================================================*/
@@ -83,6 +114,22 @@ BEGIN TRY
     PRINT N'';
 
     :r $(DataModelRoot)\03-Seed-Data\metadata.TablePrefix.Seed.sql
+
+    :r $(DataModelRoot)\03-Seed-Data\catalog.Brand.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.Category.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.Product.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.ProductAttribute.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.ProductAttributeValue.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.ProductCategory.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.ProductImage.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariant.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariantAttributeValue.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariantPrice.Seed.sql
+
+    :r $(DataModelRoot)\03-Seed-Data\sales.Transaction.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\sales.TransactionChannel.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\sales.TransactionItem.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\sales.TransactionStatus.Seed.sql
 
     /*==========================================================================
         DEFAULT CONSTRAINTS
@@ -93,6 +140,20 @@ BEGIN TRY
 
     :r $(DataModelRoot)\04-Default-Constraints\metadata.TablePrefix.Defaults.sql
 
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.Brand.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.Category.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.Product.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductAttribute.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductAttributeValue.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductImage.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductVariant.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductVariantPrice.Defaults.sql
+
+    :r $(DataModelRoot)\04-Default-Constraints\sales.Transaction.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionChannel.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionItem.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionStatus.Defaults.sql
+
     /*==========================================================================
         CHECK CONSTRAINTS
     ==========================================================================*/
@@ -101,6 +162,12 @@ BEGIN TRY
     PRINT N'';
 
     :r $(DataModelRoot)\05-Check-Constraints\metadata.TablePrefix.Checks.sql
+
+    :r $(DataModelRoot)\05-Check-Constraints\catalog.ProductImage.Checks.sql
+    :r $(DataModelRoot)\05-Check-Constraints\catalog.ProductVariantPrice.Checks.sql
+
+    :r $(DataModelRoot)\05-Check-Constraints\sales.Transaction.Checks.sql
+    :r $(DataModelRoot)\05-Check-Constraints\sales.TransactionItem.Checks.sql
 
     /*==========================================================================
         UNIQUE CONSTRAINTS
@@ -111,6 +178,16 @@ BEGIN TRY
 
     :r $(DataModelRoot)\06-Unique-Constraints\metadata.TablePrefix.Uniques.sql
 
+    :r $(DataModelRoot)\06-Unique-Constraints\catalog.Brand.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\catalog.Category.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\catalog.Product.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductAttribute.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductAttributeValue.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductVariant.Uniques.sql
+
+    :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionChannel.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionStatus.Uniques.sql
+
     /*==========================================================================
         FOREIGN KEY CONSTRAINTS
     ==========================================================================*/
@@ -118,6 +195,17 @@ BEGIN TRY
     PRINT N' FOREIGN KEY CONSTRAINTS';
     PRINT N'';
 
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.Category.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.Product.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductAttributeValue.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductCategory.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductImage.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariant.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariantAttributeValue.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariantPrice.ForeignKeys.sql
+
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.Transaction.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.TransactionItem.ForeignKeys.sql
 
     /*==========================================================================
         INDEXES
@@ -126,6 +214,21 @@ BEGIN TRY
     PRINT N' INDEXES';
     PRINT N'';
 
+    :r $(DataModelRoot)\08-Indexes\catalog.ProductImage.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\catalog.ProductVariant.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\catalog.ProductVariantPrice.Indexes.sql
+
+    :r $(DataModelRoot)\08-Indexes\sales.Transaction.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\sales.TransactionItem.Indexes.sql
+
+    /*==========================================================================
+        TEMPORAL INTEGRITY
+    ==========================================================================*/
+
+    PRINT N' TEMPORAL INTEGRITY';
+    PRINT N'';
+
+    :r $(DataModelRoot)\09-Temporal-Integrity\catalog.ProductVariantPrice.TemporalIntegrity.sql
 
     /*==========================================================================
         FINAL VALIDATION
@@ -134,7 +237,23 @@ BEGIN TRY
     PRINT N' FINAL VALIDATION';
     PRINT N'';
 
-    :r $(DataModelRoot)\09-Final-Validation\metadata.TablePrefix.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\metadata.TablePrefix.FinalValidation.sql
+
+    :r $(DataModelRoot)\10-Final-Validation\catalog.Brand.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.Category.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.Product.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.ProductAttribute.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.ProductAttributeValue.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.ProductCategory.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.ProductImage.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariant.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariantAttributeValue.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariantPrice.FinalValidation.sql
+    
+    :r $(DataModelRoot)\10-Final-Validation\sales.Transaction.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\sales.TransactionChannel.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\sales.TransactionItem.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\sales.TransactionStatus.FinalValidation.sql
 
     COMMIT TRANSACTION;
 

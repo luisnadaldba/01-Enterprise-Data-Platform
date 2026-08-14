@@ -7,17 +7,17 @@
 
     DECLARE @PFX_validation_errors int = 0;
 
-    DECLARE @PFX_table_status          nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PFX_primary_key_status    nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PFX_columns_status        nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PFX_documentation_status  nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PFX_seed_data_status      nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PFX_defaults_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PFX_checks_status         nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PFX_uniques_status        nvarchar(20) = N'NOT VALIDATED';
-
-    DECLARE @PFX_foreign_keys_status   nvarchar(20) = N'NOT APPLICABLE';
-    DECLARE @PFX_indexes_status        nvarchar(20) = N'NOT REQUIRED';
+    DECLARE @PFX_table_status               nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_columns_status             nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_documentation_status       nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_defaults_status            nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_checks_status              nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_uniques_status             nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PFX_foreign_keys_status        nvarchar(20) = N'NOT APPLICABLE';
+    DECLARE @PFX_indexes_status             nvarchar(20) = N'NOT REQUIRED';
+    DECLARE @PFX_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
 
     /*==========================================================================
         TABLE VALIDATION
@@ -834,8 +834,8 @@
     PRINT N'        Unique Constraints            : ' + @PFX_uniques_status;
     PRINT N'        Foreign Key Constraints       : ' + @PFX_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PFX_indexes_status;
-    PRINT N'';
-
+    PRINT N'        Temporal Integrity            : ' + @PFX_temporal_integrity_status;
+  
     PRINT N'';
     PRINT N'    --------------------------------------------------------------------------';
 
