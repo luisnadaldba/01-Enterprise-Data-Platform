@@ -77,11 +77,17 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\catalog.ProductVariantPrice.sql
 
     :r $(DataModelRoot)\01-Tables\customer.Customer.sql
+    :r $(DataModelRoot)\01-Tables\customer.CustomerAddress.sql
+    :r $(DataModelRoot)\01-Tables\customer.CustomerContact.sql
+    :r $(DataModelRoot)\01-Tables\customer.CustomerDocument.sql
+    :r $(DataModelRoot)\01-Tables\customer.CustomerDocumentType.sql
+    :r $(DataModelRoot)\01-Tables\customer.CustomerEmail.sql
     :r $(DataModelRoot)\01-Tables\customer.CustomerType.sql
 
     :r $(DataModelRoot)\01-Tables\reference.Address.sql
     :r $(DataModelRoot)\01-Tables\reference.AdministrativeDivision.sql
     :r $(DataModelRoot)\01-Tables\reference.City.sql
+    :r $(DataModelRoot)\01-Tables\reference.ContactType.sql
     :r $(DataModelRoot)\01-Tables\reference.Country.sql
     -- r $(DataModelRoot)\01-Tables\reference.Status.sql
 
@@ -111,11 +117,17 @@ BEGIN TRY
     :r $(DataModelRoot)\02-Object-Documentation\catalog.ProductVariantPrice.Documentation.sql
 
     :r $(DataModelRoot)\02-Object-Documentation\customer.Customer.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerAddress.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerContact.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerDocument.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerDocumentType.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerEmail.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerType.Documentation.sql
 
     :r $(DataModelRoot)\02-Object-Documentation\reference.Address.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.AdministrativeDivision.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.City.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\reference.ContactType.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.Country.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.Status.Documentation.sql
 
@@ -145,11 +157,17 @@ BEGIN TRY
     :r $(DataModelRoot)\03-Seed-Data\catalog.ProductVariantPrice.Seed.sql
 
     :r $(DataModelRoot)\03-Seed-Data\customer.Customer.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\customer.CustomerAddress.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\customer.CustomerContact.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\customer.CustomerDocument.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\customer.CustomerDocumentType.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\customer.CustomerEmail.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\customer.CustomerType.Seed.sql
 
     :r $(DataModelRoot)\03-Seed-Data\reference.Address.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.AdministrativeDivision.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.City.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\reference.ContactType.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.Country.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.Status.Seed.sql
 
@@ -177,11 +195,17 @@ BEGIN TRY
     :r $(DataModelRoot)\04-Default-Constraints\catalog.ProductVariantPrice.Defaults.sql
 
     :r $(DataModelRoot)\04-Default-Constraints\customer.Customer.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerAddress.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerContact.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerDocument.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerDocumentType.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerEmail.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerType.Defaults.sql
 
     :r $(DataModelRoot)\04-Default-Constraints\reference.Address.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.AdministrativeDivision.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.City.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\reference.ContactType.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.Country.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.Status.Defaults.sql
 
@@ -203,6 +227,9 @@ BEGIN TRY
     :r $(DataModelRoot)\05-Check-Constraints\catalog.ProductVariantPrice.Checks.sql
 
     :r $(DataModelRoot)\05-Check-Constraints\customer.Customer.Checks.sql
+    :r $(DataModelRoot)\05-Check-Constraints\customer.CustomerAddress.Checks.sql
+    :r $(DataModelRoot)\05-Check-Constraints\customer.CustomerContact.Checks.sql
+    :r $(DataModelRoot)\05-Check-Constraints\customer.CustomerEmail.Checks.sql
 
     :r $(DataModelRoot)\05-Check-Constraints\reference.Address.Checks.sql
 
@@ -225,11 +252,14 @@ BEGIN TRY
     :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductAttributeValue.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\catalog.ProductVariant.Uniques.sql
 
+    :r $(DataModelRoot)\06-Unique-Constraints\customer.CustomerDocument.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\customer.CustomerDocumentType.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\customer.CustomerType.Uniques.sql
 
     :r $(DataModelRoot)\06-Unique-Constraints\reference.Address.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\reference.AdministrativeDivision.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\reference.City.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\reference.ContactType.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\reference.Country.Uniques.sql
 
     :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionChannel.Uniques.sql
@@ -252,6 +282,10 @@ BEGIN TRY
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\catalog.ProductVariantPrice.ForeignKeys.sql
 
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.Customer.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.CustomerAddress.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.CustomerContact.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.CustomerDocument.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.CustomerEmail.ForeignKeys.sql
 
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.Address.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.AdministrativeDivision.ForeignKeys.sql
@@ -272,6 +306,9 @@ BEGIN TRY
     :r $(DataModelRoot)\08-Indexes\catalog.ProductVariantPrice.Indexes.sql
 
     :r $(DataModelRoot)\08-Indexes\costumer.Costumer.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\costumer.CostumerAddress.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\costumer.CostumerContact.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\costumer.CustomerEmail.Indexes.sql
 
     :r $(DataModelRoot)\08-Indexes\sales.Transaction.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\sales.TransactionItem.Indexes.sql
@@ -306,11 +343,17 @@ BEGIN TRY
     :r $(DataModelRoot)\10-Final-Validation\catalog.ProductVariantPrice.FinalValidation.sql
 
     :r $(DataModelRoot)\10-Final-Validation\customer.Customer.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\customer.CustomerAddress.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\customer.CustomerContact.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\customer.CustomerDocument.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\customer.CustomerDocumentType.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\customer.CustomerEmail.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\customer.CustomerType.FinalValidation.sql
 
     :r $(DataModelRoot)\10-Final-Validation\reference.Address.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.AdministrativeDivision.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.City.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\reference.ContactType.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.Country.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.Status.FinalValidation.sql
 
