@@ -1,6 +1,80 @@
     PRINT N'    customer.Customer';
     PRINT N'    --------------------------------------------------------------------------';
 
+    /*==============================================================================
+        DEFAULT CONSTRAINT: DF_CST_is_active
+    ==============================================================================*/
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM sys.default_constraints AS dc
+        INNER JOIN sys.columns AS c
+            ON c.object_id = dc.parent_object_id
+        AND c.column_id = dc.parent_column_id
+        WHERE dc.parent_object_id = OBJECT_ID(N'customer.Customer')
+        AND c.name = N'CST_is_active'
+    )
+    BEGIN
+
+        ALTER TABLE customer.Customer
+            ADD CONSTRAINT DF_CST_is_active
+            DEFAULT (1) FOR CST_is_active;
+
+        PRINT N'        [+] Default constraint added      : DF_CST_is_active';
+        PRINT N'            Column                        : CST_is_active';
+        PRINT N'            Definition                    : DEFAULT (1)';
+
+    END
+    ELSE
+    BEGIN
+
+        DECLARE
+            @CST_is_active_constraint_name sysname,
+            @CST_is_active_definition      nvarchar(4000);
+
+
+        SELECT
+            @CST_is_active_constraint_name = dc.name,
+            @CST_is_active_definition      = dc.definition
+
+        FROM sys.default_constraints AS dc
+
+        INNER JOIN sys.columns AS c
+            ON c.object_id = dc.parent_object_id
+        AND c.column_id = dc.parent_column_id
+
+        WHERE dc.parent_object_id = OBJECT_ID(N'customer.Customer')
+        AND c.name = N'CST_is_active';
+
+
+        IF @CST_is_active_constraint_name = N'DF_CST_is_active'
+        AND REPLACE(REPLACE(@CST_is_active_definition, N'(', N''), N')', N'')
+            = N'1'
+        BEGIN
+
+            PRINT N'        [•] Default constraint validated  : DF_CST_is_active';
+            PRINT N'            Column                        : CST_is_active';
+            PRINT N'            Definition                    : DEFAULT (1)';
+
+        END
+        ELSE
+        BEGIN
+
+            PRINT N'        [!] Default constraint mismatch   : DF_CST_is_active';
+            PRINT N'            Expected Name                 : DF_CST_is_active';
+            PRINT N'            Actual Name                   : '
+                + COALESCE(@CST_is_active_constraint_name, N'<NULL>');
+            PRINT N'            Column                        : CST_is_active';
+            PRINT N'            Expected Definition           : DEFAULT (1)';
+            PRINT N'            Actual Definition             : DEFAULT '
+                + COALESCE(@CST_is_active_definition, N'<NULL>');
+            PRINT N'            Existing constraint was preserved for review.';
+
+        END;
+
+    END;
+
 
     /*==============================================================================
         DEFAULT CONSTRAINT: DF_CST_created_at

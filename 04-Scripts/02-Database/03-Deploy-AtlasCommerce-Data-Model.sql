@@ -89,8 +89,7 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\reference.City.sql
     :r $(DataModelRoot)\01-Tables\reference.ContactType.sql
     :r $(DataModelRoot)\01-Tables\reference.Country.sql
-    -- r $(DataModelRoot)\01-Tables\reference.Status.sql
-
+  
     :r $(DataModelRoot)\01-Tables\sales.Transaction.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionChannel.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionItem.sql
@@ -129,7 +128,6 @@ BEGIN TRY
     :r $(DataModelRoot)\02-Object-Documentation\reference.City.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.ContactType.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.Country.Documentation.sql
-    :r $(DataModelRoot)\02-Object-Documentation\reference.Status.Documentation.sql
 
     :r $(DataModelRoot)\02-Object-Documentation\sales.Transaction.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionChannel.Documentation.sql
@@ -169,7 +167,6 @@ BEGIN TRY
     :r $(DataModelRoot)\03-Seed-Data\reference.City.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.ContactType.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.Country.Seed.sql
-    :r $(DataModelRoot)\03-Seed-Data\reference.Status.Seed.sql
 
     :r $(DataModelRoot)\03-Seed-Data\sales.Transaction.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\sales.TransactionChannel.Seed.sql
@@ -207,7 +204,6 @@ BEGIN TRY
     :r $(DataModelRoot)\04-Default-Constraints\reference.City.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.ContactType.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.Country.Defaults.sql
-    :r $(DataModelRoot)\04-Default-Constraints\reference.Status.Defaults.sql
 
     :r $(DataModelRoot)\04-Default-Constraints\sales.Transaction.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionChannel.Defaults.sql
@@ -305,10 +301,10 @@ BEGIN TRY
     :r $(DataModelRoot)\08-Indexes\catalog.ProductVariant.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\catalog.ProductVariantPrice.Indexes.sql
 
-    :r $(DataModelRoot)\08-Indexes\costumer.Costumer.Indexes.sql
-    :r $(DataModelRoot)\08-Indexes\costumer.CostumerAddress.Indexes.sql
-    :r $(DataModelRoot)\08-Indexes\costumer.CostumerContact.Indexes.sql
-    :r $(DataModelRoot)\08-Indexes\costumer.CustomerEmail.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\customer.Customer.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\customer.CustomerAddress.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\customer.CustomerContact.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\customer.CustomerEmail.Indexes.sql
 
     :r $(DataModelRoot)\08-Indexes\sales.Transaction.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\sales.TransactionItem.Indexes.sql
@@ -355,7 +351,6 @@ BEGIN TRY
     :r $(DataModelRoot)\10-Final-Validation\reference.City.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.ContactType.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.Country.FinalValidation.sql
-    :r $(DataModelRoot)\10-Final-Validation\reference.Status.FinalValidation.sql
 
     :r $(DataModelRoot)\10-Final-Validation\sales.Transaction.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionChannel.FinalValidation.sql

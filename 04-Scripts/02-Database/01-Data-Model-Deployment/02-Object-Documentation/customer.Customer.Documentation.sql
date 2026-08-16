@@ -233,13 +233,12 @@
 
     END;
 
-
     /*----------------------------------------------------------------------
-        COLUMN DESCRIPTION: CST_STS_id
+        COLUMN DESCRIPTION: CST_is_active
     ----------------------------------------------------------------------*/
 
     SET @CST_expected_description =
-        N'Foreign key of reference.Status defining whether the customer is active or inactive.';
+        N'Indicates whether the customer is currently active.';
 
     IF NOT EXISTS
     (
@@ -253,7 +252,7 @@
         WHERE ep.class = 1
         AND ep.major_id = OBJECT_ID(N'customer.Customer')
         AND ep.name = N'MS_Description'
-        AND c.name = N'CST_STS_id'
+        AND c.name = N'CST_is_active'
     )
     BEGIN
 
@@ -265,9 +264,9 @@
             @level1type = N'TABLE',
             @level1name = N'Customer',
             @level2type = N'COLUMN',
-            @level2name = N'CST_STS_id';
+            @level2name = N'CST_is_active';
 
-        PRINT N'        [+] Column description added      : CST_STS_id';
+        PRINT N'        [+] Column description added      : CST_is_active';
 
     END
     ELSE
@@ -288,18 +287,18 @@
         WHERE ep.class = 1
         AND ep.major_id = OBJECT_ID(N'customer.Customer')
         AND ep.name = N'MS_Description'
-        AND c.name = N'CST_STS_id';
+        AND c.name = N'CST_is_active';
 
         IF @CST_existing_description = @CST_expected_description
         BEGIN
 
-            PRINT N'        [•] Column description validated  : CST_STS_id';
+            PRINT N'        [•] Column description validated  : CST_is_active';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Column description mismatch   : CST_STS_id';
+            PRINT N'        [!] Column description mismatch   : CST_is_active';
             PRINT N'            Expected                     : '
                 + @CST_expected_description;
             PRINT N'            Actual                       : '

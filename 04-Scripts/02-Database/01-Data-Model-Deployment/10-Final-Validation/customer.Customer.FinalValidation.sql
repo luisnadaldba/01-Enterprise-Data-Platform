@@ -185,8 +185,8 @@
         WHERE c.object_id =
                 OBJECT_ID(N'customer.Customer')
 
-        AND c.name = N'CST_STS_id'
-        AND t.name = N'tinyint'
+        AND c.name = N'CST_is_active'
+        AND t.name = N'bit'
         AND c.max_length = 1
         AND c.is_nullable = 0
         AND c.is_identity = 0
@@ -326,8 +326,8 @@
     ),
     (
         N'COLUMN',
-        N'CST_STS_id',
-        N'Foreign key of reference.Status defining whether the customer is active or inactive.'
+        N'CST_is_active',
+        N'Indicates whether the customer is currently active.'
     ),
     (
         N'COLUMN',
@@ -513,6 +513,11 @@
         CST_default_expected_definition
     )
     VALUES
+    (
+        N'CST_is_active',
+        N'DF_CST_is_active',
+        N'1'
+    ),
     (
         N'CST_created_at',
         N'DF_CST_created_at',
@@ -813,80 +818,6 @@
 
             AND rc.name =
                     N'CSTCT_id'
-        )
-    )
-    BEGIN
-
-        SET @CST_FV_invalid_foreign_keys += 1;
-
-    END;
-
-
-    /*--------------------------------------------------------------------------
-        FK_CST_STS
-    --------------------------------------------------------------------------*/
-
-    IF NOT EXISTS
-    (
-        SELECT 1
-
-        FROM sys.foreign_keys AS fk
-
-        WHERE fk.parent_object_id =
-                OBJECT_ID(N'customer.Customer')
-
-        AND fk.referenced_object_id =
-                OBJECT_ID(N'reference.Status')
-
-        AND fk.name =
-                N'FK_CST_STS'
-
-        AND fk.delete_referential_action = 0
-
-        AND fk.update_referential_action = 0
-
-        AND fk.is_disabled = 0
-
-        AND fk.is_not_trusted = 0
-
-        AND
-        (
-            SELECT COUNT(*)
-
-            FROM sys.foreign_key_columns AS fkc
-
-            WHERE fkc.constraint_object_id =
-                    fk.object_id
-        ) = 1
-
-        AND EXISTS
-        (
-            SELECT 1
-
-            FROM sys.foreign_key_columns AS fkc
-
-            INNER JOIN sys.columns AS pc
-                ON  pc.object_id =
-                        fkc.parent_object_id
-
-                AND pc.column_id =
-                        fkc.parent_column_id
-
-            INNER JOIN sys.columns AS rc
-                ON  rc.object_id =
-                        fkc.referenced_object_id
-
-                AND rc.column_id =
-                        fkc.referenced_column_id
-
-            WHERE fkc.constraint_object_id =
-                    fk.object_id
-
-            AND pc.name =
-                    N'CST_STS_id'
-
-            AND rc.name =
-                    N'STS_id'
         )
     )
     BEGIN

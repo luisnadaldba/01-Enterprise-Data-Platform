@@ -17,7 +17,7 @@
         --------------------------------------------------------------------------
         - Represent both individual and company customers in a single entity.
         - Associate each Customer with one controlled CustomerType.
-        - Use the shared reference.Status domain for active/inactive state.
+        - Represent active/inactive state directly through CST_is_active.
         - Allow birth date only when applicable or provided.
         - Keep documents outside Customer.
         - Keep contacts outside Customer.
@@ -72,11 +72,12 @@
             CST_id          int             IDENTITY(1,1) NOT NULL,
 
             CST_CSTCT_id    smallint        NOT NULL,
-            CST_STS_id      tinyint         NOT NULL,
 
             CST_name        nvarchar(200)   NOT NULL,
 
             CST_birth_date  date            NULL,
+
+            CST_is_active   bit             NOT NULL,
 
             CST_created_at  datetime2(0)    NOT NULL,
             CST_updated_at  datetime2(0)    NOT NULL,
@@ -323,19 +324,18 @@
 
         END;
 
-
         /*--------------------------------------------------------------------------
-            COLUMN: CST_STS_id
+            COLUMN: CST_is_active
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'customer.Customer', N'CST_STS_id') IS NULL
+        IF COL_LENGTH(N'customer.Customer', N'CST_is_active') IS NULL
         BEGIN
 
             ALTER TABLE customer.Customer
-                ADD CST_STS_id tinyint NULL;
+                ADD CST_is_active bit NULL;
 
-            PRINT N'            [+] Column added                  : CST_STS_id';
-            PRINT N'            [!] Pending action                : Backfill CST_STS_id before enforcing NOT NULL';
+            PRINT N'            [+] Column added                  : CST_is_active';
+            PRINT N'            [!] Pending action                : Backfill CST_is_active before enforcing NOT NULL';
 
         END
 
@@ -348,15 +348,15 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_STS_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+            AND c.name = N'CST_is_active'
+            AND TYPE_NAME(c.user_type_id) = N'bit'
         )
         BEGIN
 
-            PRINT N'            [X] Column definition mismatch    : CST_STS_id';
+            PRINT N'            [X] Column definition mismatch    : CST_is_active';
 
             ;THROW 50345,
-                N'Column CST_STS_id does not match the expected data type tinyint.',
+                N'Column CST_is_active does not match the expected data type bit.',
                 1;
 
         END
@@ -370,13 +370,13 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_STS_id'
+            AND c.name = N'CST_is_active'
             AND c.is_nullable = 1
         )
         BEGIN
 
-            PRINT N'            [!] Column nullable               : CST_STS_id';
-            PRINT N'            [!] Expected final definition     : tinyint NOT NULL';
+            PRINT N'            [!] Column nullable               : CST_is_active';
+            PRINT N'            [!] Expected final definition     : bit NOT NULL';
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
@@ -384,7 +384,7 @@
         ELSE
         BEGIN
 
-            PRINT N'            [•] Column validated              : CST_STS_id';
+            PRINT N'            [•] Column validated              : CST_is_active';
 
         END;
 
