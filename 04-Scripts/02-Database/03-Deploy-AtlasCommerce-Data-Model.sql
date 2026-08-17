@@ -14,7 +14,11 @@ SET XACT_ABORT ON;
 DECLARE @ScriptVersion nvarchar(20) = N'1.0.0';
 DECLARE @ScriptName    sysname      = N'03-Deploy-AtlasCommerce-Data-Model.sql';
 DECLARE @DatabaseName  sysname      = N'AtlasCommerce';
-DECLARE @StartTime     datetime2(0) = SYSDATETIME();
+DECLARE @StartTime     datetime2(3) = SYSDATETIME();
+
+DECLARE @GroupStartTime datetime2(3);
+DECLARE @GroupEndTime   datetime2(3);
+DECLARE @GroupElapsedMs bigint;
 
 PRINT N'';
 PRINT N'==============================================================================';
@@ -38,6 +42,8 @@ BEGIN TRY
         PARTITIONING
     ==============================================================================*/
 
+    SET @GroupStartTime = SYSDATETIME();
+
     PRINT N' PARTITIONING';
     PRINT N'';
 
@@ -50,6 +56,30 @@ BEGIN TRY
 
     :r $(DataModelRoot)\00-Partitioning\04-Partition-Validation\01-Sales-Partition-Validation.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' PARTITIONING TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         TRANSACTIONAL DATA MODEL DEPLOYMENT
     ==========================================================================*/
@@ -59,6 +89,8 @@ BEGIN TRY
     /*==========================================================================
         TABLES
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' TABLES';
     PRINT N'';
@@ -84,6 +116,11 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\customer.CustomerEmail.sql
     :r $(DataModelRoot)\01-Tables\customer.CustomerType.sql
 
+    :r $(DataModelRoot)\01-Tables\inventory.Inventory.sql
+    :r $(DataModelRoot)\01-Tables\inventory.InventoryMovement.sql
+    :r $(DataModelRoot)\01-Tables\inventory.InventoryMovementNote.sql
+    :r $(DataModelRoot)\01-Tables\inventory.InventoryMovementReason.sql
+
     :r $(DataModelRoot)\01-Tables\reference.Address.sql
     :r $(DataModelRoot)\01-Tables\reference.AdministrativeDivision.sql
     :r $(DataModelRoot)\01-Tables\reference.City.sql
@@ -95,9 +132,35 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\sales.TransactionItem.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionStatus.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' TABLES TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         OBJECT DOCUMENTATION
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' OBJECT DOCUMENTATION';
     PRINT N'';
@@ -123,6 +186,11 @@ BEGIN TRY
     :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerEmail.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\customer.CustomerType.Documentation.sql
 
+    :r $(DataModelRoot)\02-Object-Documentation\inventory.Inventory.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\inventory.InventoryMovement.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\inventory.InventoryMovementNote.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\inventory.InventoryMovementReason.Documentation.sql
+
     :r $(DataModelRoot)\02-Object-Documentation\reference.Address.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.AdministrativeDivision.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\reference.City.Documentation.sql
@@ -134,9 +202,35 @@ BEGIN TRY
     :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionItem.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionStatus.Documentation.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' OBJECT DOCUMENTATION TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         SEED DATA
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' SEED DATA';
     PRINT N'';
@@ -162,6 +256,11 @@ BEGIN TRY
     :r $(DataModelRoot)\03-Seed-Data\customer.CustomerEmail.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\customer.CustomerType.Seed.sql
 
+    :r $(DataModelRoot)\03-Seed-Data\inventory.Inventory.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\inventory.InventoryMovement.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\inventory.InventoryMovementNote.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\inventory.InventoryMovementReason.Seed.sql
+
     :r $(DataModelRoot)\03-Seed-Data\reference.Address.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.AdministrativeDivision.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\reference.City.Seed.sql
@@ -173,9 +272,35 @@ BEGIN TRY
     :r $(DataModelRoot)\03-Seed-Data\sales.TransactionItem.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\sales.TransactionStatus.Seed.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' SEED DATA TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         DEFAULT CONSTRAINTS
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' DEFAULT CONSTRAINTS';
     PRINT N'';
@@ -199,6 +324,11 @@ BEGIN TRY
     :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerEmail.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\customer.CustomerType.Defaults.sql
 
+    :r $(DataModelRoot)\04-Default-Constraints\inventory.Inventory.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\inventory.InventoryMovement.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\inventory.InventoryMovementNote.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\inventory.InventoryMovementReason.Defaults.sql
+
     :r $(DataModelRoot)\04-Default-Constraints\reference.Address.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.AdministrativeDivision.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\reference.City.Defaults.sql
@@ -210,9 +340,35 @@ BEGIN TRY
     :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionItem.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionStatus.Defaults.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' DEFAULT CONSTRAINTS TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         CHECK CONSTRAINTS
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' CHECK CONSTRAINTS';
     PRINT N'';
@@ -227,14 +383,43 @@ BEGIN TRY
     :r $(DataModelRoot)\05-Check-Constraints\customer.CustomerContact.Checks.sql
     :r $(DataModelRoot)\05-Check-Constraints\customer.CustomerEmail.Checks.sql
 
+    :r $(DataModelRoot)\05-Check-Constraints\inventory.Inventory.Checks.sql
+    :r $(DataModelRoot)\05-Check-Constraints\inventory.InventoryMovement.Checks.sql
+
     :r $(DataModelRoot)\05-Check-Constraints\reference.Address.Checks.sql
 
     :r $(DataModelRoot)\05-Check-Constraints\sales.Transaction.Checks.sql
     :r $(DataModelRoot)\05-Check-Constraints\sales.TransactionItem.Checks.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' CHECK CONSTRAINTS TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         UNIQUE CONSTRAINTS
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' UNIQUE CONSTRAINTS';
     PRINT N'';
@@ -252,6 +437,9 @@ BEGIN TRY
     :r $(DataModelRoot)\06-Unique-Constraints\customer.CustomerDocumentType.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\customer.CustomerType.Uniques.sql
 
+    :r $(DataModelRoot)\06-Unique-Constraints\inventory.Inventory.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\inventory.InventoryMovementReason.Uniques.sql
+
     :r $(DataModelRoot)\06-Unique-Constraints\reference.Address.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\reference.AdministrativeDivision.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\reference.City.Uniques.sql
@@ -261,9 +449,35 @@ BEGIN TRY
     :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionChannel.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionStatus.Uniques.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' UNIQUE CONSTRAINTS TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         FOREIGN KEY CONSTRAINTS
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' FOREIGN KEY CONSTRAINTS';
     PRINT N'';
@@ -283,6 +497,10 @@ BEGIN TRY
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.CustomerDocument.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\customer.CustomerEmail.ForeignKeys.sql
 
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\inventory.Inventory.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\inventory.InventoryMovement.ForeignKeys.sql
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\inventory.InventoryMovementNote.ForeignKeys.sql
+
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.Address.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.AdministrativeDivision.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\reference.City.ForeignKeys.sql
@@ -290,9 +508,35 @@ BEGIN TRY
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.Transaction.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.TransactionItem.ForeignKeys.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' FOREIGN KEY TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         INDEXES
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' INDEXES';
     PRINT N'';
@@ -306,21 +550,76 @@ BEGIN TRY
     :r $(DataModelRoot)\08-Indexes\customer.CustomerContact.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\customer.CustomerEmail.Indexes.sql
 
+    :r $(DataModelRoot)\08-Indexes\inventory.InventoryMovement.Indexes.sql
+    :r $(DataModelRoot)\08-Indexes\inventory.InventoryMovementNote.Indexes.sql
+
     :r $(DataModelRoot)\08-Indexes\sales.Transaction.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\sales.TransactionItem.Indexes.sql
+
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' INDEXES TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
 
     /*==========================================================================
         TEMPORAL INTEGRITY
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' TEMPORAL INTEGRITY';
     PRINT N'';
 
     :r $(DataModelRoot)\09-Temporal-Integrity\catalog.ProductVariantPrice.TemporalIntegrity.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' TEMPORAL INTEGRITY TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     /*==========================================================================
         FINAL VALIDATION
     ==========================================================================*/
+
+    SET @GroupStartTime = SYSDATETIME();
 
     PRINT N' FINAL VALIDATION';
     PRINT N'';
@@ -346,6 +645,11 @@ BEGIN TRY
     :r $(DataModelRoot)\10-Final-Validation\customer.CustomerEmail.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\customer.CustomerType.FinalValidation.sql
 
+    :r $(DataModelRoot)\10-Final-Validation\inventory.Inventory.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\inventory.InventoryMovement.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\inventory.InventoryMovementNote.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\inventory.InventoryMovementReason.FinalValidation.sql
+
     :r $(DataModelRoot)\10-Final-Validation\reference.Address.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.AdministrativeDivision.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\reference.City.FinalValidation.sql
@@ -357,7 +661,62 @@ BEGIN TRY
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionItem.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionStatus.FinalValidation.sql
 
+    SET @GroupEndTime = SYSDATETIME();
+
+    SET @GroupElapsedMs =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @GroupStartTime,
+            @GroupEndTime
+        );
+
+    PRINT N'';
+    PRINT N' FINAL VALIDATION TIME';
+    PRINT N' ------------------------------------------------------------------------------';
+    PRINT N' Elapsed : '
+        + CONVERT(nvarchar(20), @GroupElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'';
+
     COMMIT TRANSACTION;
+
+    /*==========================================================================
+        DEPLOYMENT TIMING
+    ==========================================================================*/
+
+    DECLARE @EndTime datetime2(3) = SYSDATETIME();
+
+    DECLARE @ElapsedMs bigint =
+        DATEDIFF_BIG
+        (
+            MILLISECOND,
+            @StartTime,
+            @EndTime
+        );
+
+
+    PRINT N'';
+    PRINT N'==============================================================================';
+    PRINT N' DEPLOYMENT TIMING';
+    PRINT N'==============================================================================';
+    PRINT N' Total elapsed : '
+        + CONVERT(nvarchar(20), @ElapsedMs)
+        + N' ms ('
+        + CONVERT
+        (
+            nvarchar(30),
+            CONVERT(decimal(18,3), @ElapsedMs / 1000.0)
+        )
+        + N' s)';
+    PRINT N'==============================================================================';
+
 
     PRINT N'';
     PRINT N'==============================================================================';

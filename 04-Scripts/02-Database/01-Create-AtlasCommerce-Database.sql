@@ -1,4 +1,4 @@
-AtlasCommerce/******************************************************************************
+/******************************************************************************
  Project      : Atlas Commerce
  Repository   : Atlas Engineering / Enterprise Data Platform
  Script       : 01-Create-AtlasCommerce-Database.sql
@@ -293,7 +293,7 @@ SET @Sql =
         SIZE = ' + CONVERT(nvarchar(20), @DataInitialSizeMB) + N'MB,
         MAXSIZE = ' + CONVERT(nvarchar(20), @DataMaxSizeMB) + N'MB,
         FILEGROWTH = ' + CONVERT(nvarchar(20), @FileGrowthMB) + N'MB
-    ),
+    )
 
     LOG ON
     (
