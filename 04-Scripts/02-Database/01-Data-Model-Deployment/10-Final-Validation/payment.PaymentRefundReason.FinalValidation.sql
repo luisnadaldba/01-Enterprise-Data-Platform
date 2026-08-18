@@ -1,0 +1,767 @@
+    PRINT N'    payment.PaymentRefundReason';
+    PRINT N'    --------------------------------------------------------------------------';
+
+
+    /*==========================================================================
+        FINAL VALIDATION STATE
+    ==========================================================================*/
+
+    DECLARE @PAYRR_FV_validation_errors int = 0;
+
+    DECLARE @PAYRR_FV_table_status               nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRR_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRR_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRR_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRR_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRR_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRR_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
+    DECLARE @PAYRR_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRR_FV_foreign_keys_status        nvarchar(20) = N'NOT REQUIRED';
+    DECLARE @PAYRR_FV_indexes_status             nvarchar(20) = N'NOT REQUIRED';
+    DECLARE @PAYRR_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
+
+
+    /*==========================================================================
+        TABLE VALIDATION
+    ==========================================================================*/
+
+    IF OBJECT_ID(N'payment.PaymentRefundReason', N'U') IS NOT NULL
+    BEGIN
+        SET @PAYRR_FV_table_status = N'VALID';
+    END
+    ELSE
+    BEGIN
+        SET @PAYRR_FV_table_status = N'FAILED';
+        SET @PAYRR_FV_validation_errors += 1;
+    END;
+
+
+    /*==========================================================================
+        PRIMARY KEY VALIDATION
+    ==========================================================================*/
+
+    DECLARE @PAYRR_FV_pk_actual_name     sysname;
+    DECLARE @PAYRR_FV_pk_actual_columns  nvarchar(4000);
+    DECLARE @PAYRR_FV_pk_data_space      sysname;
+
+
+    SELECT
+        @PAYRR_FV_pk_actual_name = kc.name,
+        @PAYRR_FV_pk_data_space = ds.name,
+
+        @PAYRR_FV_pk_actual_columns =
+        (
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), c.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY ic.key_ordinal
+                )
+
+            FROM sys.index_columns AS ic
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id = ic.object_id
+                AND c.column_id = ic.column_id
+
+            WHERE ic.object_id = kc.parent_object_id
+            AND ic.index_id = kc.unique_index_id
+            AND ic.key_ordinal > 0
+        )
+
+    FROM sys.key_constraints AS kc
+
+    INNER JOIN sys.indexes AS i
+        ON  i.object_id = kc.parent_object_id
+        AND i.index_id = kc.unique_index_id
+
+    INNER JOIN sys.data_spaces AS ds
+        ON ds.data_space_id = i.data_space_id
+
+    WHERE kc.parent_object_id =
+            OBJECT_ID(N'payment.PaymentRefundReason')
+
+    AND kc.type = N'PK';
+
+
+    IF @PAYRR_FV_pk_actual_name = N'PK_PAYRR'
+    AND @PAYRR_FV_pk_actual_columns = N'PAYRR_id'
+    AND @PAYRR_FV_pk_data_space = N'FG_CORE'
+    BEGIN
+        SET @PAYRR_FV_primary_key_status = N'VALID';
+    END
+    ELSE
+    BEGIN
+        SET @PAYRR_FV_primary_key_status = N'FAILED';
+        SET @PAYRR_FV_validation_errors += 1;
+    END;
+
+
+    /*==========================================================================
+        COLUMNS VALIDATION
+    ==========================================================================*/
+
+    DECLARE @PAYRR_FV_expected_column_count int = 4;
+    DECLARE @PAYRR_FV_actual_column_count   int;
+
+
+    SELECT
+        @PAYRR_FV_actual_column_count = COUNT(*)
+
+    FROM sys.columns
+
+    WHERE object_id =
+            OBJECT_ID(N'payment.PaymentRefundReason');
+
+
+    IF @PAYRR_FV_actual_column_count =
+            @PAYRR_FV_expected_column_count
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'payment.PaymentRefundReason')
+
+        AND c.name = N'PAYRR_id'
+        AND t.name = N'tinyint'
+        AND c.max_length = 1
+        AND c.is_nullable = 0
+        AND c.is_identity = 1
+    )
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.identity_columns AS ic
+
+        WHERE ic.object_id =
+                OBJECT_ID(N'payment.PaymentRefundReason')
+
+        AND ic.name = N'PAYRR_id'
+        AND CONVERT(bigint, ic.seed_value) = 1
+        AND CONVERT(bigint, ic.increment_value) = 1
+    )
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'payment.PaymentRefundReason')
+
+        AND c.name = N'PAYRR_name'
+        AND t.name = N'varchar'
+        AND c.max_length = 40
+        AND c.is_nullable = 0
+    )
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'payment.PaymentRefundReason')
+
+        AND c.name = N'PAYRR_created_at'
+        AND t.name = N'datetime2'
+        AND c.scale = 0
+        AND c.is_nullable = 0
+    )
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'payment.PaymentRefundReason')
+
+        AND c.name = N'PAYRR_updated_at'
+        AND t.name = N'datetime2'
+        AND c.scale = 0
+        AND c.is_nullable = 0
+    )
+    BEGIN
+        SET @PAYRR_FV_columns_status = N'VALID';
+    END
+    ELSE
+    BEGIN
+        SET @PAYRR_FV_columns_status = N'FAILED';
+        SET @PAYRR_FV_validation_errors += 1;
+    END;
+
+
+    /*==========================================================================
+        OBJECT DOCUMENTATION VALIDATION
+    ==========================================================================*/
+
+    DECLARE @PAYRR_FV_expected_documentation TABLE
+    (
+        PAYRR_doc_id                    tinyint IDENTITY(1,1) NOT NULL,
+        PAYRR_doc_object_type           nvarchar(10) NOT NULL,
+        PAYRR_doc_column_name           sysname NULL,
+        PAYRR_doc_expected_description  nvarchar(4000) NOT NULL
+    );
+
+
+    DECLARE @PAYRR_FV_doc_current_id        tinyint;
+    DECLARE @PAYRR_FV_doc_max_id            tinyint;
+    DECLARE @PAYRR_FV_doc_object_type       nvarchar(10);
+    DECLARE @PAYRR_FV_doc_column_name       sysname;
+    DECLARE @PAYRR_FV_doc_expected_value    nvarchar(4000);
+    DECLARE @PAYRR_FV_doc_actual_value      nvarchar(4000);
+    DECLARE @PAYRR_FV_invalid_documentation int = 0;
+
+
+    /*--------------------------------------------------------------------------
+        EXPECTED DOCUMENTATION
+
+        IMPORTANT:
+            These descriptions intentionally match
+            payment.PaymentRefundReason.Documentation.sql.
+    --------------------------------------------------------------------------*/
+
+    INSERT INTO @PAYRR_FV_expected_documentation
+    (
+        PAYRR_doc_object_type,
+        PAYRR_doc_column_name,
+        PAYRR_doc_expected_description
+    )
+    VALUES
+    (
+        N'TABLE',
+        NULL,
+        N'Defines the controlled reasons used to classify payment refunds in Atlas Commerce.'
+    ),
+    (
+        N'COLUMN',
+        N'PAYRR_id',
+        N'Primary key of payment.PaymentRefundReason.'
+    ),
+    (
+        N'COLUMN',
+        N'PAYRR_name',
+        N'Stores the controlled name of the reason associated with a payment refund.'
+    ),
+    (
+        N'COLUMN',
+        N'PAYRR_created_at',
+        N'Records the date and time when the row was initially created.'
+    ),
+    (
+        N'COLUMN',
+        N'PAYRR_updated_at',
+        N'Records the date and time of the most recent meaningful modification to the row.'
+    );
+
+
+    SELECT
+        @PAYRR_FV_doc_current_id =
+            MIN(PAYRR_doc_id),
+
+        @PAYRR_FV_doc_max_id =
+            MAX(PAYRR_doc_id)
+
+    FROM @PAYRR_FV_expected_documentation;
+
+
+    WHILE @PAYRR_FV_doc_current_id <=
+        @PAYRR_FV_doc_max_id
+    BEGIN
+
+        SET @PAYRR_FV_doc_object_type = NULL;
+        SET @PAYRR_FV_doc_column_name = NULL;
+        SET @PAYRR_FV_doc_expected_value = NULL;
+        SET @PAYRR_FV_doc_actual_value = NULL;
+
+
+        SELECT
+            @PAYRR_FV_doc_object_type =
+                PAYRR_doc_object_type,
+
+            @PAYRR_FV_doc_column_name =
+                PAYRR_doc_column_name,
+
+            @PAYRR_FV_doc_expected_value =
+                PAYRR_doc_expected_description
+
+        FROM @PAYRR_FV_expected_documentation
+
+        WHERE PAYRR_doc_id =
+                @PAYRR_FV_doc_current_id;
+
+
+        IF @PAYRR_FV_doc_object_type = N'TABLE'
+        BEGIN
+
+            SELECT
+                @PAYRR_FV_doc_actual_value =
+                    CONVERT(nvarchar(4000), ep.value)
+
+            FROM sys.extended_properties AS ep
+
+            WHERE ep.class = 1
+            AND ep.major_id =
+                    OBJECT_ID(N'payment.PaymentRefundReason')
+            AND ep.minor_id = 0
+            AND ep.name = N'MS_Description';
+
+        END
+        ELSE
+        BEGIN
+
+            SELECT
+                @PAYRR_FV_doc_actual_value =
+                    CONVERT(nvarchar(4000), ep.value)
+
+            FROM sys.extended_properties AS ep
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id = ep.major_id
+                AND c.column_id = ep.minor_id
+
+            WHERE ep.class = 1
+            AND ep.major_id =
+                    OBJECT_ID(N'payment.PaymentRefundReason')
+            AND ep.name = N'MS_Description'
+            AND c.name =
+                    @PAYRR_FV_doc_column_name;
+
+        END;
+
+
+        IF ISNULL
+        (
+            @PAYRR_FV_doc_actual_value,
+            N''
+        )
+        <>
+        @PAYRR_FV_doc_expected_value
+        BEGIN
+
+            SET @PAYRR_FV_invalid_documentation += 1;
+
+        END;
+
+
+        SET @PAYRR_FV_doc_current_id += 1;
+
+    END;
+
+
+    IF @PAYRR_FV_invalid_documentation = 0
+    BEGIN
+        SET @PAYRR_FV_documentation_status = N'VALID';
+    END
+    ELSE
+    BEGIN
+        SET @PAYRR_FV_documentation_status = N'FAILED';
+        SET @PAYRR_FV_validation_errors += 1;
+    END;
+
+
+    /*==========================================================================
+        SEED DATA VALIDATION
+    ==========================================================================*/
+
+    IF EXISTS
+    (
+        SELECT 1
+        FROM metadata.TablePrefix
+        WHERE PFX_schema_name = N'payment'
+        AND PFX_table_name = N'PaymentRefundReason'
+        AND PFX_prefix = N'PAYRR'
+        AND PFX_is_active = 1
+    )
+    AND
+    (
+        SELECT COUNT(*)
+        FROM payment.PaymentRefundReason
+        WHERE PAYRR_name IN
+        (
+            N'CUSTOMER_RETURN',
+            N'DUPLICATE_CHARGE',
+            N'FRAUD',
+            N'OPERATIONAL_ERROR',
+            N'ORDER_CANCELLATION'
+        )
+    ) = 5
+    AND NOT EXISTS
+    (
+        SELECT V.PAYRR_name
+        FROM
+        (
+            VALUES
+                (N'CUSTOMER_RETURN'),
+                (N'DUPLICATE_CHARGE'),
+                (N'FRAUD'),
+                (N'OPERATIONAL_ERROR'),
+                (N'ORDER_CANCELLATION')
+        ) AS V(PAYRR_name)
+        WHERE NOT EXISTS
+        (
+            SELECT 1
+            FROM payment.PaymentRefundReason AS PRR
+            WHERE PRR.PAYRR_name = V.PAYRR_name
+        )
+    )
+    BEGIN
+        SET @PAYRR_FV_seed_data_status = N'VALID';
+    END
+    ELSE
+    BEGIN
+        SET @PAYRR_FV_seed_data_status = N'FAILED';
+        SET @PAYRR_FV_validation_errors += 1;
+    END;
+
+
+    /*==========================================================================
+        DEFAULT CONSTRAINTS VALIDATION
+    ==========================================================================*/
+
+    DECLARE @PAYRR_FV_expected_defaults TABLE
+    (
+        PAYRR_default_id                   tinyint IDENTITY(1,1) NOT NULL,
+        PAYRR_default_column_name          sysname NOT NULL,
+        PAYRR_default_constraint_name      sysname NOT NULL,
+        PAYRR_default_expected_definition  nvarchar(4000) NOT NULL
+    );
+
+
+    DECLARE @PAYRR_FV_default_current_id          tinyint;
+    DECLARE @PAYRR_FV_default_max_id              tinyint;
+    DECLARE @PAYRR_FV_default_column_name         sysname;
+    DECLARE @PAYRR_FV_default_expected_name       sysname;
+    DECLARE @PAYRR_FV_default_actual_name         sysname;
+    DECLARE @PAYRR_FV_default_expected_definition nvarchar(4000);
+    DECLARE @PAYRR_FV_default_actual_definition   nvarchar(4000);
+    DECLARE @PAYRR_FV_default_expected_normalized nvarchar(4000);
+    DECLARE @PAYRR_FV_default_actual_normalized   nvarchar(4000);
+    DECLARE @PAYRR_FV_invalid_defaults            int = 0;
+
+
+    INSERT INTO @PAYRR_FV_expected_defaults
+    (
+        PAYRR_default_column_name,
+        PAYRR_default_constraint_name,
+        PAYRR_default_expected_definition
+    )
+    VALUES
+    (
+        N'PAYRR_created_at',
+        N'DF_PAYRR_created_at',
+        N'sysdatetime'
+    ),
+    (
+        N'PAYRR_updated_at',
+        N'DF_PAYRR_updated_at',
+        N'sysdatetime'
+    );
+
+
+    SELECT
+        @PAYRR_FV_default_current_id =
+            MIN(PAYRR_default_id),
+
+        @PAYRR_FV_default_max_id =
+            MAX(PAYRR_default_id)
+
+    FROM @PAYRR_FV_expected_defaults;
+
+
+    WHILE @PAYRR_FV_default_current_id <=
+        @PAYRR_FV_default_max_id
+    BEGIN
+
+        SET @PAYRR_FV_default_column_name = NULL;
+        SET @PAYRR_FV_default_expected_name = NULL;
+        SET @PAYRR_FV_default_actual_name = NULL;
+        SET @PAYRR_FV_default_expected_definition = NULL;
+        SET @PAYRR_FV_default_actual_definition = NULL;
+
+
+        SELECT
+            @PAYRR_FV_default_column_name =
+                PAYRR_default_column_name,
+
+            @PAYRR_FV_default_expected_name =
+                PAYRR_default_constraint_name,
+
+            @PAYRR_FV_default_expected_definition =
+                PAYRR_default_expected_definition
+
+        FROM @PAYRR_FV_expected_defaults
+
+        WHERE PAYRR_default_id =
+                @PAYRR_FV_default_current_id;
+
+
+        SELECT
+            @PAYRR_FV_default_actual_name =
+                dc.name,
+
+            @PAYRR_FV_default_actual_definition =
+                dc.definition
+
+        FROM sys.default_constraints AS dc
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = dc.parent_object_id
+            AND c.column_id = dc.parent_column_id
+
+        WHERE dc.parent_object_id =
+                OBJECT_ID(N'payment.PaymentRefundReason')
+
+        AND c.name =
+                @PAYRR_FV_default_column_name;
+
+
+        SET @PAYRR_FV_default_expected_normalized =
+            LOWER
+            (
+                REPLACE
+                (
+                    REPLACE
+                    (
+                        REPLACE
+                        (
+                            @PAYRR_FV_default_expected_definition,
+                            N'(',
+                            N''
+                        ),
+                        N')',
+                        N''
+                    ),
+                    N' ',
+                    N''
+                )
+            );
+
+
+        SET @PAYRR_FV_default_actual_normalized =
+            LOWER
+            (
+                REPLACE
+                (
+                    REPLACE
+                    (
+                        REPLACE
+                        (
+                            @PAYRR_FV_default_actual_definition,
+                            N'(',
+                            N''
+                        ),
+                        N')',
+                        N''
+                    ),
+                    N' ',
+                    N''
+                )
+            );
+
+
+        IF @PAYRR_FV_default_actual_name IS NULL
+        OR @PAYRR_FV_default_actual_name <>
+                @PAYRR_FV_default_expected_name
+        OR @PAYRR_FV_default_actual_definition IS NULL
+        OR @PAYRR_FV_default_actual_normalized <>
+                @PAYRR_FV_default_expected_normalized
+        BEGIN
+
+            SET @PAYRR_FV_invalid_defaults += 1;
+
+        END;
+
+
+        SET @PAYRR_FV_default_current_id += 1;
+
+    END;
+
+
+    IF @PAYRR_FV_invalid_defaults = 0
+    BEGIN
+        SET @PAYRR_FV_defaults_status = N'VALID';
+    END
+    ELSE
+    BEGIN
+        SET @PAYRR_FV_defaults_status = N'FAILED';
+        SET @PAYRR_FV_validation_errors += 1;
+    END;
+
+
+    /*==========================================================================
+        UNIQUE CONSTRAINT VALIDATION
+    ==========================================================================*/
+
+    DECLARE @PAYRR_FV_uq_actual_name        sysname;
+    DECLARE @PAYRR_FV_uq_actual_columns     nvarchar(4000);
+    DECLARE @PAYRR_FV_uq_actual_disabled    bit;
+    DECLARE @PAYRR_FV_uq_actual_data_space  sysname;
+
+
+    SELECT
+        @PAYRR_FV_uq_actual_name =
+            kc.name,
+
+        @PAYRR_FV_uq_actual_disabled =
+            i.is_disabled,
+
+        @PAYRR_FV_uq_actual_data_space =
+            ds.name,
+
+        @PAYRR_FV_uq_actual_columns =
+        (
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), c.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY ic.key_ordinal
+                )
+
+            FROM sys.index_columns AS ic
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id = ic.object_id
+                AND c.column_id = ic.column_id
+
+            WHERE ic.object_id =
+                    kc.parent_object_id
+
+            AND ic.index_id =
+                    kc.unique_index_id
+
+            AND ic.key_ordinal > 0
+        )
+
+    FROM sys.key_constraints AS kc
+
+    INNER JOIN sys.indexes AS i
+        ON  i.object_id = kc.parent_object_id
+        AND i.index_id = kc.unique_index_id
+
+    INNER JOIN sys.data_spaces AS ds
+        ON ds.data_space_id = i.data_space_id
+
+    WHERE kc.parent_object_id =
+            OBJECT_ID(N'payment.PaymentRefundReason')
+
+    AND kc.type = N'UQ'
+
+    AND kc.name =
+            N'UQ_PAYRR_name';
+
+
+    IF @PAYRR_FV_uq_actual_name =
+            N'UQ_PAYRR_name'
+
+    AND @PAYRR_FV_uq_actual_columns =
+            N'PAYRR_name'
+
+    AND @PAYRR_FV_uq_actual_disabled = 0
+
+    AND @PAYRR_FV_uq_actual_data_space =
+            N'FG_CORE'
+    BEGIN
+
+        SET @PAYRR_FV_uniques_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @PAYRR_FV_uniques_status = N'FAILED';
+        SET @PAYRR_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        FINAL STATE
+    ==========================================================================*/
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+
+    PRINT N'';
+    PRINT N'    FINAL STATE';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    PRINT N'        Table                         : ' + @PAYRR_FV_table_status;
+    PRINT N'        Primary Key                   : ' + @PAYRR_FV_primary_key_status;
+    PRINT N'        Columns                       : ' + @PAYRR_FV_columns_status;
+    PRINT N'        Object Documentation          : ' + @PAYRR_FV_documentation_status;
+    PRINT N'        Seed Data                     : ' + @PAYRR_FV_seed_data_status;
+    PRINT N'        Default Constraints           : ' + @PAYRR_FV_defaults_status;
+    PRINT N'        Check Constraints             : ' + @PAYRR_FV_checks_status;
+    PRINT N'        Unique Constraints            : ' + @PAYRR_FV_uniques_status;
+    PRINT N'        Foreign Key Constraints       : ' + @PAYRR_FV_foreign_keys_status;
+    PRINT N'        Additional Indexes            : ' + @PAYRR_FV_indexes_status;
+    PRINT N'        Temporal Integrity            : ' + @PAYRR_FV_temporal_integrity_status;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+
+
+    IF @PAYRR_FV_validation_errors = 0
+    BEGIN
+
+        PRINT N'';
+        PRINT N'        Result                        : PASSED';
+        PRINT N'';
+
+    END
+    ELSE
+    BEGIN
+
+        PRINT N'';
+        PRINT N'        Result                        : FAILED';
+
+        PRINT N'        Validation Errors             : '
+            + CONVERT
+            (
+                nvarchar(10),
+                @PAYRR_FV_validation_errors
+            );
+
+        PRINT N'';
+
+
+        ;THROW 50330,
+            N'Final validation failed for payment.PaymentRefundReason.',
+            1;
+
+    END;
+
+
+    PRINT N'';

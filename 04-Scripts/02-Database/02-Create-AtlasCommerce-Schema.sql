@@ -10,11 +10,13 @@
    Rerunnable    : Yes
 
    Schemas:
-       reference
-       customer
        catalog
-       sales
+       customer
        inventory
+       metadata
+       payment
+       reference
+       sales
 
    Deployment principles:
        - Safe to rerun
@@ -130,6 +132,7 @@ VALUES
     (N'customer'),
     (N'inventory'),
     (N'metadata'),
+    (N'payment'),
     (N'reference'),
     (N'sales');
 
