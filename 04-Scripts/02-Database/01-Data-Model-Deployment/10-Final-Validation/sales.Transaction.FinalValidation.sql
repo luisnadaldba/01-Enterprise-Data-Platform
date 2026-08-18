@@ -100,7 +100,7 @@
         COLUMNS VALIDATION
     ==========================================================================*/
 
-    DECLARE @TRN_FV_expected_column_count int = 10;
+    DECLARE @TRN_FV_expected_column_count int = 9;
     DECLARE @TRN_FV_actual_column_count   int;
 
     SELECT
@@ -214,22 +214,7 @@
         AND c.scale = 2
         AND c.is_nullable = 0
     )
-
-    AND EXISTS
-    (
-        SELECT 1
-        FROM sys.columns AS c
-        INNER JOIN sys.types AS t
-            ON c.user_type_id = t.user_type_id
-        WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-        AND c.name = N'TRN_shipping_amount'
-        AND t.name = N'decimal'
-        AND c.precision = 19
-        AND c.scale = 2
-        AND c.is_nullable = 0
-    )
-
-    AND EXISTS
+AND EXISTS
     (
         SELECT 1
         FROM sys.columns AS c
@@ -343,11 +328,6 @@
         N'COLUMN',
         N'TRN_discount_amount',
         N'Total discount amount applied to the transaction.'
-    ),
-    (
-        N'COLUMN',
-        N'TRN_shipping_amount',
-        N'Shipping amount charged for the transaction.'
     ),
     (
         N'COLUMN',
@@ -521,11 +501,6 @@
         N'((0.00))'
     ),
     (
-        N'TRN_shipping_amount',
-        N'DF_TRN_shipping_amount',
-        N'((0.00))'
-    ),
-    (
         N'TRN_created_at',
         N'DF_TRN_created_at',
         N'(sysdatetime())'
@@ -673,10 +648,6 @@
     (
         N'CK_TRN_discount_amount',
         N'TRN_discount_amount>=0.00'
-    ),
-    (
-        N'CK_TRN_shipping_amount',
-        N'TRN_shipping_amount>=0.00'
     );
 
 

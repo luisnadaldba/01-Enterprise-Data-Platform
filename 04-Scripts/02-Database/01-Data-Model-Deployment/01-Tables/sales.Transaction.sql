@@ -94,7 +94,6 @@
 
             TRN_gross_amount       decimal(19,2)   NOT NULL,
             TRN_discount_amount    decimal(19,2)   NOT NULL,
-            TRN_shipping_amount    decimal(19,2)   NOT NULL,
 
             TRN_created_at         datetime2(0)    NOT NULL,
             TRN_updated_at         datetime2(0)    NOT NULL,
@@ -589,61 +588,6 @@
 
         END;
 
-
-        /*----------------------------------------------------------------------
-            COLUMN: TRN_shipping_amount
-        ----------------------------------------------------------------------*/
-
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_shipping_amount') IS NULL
-        BEGIN
-
-            ALTER TABLE sales.[Transaction]
-                ADD TRN_shipping_amount decimal(19,2) NULL;
-
-            PRINT N'            [+] Column added                  : TRN_shipping_amount';
-            PRINT N'            [!] Pending action                : Backfill TRN_shipping_amount before enforcing NOT NULL';
-
-        END
-        ELSE IF NOT EXISTS
-        (
-            SELECT 1
-            FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_shipping_amount'
-            AND TYPE_NAME(c.user_type_id) = N'decimal'
-            AND c.precision = 19
-            AND c.scale = 2
-        )
-        BEGIN
-
-            PRINT N'            [X] Column definition mismatch    : TRN_shipping_amount';
-
-            ;THROW 50042,
-                N'Column TRN_shipping_amount does not match the expected data type decimal(19,2).',
-                1;
-
-        END
-        ELSE IF EXISTS
-        (
-            SELECT 1
-            FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_shipping_amount'
-            AND c.is_nullable = 1
-        )
-        BEGIN
-
-            PRINT N'            [!] Column nullable               : TRN_shipping_amount';
-            PRINT N'            [!] Expected final definition     : decimal(19,2) NOT NULL';
-            PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
-
-        END
-        ELSE
-        BEGIN
-
-            PRINT N'            [•] Column validated              : TRN_shipping_amount';
-
-        END;
 
         /*----------------------------------------------------------------------
             COLUMN: TRN_created_at

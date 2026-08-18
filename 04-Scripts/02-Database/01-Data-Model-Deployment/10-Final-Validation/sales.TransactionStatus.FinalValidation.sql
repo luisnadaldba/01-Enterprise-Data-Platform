@@ -368,7 +368,7 @@
     (
         SELECT COUNT(*)
         FROM sales.TransactionStatus
-    ) <> 4
+    ) <> 5
     BEGIN
         SET @TRNST_FV_invalid_seed += 1;
     END;
@@ -399,6 +399,18 @@
         SET @TRNST_FV_invalid_seed += 1;
     END;
 
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM sales.TransactionStatus
+        WHERE TRNST_code = N'COMPLETED'
+        AND TRNST_name = N'Completed'
+        AND TRNST_is_active = 1
+    )
+    BEGIN
+        SET @TRNST_FV_invalid_seed += 1;
+    END;
 
     IF NOT EXISTS
     (

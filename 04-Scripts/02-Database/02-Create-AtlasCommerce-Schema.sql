@@ -17,6 +17,7 @@
        payment
        reference
        sales
+       shipping
 
    Deployment principles:
        - Safe to rerun
@@ -134,7 +135,8 @@ VALUES
     (N'metadata'),
     (N'payment'),
     (N'reference'),
-    (N'sales');
+    (N'sales'),
+    (N'shipping');
 
 DECLARE @SchemaName sysname;
 

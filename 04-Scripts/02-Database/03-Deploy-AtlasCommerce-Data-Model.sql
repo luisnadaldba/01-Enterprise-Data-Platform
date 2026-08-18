@@ -140,6 +140,10 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\sales.TransactionItem.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionStatus.sql
 
+    :r $(DataModelRoot)\01-Tables\shipping.Shipment.sql
+    :r $(DataModelRoot)\01-Tables\shipping.ShipmentMethod.sql
+    :r $(DataModelRoot)\01-Tables\shipping.ShipmentStatus.sql
+
     SET @GroupEndTime = SYSDATETIME();
 
     SET @GroupElapsedMs =
@@ -217,6 +221,10 @@ BEGIN TRY
     :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionChannel.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionItem.Documentation.sql
     :r $(DataModelRoot)\02-Object-Documentation\sales.TransactionStatus.Documentation.sql
+
+    :r $(DataModelRoot)\02-Object-Documentation\shipping.Shipment.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\shipping.ShipmentMethod.Documentation.sql
+    :r $(DataModelRoot)\02-Object-Documentation\shipping.ShipmentStatus.Documentation.sql
 
     SET @GroupEndTime = SYSDATETIME();
 
@@ -296,6 +304,10 @@ BEGIN TRY
     :r $(DataModelRoot)\03-Seed-Data\sales.TransactionItem.Seed.sql
     :r $(DataModelRoot)\03-Seed-Data\sales.TransactionStatus.Seed.sql
 
+    :r $(DataModelRoot)\03-Seed-Data\shipping.Shipment.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\shipping.ShipmentMethod.Seed.sql
+    :r $(DataModelRoot)\03-Seed-Data\shipping.ShipmentStatus.Seed.sql
+
     SET @GroupEndTime = SYSDATETIME();
 
     SET @GroupElapsedMs =
@@ -372,6 +384,10 @@ BEGIN TRY
     :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionItem.Defaults.sql
     :r $(DataModelRoot)\04-Default-Constraints\sales.TransactionStatus.Defaults.sql
 
+    :r $(DataModelRoot)\04-Default-Constraints\shipping.Shipment.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\shipping.ShipmentMethod.Defaults.sql
+    :r $(DataModelRoot)\04-Default-Constraints\shipping.ShipmentStatus.Defaults.sql
+
     SET @GroupEndTime = SYSDATETIME();
 
     SET @GroupElapsedMs =
@@ -426,6 +442,8 @@ BEGIN TRY
 
     :r $(DataModelRoot)\05-Check-Constraints\sales.Transaction.Checks.sql
     :r $(DataModelRoot)\05-Check-Constraints\sales.TransactionItem.Checks.sql
+
+    :r $(DataModelRoot)\05-Check-Constraints\shipping.Shipment.Checks.sql
 
     SET @GroupEndTime = SYSDATETIME();
 
@@ -491,6 +509,10 @@ BEGIN TRY
     :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionChannel.Uniques.sql
     :r $(DataModelRoot)\06-Unique-Constraints\sales.TransactionStatus.Uniques.sql
 
+    :r $(DataModelRoot)\06-Unique-Constraints\shipping.Shipment.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\shipping.ShipmentMethod.Uniques.sql
+    :r $(DataModelRoot)\06-Unique-Constraints\shipping.ShipmentStatus.Uniques.sql
+
     SET @GroupEndTime = SYSDATETIME();
 
     SET @GroupElapsedMs =
@@ -554,6 +576,8 @@ BEGIN TRY
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.Transaction.ForeignKeys.sql
     :r $(DataModelRoot)\07-Foreign-Key-Constraints\sales.TransactionItem.ForeignKeys.sql
 
+    :r $(DataModelRoot)\07-Foreign-Key-Constraints\shipping.Shipment.ForeignKeys.sql
+
     SET @GroupEndTime = SYSDATETIME();
 
     SET @GroupElapsedMs =
@@ -605,6 +629,8 @@ BEGIN TRY
 
     :r $(DataModelRoot)\08-Indexes\sales.Transaction.Indexes.sql
     :r $(DataModelRoot)\08-Indexes\sales.TransactionItem.Indexes.sql
+
+    :r $(DataModelRoot)\08-Indexes\shipping.Shipment.Indexes.sql
 
     SET @GroupEndTime = SYSDATETIME();
 
@@ -722,6 +748,10 @@ BEGIN TRY
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionChannel.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionItem.FinalValidation.sql
     :r $(DataModelRoot)\10-Final-Validation\sales.TransactionStatus.FinalValidation.sql
+
+    :r $(DataModelRoot)\10-Final-Validation\shipping.Shipment.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\shipping.ShipmentMethod.FinalValidation.sql
+    :r $(DataModelRoot)\10-Final-Validation\shipping.ShipmentStatus.FinalValidation.sql
 
     SET @GroupEndTime = SYSDATETIME();
 

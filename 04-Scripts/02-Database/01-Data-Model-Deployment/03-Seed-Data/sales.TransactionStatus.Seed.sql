@@ -131,6 +131,11 @@
         1
     ),
     (
+        'COMPLETED',
+        'Completed',
+        1
+    ),
+    (
         'CANCELLED',
         'Cancelled',
         1
