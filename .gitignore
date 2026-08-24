@@ -5,3 +5,6 @@
 02-Database/Data/*.mdf
 02-Database/Data/*.ndf
 02-Database/Log/*.ldf
+
+# Private learning and training material
+03-Documentation/06-Learning/
