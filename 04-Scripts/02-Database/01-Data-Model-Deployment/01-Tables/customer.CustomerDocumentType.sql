@@ -29,8 +29,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    customer.CustomerDocumentType';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● customer.CustomerDocumentType';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -40,8 +40,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -102,6 +105,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -256,7 +260,7 @@
         --------------------------------------------------------------------------*/
 
         IF @DTP_ActualPrimaryKeyName <>
-            N'PK_DTP'
+                N'PK_DTP'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -338,7 +342,7 @@
 
             PRINT N'            [!] Column nullable               : DTP_name';
             PRINT N'            [!] Expected final definition     : nvarchar(100) NOT NULL';
-            PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+            PRINT N'            [!] Pending action                : Backfill DTP_name before enforcing NOT NULL';
 
         END
         ELSE
@@ -547,4 +551,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

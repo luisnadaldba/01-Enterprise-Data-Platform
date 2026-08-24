@@ -1,5 +1,6 @@
-    PRINT N'    payment.Payment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.Payment';
+    PRINT N'';
 
     DECLARE @PAY_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -63,8 +64,8 @@
         ELSE
         BEGIN
 
-            DECLARE @PAY_actual_prefix     nvarchar(5);
-            DECLARE @PAY_actual_is_active  bit;
+            DECLARE @PAY_actual_prefix    nvarchar(5);
+            DECLARE @PAY_actual_is_active bit;
 
 
             SELECT
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

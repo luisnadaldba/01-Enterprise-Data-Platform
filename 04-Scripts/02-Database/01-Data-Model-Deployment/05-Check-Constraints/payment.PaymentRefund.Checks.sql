@@ -1,5 +1,6 @@
-    PRINT N'    payment.PaymentRefund';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.PaymentRefund';
+    PRINT N'';
 
 
     DECLARE @PAYRF_check_expected_name          sysname;
@@ -154,4 +155,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

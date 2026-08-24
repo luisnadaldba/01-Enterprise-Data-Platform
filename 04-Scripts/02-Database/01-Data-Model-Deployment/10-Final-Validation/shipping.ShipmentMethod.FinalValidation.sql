@@ -1,5 +1,4 @@
-    PRINT N'    shipping.ShipmentMethod';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● shipping.ShipmentMethod';
 
 
     /*==========================================================================
@@ -264,12 +263,12 @@
     (
         N'COLUMN',
         N'SHPMT_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'SHPMT_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -698,11 +697,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @SHPMT_FV_table_status;
@@ -716,23 +711,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @SHPMT_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @SHPMT_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @SHPMT_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @SHPMT_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -742,14 +731,17 @@
                 @SHPMT_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @SHPMT_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 51030,
             N'Final validation failed for shipping.ShipmentMethod.',
             1;
 
     END;
-
-
-    PRINT N'';

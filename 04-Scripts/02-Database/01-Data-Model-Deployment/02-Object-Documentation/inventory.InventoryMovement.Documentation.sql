@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryMovement';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryMovement';
+    PRINT N'';
 
     DECLARE @INVMV_expected_description nvarchar(4000);
     DECLARE @INVMV_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,29 +47,46 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Table description validated   : inventory.InventoryMovement';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Table description mismatch    : inventory.InventoryMovement';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -77,14 +102,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_id'
     )
     BEGIN
 
@@ -106,32 +140,51 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_id';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_id';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_id';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_id';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -142,19 +195,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVMV_expected_description =
-        N'Foreign key of catalog.ProductVariant.';
+        N'Foreign key referencing catalog.ProductVariant.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_PRDVA_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_PRDVA_id'
     )
     BEGIN
 
@@ -176,32 +238,51 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_PRDVA_id';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_PRDVA_id';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_PRDVA_id';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_PRDVA_id';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -212,19 +293,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVMV_expected_description =
-        N'Foreign key of inventory.InventoryMovementReason.';
+        N'Foreign key referencing inventory.InventoryMovementReason.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_INVMR_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_INVMR_id'
     )
     BEGIN
 
@@ -246,32 +336,51 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_INVMR_id';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_INVMR_id';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_INVMR_id';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_INVMR_id';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -282,19 +391,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVMV_expected_description =
-        N'Optional identifier component of the composite foreign key to sales.TransactionItem when the movement originates from a sales transaction item.';
+        N'Optional identifier component of the composite foreign key referencing sales.TransactionItem when the inventory movement originates from a sales transaction item.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_TRNIT_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_TRNIT_id'
     )
     BEGIN
 
@@ -316,32 +434,51 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_TRNIT_id';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_TRNIT_id';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_TRNIT_id';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_TRNIT_id';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -352,21 +489,31 @@
     ----------------------------------------------------------------------*/
 
     SET @INVMV_expected_description =
-        N'Optional transaction date component of the composite foreign key to sales.TransactionItem.';
+        N'Optional transaction timestamp component of the composite foreign key referencing sales.TransactionItem when the inventory movement originates from a sales transaction item.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_TRNIT_transaction_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_TRNIT_transaction_at'
     )
     BEGIN
+
         EXEC sys.sp_addextendedproperty
             @name = N'MS_Description',
             @value = @INVMV_expected_description,
@@ -378,35 +525,60 @@
             @level2name = N'INVMV_TRNIT_transaction_at';
 
         PRINT N'        [+] Column description added      : INVMV_TRNIT_transaction_at';
+
     END
     ELSE
     BEGIN
+
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
-            @INVMV_existing_description = CONVERT(nvarchar(4000), ep.value)
+            @INVMV_existing_description =
+                CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_TRNIT_transaction_at';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_TRNIT_transaction_at';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_TRNIT_transaction_at';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_TRNIT_transaction_at';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
+
     END;
 
 
@@ -420,14 +592,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_quantity'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_quantity'
     )
     BEGIN
 
@@ -449,32 +630,51 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_quantity';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_quantity';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_quantity';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_quantity';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -490,14 +690,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_movement_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_movement_at'
     )
     BEGIN
 
@@ -519,32 +728,51 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_movement_at';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_movement_at';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_movement_at';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_movement_at';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -555,19 +783,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVMV_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_created_at'
     )
     BEGIN
 
@@ -589,32 +826,51 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_created_at';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_created_at';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_created_at';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_created_at';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
@@ -625,19 +881,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVMV_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_updated_at'
     )
     BEGIN
 
@@ -659,34 +924,56 @@
 
         SET @INVMV_existing_description = NULL;
 
+
         SELECT
             @INVMV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryMovement')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVMV_updated_at';
 
-        IF @INVMV_existing_description = @INVMV_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryMovement')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVMV_updated_at';
+
+
+        IF @INVMV_existing_description =
+            @INVMV_expected_description
         BEGIN
+
             PRINT N'        [•] Column description validated  : INVMV_updated_at';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVMV_updated_at';
-            PRINT N'            Expected                     : ' + @INVMV_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVMV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVMV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVMV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVMV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVMV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVMV_existing_description
                   END;
+
         END;
 
     END;
 
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

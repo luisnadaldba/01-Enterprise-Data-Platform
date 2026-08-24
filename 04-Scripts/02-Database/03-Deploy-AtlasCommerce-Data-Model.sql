@@ -67,9 +67,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' PARTITIONING TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● PARTITIONING TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -78,6 +78,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -134,7 +136,7 @@ BEGIN TRY
     :r $(DataModelRoot)\01-Tables\reference.City.sql
     :r $(DataModelRoot)\01-Tables\reference.ContactType.sql
     :r $(DataModelRoot)\01-Tables\reference.Country.sql
-  
+
     :r $(DataModelRoot)\01-Tables\sales.Transaction.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionChannel.sql
     :r $(DataModelRoot)\01-Tables\sales.TransactionItem.sql
@@ -155,9 +157,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' TABLES TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● TABLES TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -166,6 +168,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -237,9 +241,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' OBJECT DOCUMENTATION TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● OBJECT DOCUMENTATION TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -248,6 +252,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -319,9 +325,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' SEED DATA TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● SEED DATA TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -330,6 +336,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -399,9 +407,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' DEFAULT CONSTRAINTS TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● DEFAULT CONSTRAINTS TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -410,6 +418,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -456,9 +466,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' CHECK CONSTRAINTS TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● CHECK CONSTRAINTS TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -467,6 +477,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -524,9 +536,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' UNIQUE CONSTRAINTS TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● UNIQUE CONSTRAINTS TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -535,6 +547,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -589,9 +603,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' FOREIGN KEY TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● FOREIGN KEY CONSTRAINTS TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -600,6 +614,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -643,9 +659,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' INDEXES TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● INDEXES TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -654,6 +670,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -682,9 +700,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' TEMPORAL INTEGRITY TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● TEMPORAL INTEGRITY TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -693,6 +711,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     /*==========================================================================
@@ -764,9 +784,9 @@ BEGIN TRY
         );
 
     PRINT N'';
-    PRINT N' FINAL VALIDATION TIME';
-    PRINT N' ------------------------------------------------------------------------------';
-    PRINT N' Elapsed : '
+    PRINT N'    ● FINAL VALIDATION TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @GroupElapsedMs)
         + N' ms ('
         + CONVERT
@@ -775,6 +795,8 @@ BEGIN TRY
             CONVERT(decimal(18,3), @GroupElapsedMs / 1000.0)
         )
         + N' s)';
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     COMMIT TRANSACTION;
@@ -798,7 +820,10 @@ BEGIN TRY
     PRINT N'==============================================================================';
     PRINT N' DEPLOYMENT TIMING';
     PRINT N'==============================================================================';
-    PRINT N' Total elapsed : '
+    PRINT N'';
+    PRINT N'    ● TOTAL DEPLOYMENT TIME';
+    PRINT N'';
+    PRINT N'        Elapsed                         : '
         + CONVERT(nvarchar(20), @ElapsedMs)
         + N' ms ('
         + CONVERT
@@ -807,10 +832,11 @@ BEGIN TRY
             CONVERT(decimal(18,3), @ElapsedMs / 1000.0)
         )
         + N' s)';
-    PRINT N'==============================================================================';
-
-
     PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+
     PRINT N'==============================================================================';
     PRINT N' AtlasCommerce data model deployment completed successfully.';
     PRINT N'==============================================================================';

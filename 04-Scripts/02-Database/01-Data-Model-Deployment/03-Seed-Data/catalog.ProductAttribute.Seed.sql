@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductAttribute';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductAttribute';
+    PRINT N'';
 
     DECLARE @PAT_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -63,8 +64,8 @@
         ELSE
         BEGIN
 
-            DECLARE @PAT_actual_prefix    nvarchar(5);
-            DECLARE @PAT_actual_is_active bit;
+            DECLARE @PAT_actual_prefix     nvarchar(5);
+            DECLARE @PAT_actual_is_active  bit;
 
 
             SELECT
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

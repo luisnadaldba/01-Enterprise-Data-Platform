@@ -30,8 +30,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    reference.ContactType';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● reference.ContactType';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -41,8 +41,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -53,17 +56,6 @@
     END;
 
 
-    IF SCHEMA_ID(N'reference') IS NULL
-    BEGIN
-
-        ;THROW 50601,
-            N'Required schema reference does not exist.',
-            1;
-
-    END;
-
-
-    PRINT N'        [✓] Schema dependency validated     : reference';
     PRINT N'        [✓] Filegroup dependency validated  : FG_CORE';
     PRINT N'';
 
@@ -114,6 +106,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -268,7 +261,7 @@
         --------------------------------------------------------------------------*/
 
         IF @CTP_ActualPrimaryKeyName <>
-            N'PK_CTP'
+                N'PK_CTP'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -350,7 +343,7 @@
 
             PRINT N'            [!] Column nullable               : CTP_name';
             PRINT N'            [!] Expected final definition     : nvarchar(100) NOT NULL';
-            PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+            PRINT N'            [!] Pending action                : Backfill CTP_name before enforcing NOT NULL';
 
         END
         ELSE
@@ -559,4 +552,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

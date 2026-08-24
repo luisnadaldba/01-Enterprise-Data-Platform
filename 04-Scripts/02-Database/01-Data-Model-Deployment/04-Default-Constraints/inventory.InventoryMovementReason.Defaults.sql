@@ -1,5 +1,7 @@
-    PRINT N'    inventory.InventoryMovementReason';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryMovementReason';
+    PRINT N'';
+
 
     /*==============================================================================
         DEFAULT CONSTRAINT: DF_INVMR_created_at
@@ -151,4 +153,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

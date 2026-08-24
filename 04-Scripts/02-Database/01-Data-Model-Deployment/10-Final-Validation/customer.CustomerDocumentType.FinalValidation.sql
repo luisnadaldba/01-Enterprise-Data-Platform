@@ -1,5 +1,4 @@
-    PRINT N'    customer.CustomerDocumentType';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● customer.CustomerDocumentType';
 
 
     /*==========================================================================
@@ -299,12 +298,12 @@
     (
         N'COLUMN',
         N'DTP_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'DTP_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -433,41 +432,15 @@
 
 
     /*--------------------------------------------------------------------------
-        PREFIX REGISTRATION
-    --------------------------------------------------------------------------*/
-
-    IF NOT EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name =
-                N'customer'
-
-        AND PFX_table_name =
-                N'CustomerDocumentType'
-
-        AND PFX_prefix =
-                N'DTP'
-
-        AND PFX_is_active = 1
-    )
-    BEGIN
-
-        SET @DTP_FV_invalid_seed_data += 1;
-
-    END;
-
-
-    /*--------------------------------------------------------------------------
         DOCUMENT TYPES
     --------------------------------------------------------------------------*/
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM customer.CustomerDocumentType
+
         WHERE DTP_name = N'CPF'
     )
     BEGIN
@@ -480,7 +453,9 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM customer.CustomerDocumentType
+
         WHERE DTP_name = N'CNPJ'
     )
     BEGIN
@@ -493,7 +468,9 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM customer.CustomerDocumentType
+
         WHERE DTP_name = N'RG'
     )
     BEGIN
@@ -506,7 +483,9 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM customer.CustomerDocumentType
+
         WHERE DTP_name = N'CNH'
     )
     BEGIN
@@ -519,7 +498,9 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM customer.CustomerDocumentType
+
         WHERE DTP_name = N'PASSPORT'
     )
     BEGIN
@@ -536,6 +517,7 @@
     IF
     (
         SELECT COUNT(*)
+
         FROM customer.CustomerDocumentType
     ) <> 5
     BEGIN
@@ -837,11 +819,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @DTP_FV_table_status;
@@ -855,23 +833,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @DTP_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @DTP_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @DTP_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @DTP_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -881,14 +853,17 @@
                 @DTP_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @DTP_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50530,
             N'Final validation failed for customer.CustomerDocumentType.',
             1;
 
     END;
-
-
-    PRINT N'';

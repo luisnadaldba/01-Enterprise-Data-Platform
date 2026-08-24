@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerContact';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerContact';
+    PRINT N'';
 
 
     DECLARE @CSTCN_check_expected_name          sysname;
@@ -167,4 +168,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

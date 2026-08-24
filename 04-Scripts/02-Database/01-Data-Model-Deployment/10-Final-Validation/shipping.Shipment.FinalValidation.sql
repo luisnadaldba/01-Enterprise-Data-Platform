@@ -1,5 +1,4 @@
-    PRINT N'    shipping.Shipment';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● shipping.Shipment';
 
 
     /*==========================================================================
@@ -312,7 +311,7 @@
     (
         N'TABLE',
         NULL,
-        N'Records the delivery process associated with Atlas Commerce online sales transactions, including destination, shipment method, status, freight amount, delivery estimate, tracking information and relevant business-event timestamps.'
+        N'Records the delivery process associated with Atlas Commerce sales transactions that require shipment, including destination, shipment method, status, shipping amount, delivery estimate, tracking information, and relevant business-event timestamps.'
     ),
     (
         N'COLUMN',
@@ -322,27 +321,27 @@
     (
         N'COLUMN',
         N'SHP_TRN_id',
-        N'Foreign key of sales.Transaction.'
+        N'Foreign key referencing sales.Transaction.'
     ),
     (
         N'COLUMN',
         N'SHP_transaction_at',
-        N'Stores the originating sales transaction timestamp and participates with SHP_TRN_id in the composite foreign key to sales.Transaction.'
+        N'Records the date and time of the parent sales transaction and participates with SHP_TRN_id in the composite foreign key to sales.Transaction.'
     ),
     (
         N'COLUMN',
         N'SHP_CSTAD_id',
-        N'Foreign key of customer.CustomerAddress identifying the customer address selected for this shipment.'
+        N'Foreign key referencing customer.CustomerAddress.'
     ),
     (
         N'COLUMN',
         N'SHP_SHPMT_id',
-        N'Foreign key of shipping.ShipmentMethod identifying the shipment method selected for this delivery.'
+        N'Foreign key referencing shipping.ShipmentMethod.'
     ),
     (
         N'COLUMN',
         N'SHP_SHPST_id',
-        N'Foreign key of shipping.ShipmentStatus identifying the current operational state of this shipment.'
+        N'Foreign key referencing shipping.ShipmentStatus.'
     ),
     (
         N'COLUMN',
@@ -357,12 +356,12 @@
     (
         N'COLUMN',
         N'SHP_tracking_code',
-        N'Stores the postal tracking code assigned to the shipment when available.'
+        N'Stores the tracking code assigned to the shipment when available.'
     ),
     (
         N'COLUMN',
         N'SHP_posted_at',
-        N'Records the date and time when the shipment was handed over to the postal service for delivery.'
+        N'Records the date and time when the shipment was handed over to the delivery provider.'
     ),
     (
         N'COLUMN',
@@ -372,12 +371,12 @@
     (
         N'COLUMN',
         N'SHP_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'SHP_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -1337,11 +1336,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @SHP_FV_table_status;
@@ -1355,23 +1350,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @SHP_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @SHP_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @SHP_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @SHP_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -1381,14 +1370,17 @@
                 @SHP_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @SHP_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 51260,
             N'Final validation failed for shipping.Shipment.',
             1;
 
     END;
-
-
-    PRINT N'';

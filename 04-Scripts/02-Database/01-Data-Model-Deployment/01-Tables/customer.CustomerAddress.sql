@@ -34,8 +34,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    customer.CustomerAddress';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● customer.CustomerAddress';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -45,8 +45,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -100,7 +103,6 @@
         PRINT N'            Primary Key                     : CSTAD_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -114,6 +116,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -123,7 +126,8 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerAddress')
 
-            AND c.name = N'CSTAD_id'
+            AND c.name =
+                    N'CSTAD_id'
 
             AND TYPE_NAME(c.user_type_id) =
                     N'int'
@@ -173,7 +177,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'customer.CustomerAddress')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @CSTAD_ActualPrimaryKeyName IS NULL
@@ -205,7 +210,8 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'customer.CustomerAddress')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
 
@@ -265,7 +271,7 @@
         --------------------------------------------------------------------------*/
 
         IF @CSTAD_ActualPrimaryKeyName <>
-            N'PK_CSTAD'
+                N'PK_CSTAD'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -301,7 +307,6 @@
             PRINT N'            [!] Pending action                : Backfill CSTAD_CST_id before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -326,7 +331,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -374,7 +378,6 @@
             PRINT N'            [!] Pending action                : Backfill CSTAD_ADR_id before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -399,7 +402,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -447,7 +449,6 @@
             PRINT N'            [!] Pending action                : Backfill CSTAD_number before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -474,7 +475,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -521,7 +521,6 @@
             PRINT N'            [+] Column added                  : CSTAD_complement';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -548,7 +547,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -598,7 +596,6 @@
             PRINT N'            [!] Pending action                : Backfill CSTAD_is_primary before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -623,7 +620,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -671,7 +667,6 @@
             PRINT N'            [!] Pending action                : Backfill CSTAD_is_active before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -696,7 +691,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -744,7 +738,6 @@
             PRINT N'            [!] Pending action                : Backfill CSTAD_created_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -771,7 +764,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -819,7 +811,6 @@
             PRINT N'            [!] Pending action                : Backfill CSTAD_updated_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -846,7 +837,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -924,4 +914,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

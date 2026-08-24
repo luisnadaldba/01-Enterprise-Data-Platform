@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductAttributeValue';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductAttributeValue';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -19,11 +20,11 @@
         UQ_PATVL_attribute_value
 
         Rule:
-            A product attribute name must be globally unique within
-            catalog.ProductAttributeValue.
+            An attribute value must be unique within the same product
+            attribute.
 
-            The same attribute definition must be reused across products instead
-            of creating duplicate attribute records.
+            The same value may exist for different attributes because those
+            rows represent values belonging to different attribute domains.
     --------------------------------------------------------------------------*/
 
     INSERT INTO @PATVL_UQ_expected_uniques
@@ -199,7 +200,7 @@
 
             IF @PATVL_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @PATVL_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @PATVL_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @PATVL_UQ_actual_is_disabled = 0
 
@@ -360,9 +361,10 @@
 
             WHERE uq.UQ_columns COLLATE Latin1_General_100_BIN2
                     =
-                @PATVL_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                  @PATVL_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-            ORDER BY uq.UQ_name;
+            ORDER BY
+                uq.UQ_name;
 
 
             /*------------------------------------------------------------------
@@ -490,9 +492,10 @@
 
                 WHERE idx.IndexColumns COLLATE Latin1_General_100_BIN2
                         =
-                    @PATVL_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                      @PATVL_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-                ORDER BY idx.IndexName;
+                ORDER BY
+                    idx.IndexName;
 
 
                 /*--------------------------------------------------------------
@@ -658,4 +661,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerEmail';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerEmail';
+    PRINT N'';
 
 
     DECLARE @CSTEM_check_expected_name          sysname;
@@ -167,4 +168,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

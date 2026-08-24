@@ -30,8 +30,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    catalog.ProductAttributeValue';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● catalog.ProductAttributeValue';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -627,4 +627,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

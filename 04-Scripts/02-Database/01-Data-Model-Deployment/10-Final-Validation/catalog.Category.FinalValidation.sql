@@ -1,5 +1,5 @@
-    PRINT N'    catalog.Category';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.Category';
+
 
     /*==========================================================================
         FINAL VALIDATION STATE
@@ -11,7 +11,7 @@
     DECLARE @CTG_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CTG_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CTG_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @CTG_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CTG_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @CTG_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CTG_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @CTG_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
@@ -238,7 +238,7 @@
     (
         N'COLUMN',
         N'CTG_CTG_id',
-        N'Identifies the parent category in the catalog hierarchy. NULL indicates a root category.'
+        N'Foreign key referencing catalog.Category. NULL indicates a root category.'
     ),
     (
         N'COLUMN',
@@ -253,12 +253,12 @@
     (
         N'COLUMN',
         N'CTG_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'CTG_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -322,29 +322,6 @@
     ELSE
     BEGIN
         SET @CTG_FV_documentation_status = N'FAILED';
-        SET @CTG_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'Category'
-        AND PFX_prefix = N'CTG'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @CTG_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @CTG_FV_seed_data_status = N'FAILED';
         SET @CTG_FV_validation_errors += 1;
     END;
 
@@ -572,7 +549,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @CTG_FV_table_status;
@@ -586,29 +562,33 @@
     PRINT N'        Foreign Key Constraints       : ' + @CTG_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @CTG_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @CTG_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @CTG_FV_validation_errors = 0
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
+
     END
     ELSE
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : FAILED';
+
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @CTG_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @CTG_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50170,
             N'Final validation failed for catalog.Category.',
             1;
+
     END;
-
-
-    PRINT N'';

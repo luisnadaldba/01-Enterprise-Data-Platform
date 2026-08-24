@@ -42,8 +42,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    shipping.Shipment';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● shipping.Shipment';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -53,8 +53,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -114,7 +117,6 @@
         PRINT N'            Primary Key                     : SHP_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -128,18 +130,28 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -167,7 +179,8 @@
 
 
         SELECT
-            @SHP_ActualPrimaryKeyName = kc.name
+            @SHP_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -178,7 +191,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'shipping.Shipment')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @SHP_ActualPrimaryKeyName IS NULL
@@ -193,6 +207,10 @@
         END;
 
 
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY DEFINITION
+        --------------------------------------------------------------------------*/
+
         IF NOT EXISTS
         (
             SELECT 1
@@ -206,8 +224,11 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'shipping.Shipment')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
+
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
@@ -216,8 +237,12 @@
 
                 FROM sys.index_columns AS ic
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -231,10 +256,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'SHP_id'
+
+                AND c.name =
+                        N'SHP_id'
             )
         )
         BEGIN
@@ -249,7 +280,12 @@
         END;
 
 
-        IF @SHP_ActualPrimaryKeyName <> N'PK_SHP'
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY NAME
+        --------------------------------------------------------------------------*/
+
+        IF @SHP_ActualPrimaryKeyName <>
+                N'PK_SHP'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -271,7 +307,11 @@
             COLUMN: SHP_TRN_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_TRN_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_TRN_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -284,10 +324,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_TRN_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_TRN_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
         )
         BEGIN
 
@@ -301,9 +348,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_TRN_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_TRN_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -325,7 +378,11 @@
             COLUMN: SHP_transaction_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_transaction_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_transaction_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -338,10 +395,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_transaction_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_transaction_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -356,9 +421,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_transaction_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_transaction_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -380,7 +451,11 @@
             COLUMN: SHP_CSTAD_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_CSTAD_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_CSTAD_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -393,10 +468,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_CSTAD_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_CSTAD_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
 
@@ -410,9 +492,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_CSTAD_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_CSTAD_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -434,7 +522,11 @@
             COLUMN: SHP_SHPMT_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_SHPMT_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_SHPMT_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -447,10 +539,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_SHPMT_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_SHPMT_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -464,9 +563,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_SHPMT_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_SHPMT_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -488,7 +593,11 @@
             COLUMN: SHP_SHPST_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_SHPST_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_SHPST_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -501,10 +610,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_SHPST_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_SHPST_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -518,9 +634,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_SHPST_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_SHPST_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -542,7 +664,11 @@
             COLUMN: SHP_shipping_amount
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_shipping_amount') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_shipping_amount'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -555,11 +681,20 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_shipping_amount'
-            AND TYPE_NAME(c.user_type_id) = N'decimal'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_shipping_amount'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'decimal'
+
             AND c.precision = 19
+
             AND c.scale = 2
         )
         BEGIN
@@ -574,9 +709,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_shipping_amount'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_shipping_amount'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -598,7 +739,11 @@
             COLUMN: SHP_estimated_delivery_date
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_estimated_delivery_date') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_estimated_delivery_date'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -611,10 +756,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_estimated_delivery_date'
-            AND TYPE_NAME(c.user_type_id) = N'date'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_estimated_delivery_date'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'date'
         )
         BEGIN
 
@@ -628,9 +780,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_estimated_delivery_date'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_estimated_delivery_date'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -652,7 +810,11 @@
             COLUMN: SHP_tracking_code
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_tracking_code') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_tracking_code'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -664,11 +826,20 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_tracking_code'
-            AND TYPE_NAME(c.user_type_id) = N'varchar'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_tracking_code'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'varchar'
+
             AND c.max_length = 30
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -692,7 +863,11 @@
             COLUMN: SHP_posted_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_posted_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_posted_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -704,11 +879,20 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_posted_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_posted_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -732,7 +916,11 @@
             COLUMN: SHP_delivered_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_delivered_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_delivered_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -744,11 +932,20 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_delivered_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_delivered_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -772,7 +969,11 @@
             COLUMN: SHP_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -785,10 +986,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -803,9 +1012,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_created_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -827,7 +1042,11 @@
             COLUMN: SHP_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.Shipment', N'SHP_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.Shipment',
+            N'SHP_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.Shipment
@@ -840,10 +1059,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -858,9 +1085,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'shipping.Shipment')
-            AND c.name = N'SHP_updated_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.Shipment')
+
+            AND c.name =
+                    N'SHP_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -902,8 +1135,11 @@
                 OBJECT_ID(N'shipping.Shipment')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -923,4 +1159,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

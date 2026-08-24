@@ -1,5 +1,6 @@
-    PRINT N'    shipping.ShipmentStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● shipping.ShipmentStatus';
+    PRINT N'';
 
     DECLARE @SHPST_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -282,4 +283,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -32,8 +32,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    catalog.Product';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● catalog.Product';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -203,8 +203,8 @@
                 FROM sys.index_columns AS ic
 
                 WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal > 0
+                AND ic.index_id = kc.unique_index_id
+                AND ic.key_ordinal > 0
             ) = 1
 
             AND EXISTS
@@ -218,9 +218,9 @@
                     AND c.column_id = ic.column_id
 
                 WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal = 1
-                    AND c.name = N'PRD_id'
+                AND ic.index_id = kc.unique_index_id
+                AND ic.key_ordinal = 1
+                AND c.name = N'PRD_id'
             )
         )
         BEGIN
@@ -630,4 +630,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

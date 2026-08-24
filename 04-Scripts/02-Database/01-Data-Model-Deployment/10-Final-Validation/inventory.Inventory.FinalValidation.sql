@@ -1,5 +1,4 @@
-    PRINT N'    inventory.Inventory';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● inventory.Inventory';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @INV_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INV_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INV_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @INV_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @INV_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @INV_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INV_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INV_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
@@ -306,7 +305,7 @@
     (
         N'COLUMN',
         N'INV_PRDVA_id',
-        N'Foreign key of catalog.ProductVariant.'
+        N'Foreign key referencing catalog.ProductVariant.'
     ),
     (
         N'COLUMN',
@@ -321,12 +320,12 @@
     (
         N'COLUMN',
         N'INV_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'INV_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -431,31 +430,6 @@
     ELSE
     BEGIN
         SET @INV_FV_documentation_status = N'FAILED';
-        SET @INV_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'inventory'
-        AND PFX_table_name = N'Inventory'
-        AND PFX_prefix = N'INV'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @INV_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @INV_FV_seed_data_status = N'FAILED';
         SET @INV_FV_validation_errors += 1;
     END;
 
@@ -1007,11 +981,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @INV_FV_table_status;
@@ -1025,23 +995,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @INV_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @INV_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @INV_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @INV_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -1051,14 +1015,17 @@
                 @INV_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @INV_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50600,
             N'Final validation failed for inventory.Inventory.',
             1;
 
     END;
-
-
-    PRINT N'';

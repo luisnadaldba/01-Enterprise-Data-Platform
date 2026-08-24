@@ -1,5 +1,6 @@
-    PRINT N'    reference.Address';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● reference.Address';
+    PRINT N'';
 
     DECLARE @ADR_expected_description nvarchar(4000);
     DECLARE @ADR_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,16 +47,26 @@
 
         SET @ADR_existing_description = NULL;
 
+
         SELECT
             @ADR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @ADR_existing_description = @ADR_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @ADR_existing_description =
+            @ADR_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : reference.Address';
@@ -67,7 +85,7 @@
                     WHEN LEN(@ADR_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @ADR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -84,6 +102,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -91,9 +110,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_id'
     )
     BEGIN
 
@@ -115,6 +140,7 @@
 
         SET @ADR_existing_description = NULL;
 
+
         SELECT
             @ADR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -126,11 +152,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_id';
 
-        IF @ADR_existing_description = @ADR_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_id';
+
+
+        IF @ADR_existing_description =
+            @ADR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : ADR_id';
@@ -144,10 +178,12 @@
                 + @ADR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @ADR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@ADR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @ADR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@ADR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @ADR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -159,11 +195,12 @@
     ----------------------------------------------------------------------*/
 
     SET @ADR_expected_description =
-        N'Foreign key of reference.City.';
+        N'Foreign key referencing reference.City.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -171,9 +208,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_CTY_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_CTY_id'
     )
     BEGIN
 
@@ -195,6 +238,7 @@
 
         SET @ADR_existing_description = NULL;
 
+
         SELECT
             @ADR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -206,11 +250,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_CTY_id';
 
-        IF @ADR_existing_description = @ADR_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_CTY_id';
+
+
+        IF @ADR_existing_description =
+            @ADR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : ADR_CTY_id';
@@ -224,10 +276,12 @@
                 + @ADR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @ADR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@ADR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @ADR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@ADR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @ADR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -244,6 +298,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -251,9 +306,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_postal_code'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_postal_code'
     )
     BEGIN
 
@@ -275,6 +336,7 @@
 
         SET @ADR_existing_description = NULL;
 
+
         SELECT
             @ADR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -286,11 +348,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_postal_code';
 
-        IF @ADR_existing_description = @ADR_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_postal_code';
+
+
+        IF @ADR_existing_description =
+            @ADR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : ADR_postal_code';
@@ -304,10 +374,12 @@
                 + @ADR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @ADR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@ADR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @ADR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@ADR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @ADR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -324,6 +396,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -331,9 +404,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_street'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_street'
     )
     BEGIN
 
@@ -355,6 +434,7 @@
 
         SET @ADR_existing_description = NULL;
 
+
         SELECT
             @ADR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -366,11 +446,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_street';
 
-        IF @ADR_existing_description = @ADR_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_street';
+
+
+        IF @ADR_existing_description =
+            @ADR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : ADR_street';
@@ -384,10 +472,12 @@
                 + @ADR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @ADR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@ADR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @ADR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@ADR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @ADR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -399,11 +489,12 @@
     ----------------------------------------------------------------------*/
 
     SET @ADR_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -411,9 +502,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_created_at'
     )
     BEGIN
 
@@ -435,6 +532,7 @@
 
         SET @ADR_existing_description = NULL;
 
+
         SELECT
             @ADR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -446,11 +544,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_created_at';
 
-        IF @ADR_existing_description = @ADR_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_created_at';
+
+
+        IF @ADR_existing_description =
+            @ADR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : ADR_created_at';
@@ -464,10 +570,12 @@
                 + @ADR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @ADR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@ADR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @ADR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@ADR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @ADR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -479,11 +587,12 @@
     ----------------------------------------------------------------------*/
 
     SET @ADR_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -491,9 +600,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_updated_at'
     )
     BEGIN
 
@@ -515,6 +630,7 @@
 
         SET @ADR_existing_description = NULL;
 
+
         SELECT
             @ADR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -526,11 +642,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Address')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'ADR_updated_at';
 
-        IF @ADR_existing_description = @ADR_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'ADR_updated_at';
+
+
+        IF @ADR_existing_description =
+            @ADR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : ADR_updated_at';
@@ -544,14 +668,18 @@
                 + @ADR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @ADR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@ADR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @ADR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@ADR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @ADR_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

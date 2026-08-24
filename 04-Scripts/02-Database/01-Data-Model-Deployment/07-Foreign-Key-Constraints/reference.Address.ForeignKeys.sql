@@ -1,5 +1,6 @@
-    PRINT N'    reference.Address';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● reference.Address';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -141,7 +142,7 @@
     END;
 
 
-    PRINT N'        [✓] Foreign key dependencies validated';
+    PRINT N'        [✓] Foreign key dependencies validated : FK_ADR_CTY';
 
 
     /*==========================================================================
@@ -287,7 +288,11 @@
 
             PRINT N'            Expected Table                  : reference.Address';
             PRINT N'            Actual Table                    : '
-                + COALESCE(@ADR_FK_actual_parent_table, N'<NULL>');
+                + COALESCE
+                (
+                    @ADR_FK_actual_parent_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Column                 : ADR_CTY_id';
             PRINT N'            Actual Column                   : '
@@ -305,7 +310,11 @@
             PRINT N'            Expected Reference              : reference.City.CTY_id';
 
             PRINT N'            Actual Reference Table         : '
-                + COALESCE(@ADR_FK_actual_referenced_table, N'<NULL>');
+                + COALESCE
+                (
+                    @ADR_FK_actual_referenced_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Actual Reference Column        : '
                 + COALESCE
@@ -321,11 +330,19 @@
 
             PRINT N'            Expected ON DELETE              : NO ACTION';
             PRINT N'            Actual ON DELETE                : '
-                + COALESCE(@ADR_FK_actual_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @ADR_FK_actual_delete_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected ON UPDATE              : NO ACTION';
             PRINT N'            Actual ON UPDATE                : '
-                + COALESCE(@ADR_FK_actual_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @ADR_FK_actual_update_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Disabled               : 0';
             PRINT N'            Actual Disabled                 : '
@@ -424,12 +441,12 @@
             WHERE fkc.constraint_object_id =
                     fk.object_id
 
-                AND fkc.constraint_column_id = 1
+            AND fkc.constraint_column_id = 1
 
-                AND pc.name =
+            AND pc.name =
                     N'ADR_CTY_id'
 
-                AND rc.name =
+            AND rc.name =
                     N'CTY_id'
         )
 
@@ -585,4 +602,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductImage';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductImage';
+    PRINT N'';
 
     DECLARE @PRDIM_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

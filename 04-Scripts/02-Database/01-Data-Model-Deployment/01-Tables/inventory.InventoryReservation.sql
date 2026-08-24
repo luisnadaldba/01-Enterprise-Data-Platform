@@ -38,8 +38,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    inventory.InventoryReservation';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● inventory.InventoryReservation';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -49,8 +49,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -121,6 +124,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -130,11 +134,18 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservation')
 
-            AND c.name = N'INVRE_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            AND c.name =
+                    N'INVRE_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -162,7 +173,8 @@
 
 
         SELECT
-            @INVRE_ActualPrimaryKeyName = kc.name
+            @INVRE_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -173,7 +185,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'inventory.InventoryReservation')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @INVRE_ActualPrimaryKeyName IS NULL
@@ -188,6 +201,10 @@
         END;
 
 
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY DEFINITION
+        --------------------------------------------------------------------------*/
+
         IF NOT EXISTS
         (
             SELECT 1
@@ -201,17 +218,25 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'inventory.InventoryReservation')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
             (
                 SELECT COUNT(*)
+
                 FROM sys.index_columns AS ic
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -225,10 +250,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'INVRE_id'
+
+                AND c.name =
+                        N'INVRE_id'
             )
         )
         BEGIN
@@ -243,7 +274,12 @@
         END;
 
 
-        IF @INVRE_ActualPrimaryKeyName <> N'PK_INVRE'
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY NAME
+        --------------------------------------------------------------------------*/
+
+        IF @INVRE_ActualPrimaryKeyName <>
+                N'PK_INVRE'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -265,7 +301,11 @@
             COLUMN: INVRE_TRNIT_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_TRNIT_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_TRNIT_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -278,10 +318,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_TRNIT_id'
-            AND TYPE_NAME(user_type_id) = N'bigint'
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_TRNIT_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
         )
         BEGIN
 
@@ -295,10 +342,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_TRNIT_id'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_TRNIT_id'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -319,7 +372,11 @@
             COLUMN: INVRE_TRNIT_transaction_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_TRNIT_transaction_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_TRNIT_transaction_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -332,11 +389,19 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_TRNIT_transaction_at'
-            AND TYPE_NAME(user_type_id) = N'datetime2'
-            AND scale = 0
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_TRNIT_transaction_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
+            AND c.scale = 0
         )
         BEGIN
 
@@ -350,10 +415,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_TRNIT_transaction_at'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_TRNIT_transaction_at'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -374,7 +445,11 @@
             COLUMN: INVRE_PRDVA_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_PRDVA_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_PRDVA_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -387,10 +462,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_PRDVA_id'
-            AND TYPE_NAME(user_type_id) = N'int'
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_PRDVA_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
 
@@ -404,10 +486,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_PRDVA_id'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_PRDVA_id'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -428,7 +516,11 @@
             COLUMN: INVRE_INVRS_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_INVRS_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_INVRS_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -441,10 +533,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_INVRS_id'
-            AND TYPE_NAME(user_type_id) = N'tinyint'
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_INVRS_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -458,10 +557,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_INVRS_id'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_INVRS_id'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -482,7 +587,11 @@
             COLUMN: INVRE_quantity
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_quantity') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_quantity'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -495,10 +604,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_quantity'
-            AND TYPE_NAME(user_type_id) = N'int'
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_quantity'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
 
@@ -512,10 +628,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_quantity'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_quantity'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -536,7 +658,11 @@
             COLUMN: INVRE_reserved_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_reserved_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_reserved_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -549,11 +675,19 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_reserved_at'
-            AND TYPE_NAME(user_type_id) = N'datetime2'
-            AND scale = 0
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_reserved_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
+            AND c.scale = 0
         )
         BEGIN
 
@@ -567,10 +701,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_reserved_at'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_reserved_at'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -591,7 +731,11 @@
             COLUMN: INVRE_expires_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_expires_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_expires_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -604,11 +748,19 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_expires_at'
-            AND TYPE_NAME(user_type_id) = N'datetime2'
-            AND scale = 0
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_expires_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
+            AND c.scale = 0
         )
         BEGIN
 
@@ -622,10 +774,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_expires_at'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_expires_at'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -646,7 +804,11 @@
             COLUMN: INVRE_closed_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_closed_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_closed_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -658,12 +820,21 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_closed_at'
-            AND TYPE_NAME(user_type_id) = N'datetime2'
-            AND scale = 0
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_closed_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
+            AND c.scale = 0
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -686,7 +857,11 @@
             COLUMN: INVRE_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -699,11 +874,19 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_created_at'
-            AND TYPE_NAME(user_type_id) = N'datetime2'
-            AND scale = 0
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
+            AND c.scale = 0
         )
         BEGIN
 
@@ -717,10 +900,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_created_at'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_created_at'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -741,7 +930,11 @@
             COLUMN: INVRE_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryReservation', N'INVRE_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryReservation',
+            N'INVRE_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryReservation
@@ -754,11 +947,19 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_updated_at'
-            AND TYPE_NAME(user_type_id) = N'datetime2'
-            AND scale = 0
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
+            AND c.scale = 0
         )
         BEGIN
 
@@ -772,10 +973,16 @@
         ELSE IF EXISTS
         (
             SELECT 1
-            FROM sys.columns
-            WHERE object_id = OBJECT_ID(N'inventory.InventoryReservation')
-            AND name = N'INVRE_updated_at'
-            AND is_nullable = 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryReservation')
+
+            AND c.name =
+                    N'INVRE_updated_at'
+
+            AND c.is_nullable = 1
         )
         BEGIN
 
@@ -816,8 +1023,11 @@
                 OBJECT_ID(N'inventory.InventoryReservation')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -837,4 +1047,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

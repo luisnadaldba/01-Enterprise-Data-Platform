@@ -1,5 +1,4 @@
-    PRINT N'    payment.Payment';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● payment.Payment';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @PAY_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAY_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAY_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PAY_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAY_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PAY_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAY_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAY_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
@@ -313,7 +312,7 @@
     (
         N'COLUMN',
         N'PAY_TRN_id',
-        N'Foreign key of sales.Transaction.'
+        N'Foreign key referencing sales.Transaction.'
     ),
     (
         N'COLUMN',
@@ -323,12 +322,12 @@
     (
         N'COLUMN',
         N'PAY_PAYME_id',
-        N'Foreign key of payment.PaymentMethod.'
+        N'Foreign key referencing payment.PaymentMethod.'
     ),
     (
         N'COLUMN',
         N'PAY_PAYST_id',
-        N'Foreign key of payment.PaymentStatus.'
+        N'Foreign key referencing payment.PaymentStatus.'
     ),
     (
         N'COLUMN',
@@ -358,12 +357,12 @@
     (
         N'COLUMN',
         N'PAY_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PAY_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -450,31 +449,6 @@
     ELSE
     BEGIN
         SET @PAY_FV_documentation_status = N'FAILED';
-        SET @PAY_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'payment'
-        AND PFX_table_name = N'Payment'
-        AND PFX_prefix = N'PAY'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @PAY_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @PAY_FV_seed_data_status = N'FAILED';
         SET @PAY_FV_validation_errors += 1;
     END;
 
@@ -1186,11 +1160,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PAY_FV_table_status;
@@ -1204,36 +1174,33 @@
     PRINT N'        Foreign Key Constraints       : ' + @PAY_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PAY_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PAY_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PAY_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @PAY_FV_validation_errors);
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PAY_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 51000,
             N'Final validation failed for payment.Payment.',
             1;
 
     END;
-
-
-    PRINT N'';

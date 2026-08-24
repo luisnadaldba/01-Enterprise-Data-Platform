@@ -1,5 +1,4 @@
-    PRINT N'    catalog.ProductVariantAttributeValue';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.ProductVariantAttributeValue';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @PRDAV_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDAV_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDAV_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PRDAV_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PRDAV_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PRDAV_FV_defaults_status            nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PRDAV_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PRDAV_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
@@ -212,12 +211,12 @@
     (
         N'COLUMN',
         N'PRDAV_PRDVA_id',
-        N'Foreign key of catalog.ProductVariant.'
+        N'Foreign key referencing catalog.ProductVariant.'
     ),
     (
         N'COLUMN',
         N'PRDAV_PATVL_id',
-        N'Foreign key of catalog.ProductAttributeValue.'
+        N'Foreign key referencing catalog.ProductAttributeValue.'
     );
 
 
@@ -322,31 +321,6 @@
     ELSE
     BEGIN
         SET @PRDAV_FV_documentation_status = N'FAILED';
-        SET @PRDAV_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'ProductVariantAttributeValue'
-        AND PFX_prefix = N'PRDAV'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @PRDAV_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @PRDAV_FV_seed_data_status = N'FAILED';
         SET @PRDAV_FV_validation_errors += 1;
     END;
 
@@ -607,7 +581,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PRDAV_FV_table_status;
@@ -621,23 +594,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @PRDAV_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PRDAV_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PRDAV_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PRDAV_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -647,14 +614,17 @@
                 @PRDAV_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PRDAV_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50370,
             N'Final validation failed for catalog.ProductVariantAttributeValue.',
             1;
 
     END;
-
-
-    PRINT N'';

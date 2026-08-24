@@ -1,5 +1,6 @@
-    PRINT N'    catalog.Category';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.Category';
+    PRINT N'';
 
     DECLARE @CTG_expected_description nvarchar(4000);
     DECLARE @CTG_existing_description nvarchar(4000);
@@ -144,8 +145,10 @@
                 + @CTG_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTG_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTG_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTG_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTG_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTG_existing_description
                 END;
 
@@ -159,7 +162,7 @@
     ----------------------------------------------------------------------*/
 
     SET @CTG_expected_description =
-        N'Identifies the parent category in the catalog hierarchy. NULL indicates a root category.';
+        N'Foreign key referencing catalog.Category. NULL indicates a root category.';
 
     IF NOT EXISTS
     (
@@ -224,8 +227,10 @@
                 + @CTG_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTG_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTG_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTG_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTG_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTG_existing_description
                 END;
 
@@ -304,8 +309,10 @@
                 + @CTG_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTG_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTG_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTG_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTG_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTG_existing_description
                 END;
 
@@ -384,8 +391,10 @@
                 + @CTG_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTG_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTG_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTG_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTG_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTG_existing_description
                 END;
 
@@ -399,7 +408,7 @@
     ----------------------------------------------------------------------*/
 
     SET @CTG_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
@@ -464,8 +473,10 @@
                 + @CTG_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTG_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTG_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTG_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTG_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTG_existing_description
                 END;
 
@@ -479,7 +490,7 @@
     ----------------------------------------------------------------------*/
 
     SET @CTG_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
@@ -544,8 +555,10 @@
                 + @CTG_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTG_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTG_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTG_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTG_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTG_existing_description
                 END;
 
@@ -554,4 +567,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

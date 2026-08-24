@@ -1,5 +1,6 @@
-    PRINT N'    payment.PaymentStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.PaymentStatus';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -198,7 +199,7 @@
 
             IF @PAYST_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @PAYST_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @PAYST_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @PAYST_UQ_actual_is_disabled = 0
 
@@ -658,4 +659,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductVariant';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductVariant';
+    PRINT N'';
 
     DECLARE @PRDVA_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

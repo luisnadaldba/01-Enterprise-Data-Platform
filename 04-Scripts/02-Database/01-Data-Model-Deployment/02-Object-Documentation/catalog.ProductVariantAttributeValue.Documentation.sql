@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductVariantAttributeValue';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductVariantAttributeValue';
+    PRINT N'';
 
     DECLARE @PRDAV_expected_description nvarchar(4000);
     DECLARE @PRDAV_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'catalog.ProductVariantAttributeValue')
+
+        AND ep.major_id =
+                OBJECT_ID(N'catalog.ProductVariantAttributeValue')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,6 +47,7 @@
 
         SET @PRDAV_existing_description = NULL;
 
+
         SELECT
             @PRDAV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -46,9 +55,14 @@
         FROM sys.extended_properties AS ep
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'catalog.ProductVariantAttributeValue')
+
+        AND ep.major_id =
+                OBJECT_ID(N'catalog.ProductVariantAttributeValue')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
+
+        AND ep.name =
+                N'MS_Description';
 
 
         IF @PRDAV_existing_description =
@@ -71,7 +85,7 @@
                     WHEN LEN(@PRDAV_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @PRDAV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -83,7 +97,7 @@
     ----------------------------------------------------------------------*/
 
     SET @PRDAV_expected_description =
-        N'Foreign key of catalog.ProductVariant.';
+        N'Foreign key referencing catalog.ProductVariant.';
 
     IF NOT EXISTS
     (
@@ -96,10 +110,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductVariantAttributeValue')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDAV_PRDVA_id'
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDAV_PRDVA_id'
     )
     BEGIN
 
@@ -121,6 +140,7 @@
 
         SET @PRDAV_existing_description = NULL;
 
+
         SELECT
             @PRDAV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -132,10 +152,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductVariantAttributeValue')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDAV_PRDVA_id';
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDAV_PRDVA_id';
 
 
         IF @PRDAV_existing_description =
@@ -158,7 +183,7 @@
                     WHEN LEN(@PRDAV_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @PRDAV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -170,7 +195,7 @@
     ----------------------------------------------------------------------*/
 
     SET @PRDAV_expected_description =
-        N'Foreign key of catalog.ProductAttributeValue.';
+        N'Foreign key referencing catalog.ProductAttributeValue.';
 
     IF NOT EXISTS
     (
@@ -183,10 +208,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductVariantAttributeValue')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDAV_PATVL_id'
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDAV_PATVL_id'
     )
     BEGIN
 
@@ -208,6 +238,7 @@
 
         SET @PRDAV_existing_description = NULL;
 
+
         SELECT
             @PRDAV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -219,10 +250,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductVariantAttributeValue')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDAV_PATVL_id';
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDAV_PATVL_id';
 
 
         IF @PRDAV_existing_description =
@@ -245,11 +281,13 @@
                     WHEN LEN(@PRDAV_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @PRDAV_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -32,8 +32,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    reference.Address';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● reference.Address';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -43,26 +43,11 @@
     IF NOT EXISTS
     (
         SELECT 1
-        FROM sys.schemas
-        WHERE name = N'reference'
-    )
-    BEGIN
 
-        ;THROW 50210,
-            N'Required schema reference does not exist.',
-            1;
-
-    END;
-
-
-    PRINT N'        [✓] Schema dependency validated     : reference';
-
-
-    IF NOT EXISTS
-    (
-        SELECT 1
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -112,7 +97,6 @@
         PRINT N'            Primary Key                     : ADR_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -126,18 +110,28 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'reference.Address')
-            AND c.name = N'ADR_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+            WHERE c.object_id =
+                    OBJECT_ID(N'reference.Address')
+
+            AND c.name =
+                    N'ADR_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -165,7 +159,8 @@
 
 
         SELECT
-            @ADR_ActualPrimaryKeyName = kc.name
+            @ADR_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -176,7 +171,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'reference.Address')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @ADR_ActualPrimaryKeyName IS NULL
@@ -208,9 +204,11 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
@@ -219,8 +217,12 @@
 
                 FROM sys.index_columns AS ic
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -234,10 +236,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'ADR_id'
+
+                AND c.name =
+                        N'ADR_id'
             )
         )
         BEGIN
@@ -256,7 +264,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @ADR_ActualPrimaryKeyName <> N'PK_ADR'
+        IF @ADR_ActualPrimaryKeyName <>
+                N'PK_ADR'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -278,7 +287,11 @@
             COLUMN: ADR_CTY_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'reference.Address', N'ADR_CTY_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'reference.Address',
+            N'ADR_CTY_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE reference.Address
@@ -288,7 +301,6 @@
             PRINT N'            [!] Pending action                : Backfill ADR_CTY_id before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -298,8 +310,11 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_CTY_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+            AND c.name =
+                    N'ADR_CTY_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
 
@@ -310,7 +325,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -320,7 +334,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_CTY_id'
+            AND c.name =
+                    N'ADR_CTY_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -330,7 +346,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -343,7 +358,11 @@
             COLUMN: ADR_postal_code
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'reference.Address', N'ADR_postal_code') IS NULL
+        IF COL_LENGTH
+        (
+            N'reference.Address',
+            N'ADR_postal_code'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE reference.Address
@@ -353,7 +372,6 @@
             PRINT N'            [!] Pending action                : Backfill ADR_postal_code before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -363,8 +381,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_postal_code'
-            AND TYPE_NAME(c.user_type_id) = N'varchar'
+            AND c.name =
+                    N'ADR_postal_code'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'varchar'
+
             AND c.max_length = 8
         )
         BEGIN
@@ -376,7 +398,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -386,7 +407,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_postal_code'
+            AND c.name =
+                    N'ADR_postal_code'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -396,7 +419,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -409,7 +431,11 @@
             COLUMN: ADR_street
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'reference.Address', N'ADR_street') IS NULL
+        IF COL_LENGTH
+        (
+            N'reference.Address',
+            N'ADR_street'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE reference.Address
@@ -419,7 +445,6 @@
             PRINT N'            [!] Pending action                : Backfill ADR_street before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -429,8 +454,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_street'
-            AND TYPE_NAME(c.user_type_id) = N'nvarchar'
+            AND c.name =
+                    N'ADR_street'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'nvarchar'
+
             AND c.max_length = 400
         )
         BEGIN
@@ -442,7 +471,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -452,7 +480,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_street'
+            AND c.name =
+                    N'ADR_street'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -462,7 +492,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -475,7 +504,11 @@
             COLUMN: ADR_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'reference.Address', N'ADR_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'reference.Address',
+            N'ADR_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE reference.Address
@@ -485,7 +518,6 @@
             PRINT N'            [!] Pending action                : Backfill ADR_created_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -495,8 +527,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'ADR_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -508,7 +544,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -518,7 +553,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_created_at'
+            AND c.name =
+                    N'ADR_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -528,7 +565,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -541,7 +577,11 @@
             COLUMN: ADR_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'reference.Address', N'ADR_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'reference.Address',
+            N'ADR_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE reference.Address
@@ -551,7 +591,6 @@
             PRINT N'            [!] Pending action                : Backfill ADR_updated_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -561,8 +600,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'ADR_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -574,7 +617,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -584,7 +626,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.Address')
 
-            AND c.name = N'ADR_updated_at'
+            AND c.name =
+                    N'ADR_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -594,7 +638,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -627,8 +670,11 @@
                 OBJECT_ID(N'reference.Address')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -648,4 +694,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

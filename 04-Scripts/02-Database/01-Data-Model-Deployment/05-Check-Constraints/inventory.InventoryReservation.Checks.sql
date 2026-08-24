@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryReservation';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryReservation';
+    PRINT N'';
 
 
     DECLARE @INVRE_check_expected_name          sysname;
@@ -438,4 +439,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryReservation';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryReservation';
+    PRINT N'';
 
     DECLARE @INVRE_expected_description nvarchar(4000);
     DECLARE @INVRE_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,16 +47,26 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : inventory.InventoryReservation';
@@ -62,10 +80,12 @@
                 + @INVRE_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INVRE_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INVRE_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INVRE_existing_description
-                END;
+                  END;
 
         END;
 
@@ -82,14 +102,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_id'
     )
     BEGIN
 
@@ -111,26 +140,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
             ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_id';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_id';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_id';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_id';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -141,19 +195,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVRE_expected_description =
-        N'Identifier component of the composite foreign key to sales.TransactionItem that owns the reservation.';
+        N'Identifier component of the composite foreign key referencing sales.TransactionItem that owns the reservation.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_TRNIT_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_TRNIT_id'
     )
     BEGIN
 
@@ -175,26 +238,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_TRNIT_id';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_TRNIT_id';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_TRNIT_id';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_TRNIT_id';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -205,19 +293,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVRE_expected_description =
-        N'Transaction date component of the composite foreign key to sales.TransactionItem.';
+        N'Transaction timestamp component of the composite foreign key referencing sales.TransactionItem.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_TRNIT_transaction_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_TRNIT_transaction_at'
     )
     BEGIN
 
@@ -239,26 +336,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_TRNIT_transaction_at';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_TRNIT_transaction_at';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_TRNIT_transaction_at';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_TRNIT_transaction_at';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -269,19 +391,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVRE_expected_description =
-        N'Foreign key of catalog.ProductVariant identifying the product variant reserved.';
+        N'Foreign key referencing catalog.ProductVariant.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_PRDVA_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_PRDVA_id'
     )
     BEGIN
 
@@ -303,26 +434,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_PRDVA_id';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_PRDVA_id';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_PRDVA_id';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_PRDVA_id';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -333,19 +489,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVRE_expected_description =
-        N'Foreign key of inventory.InventoryReservationStatus identifying the current reservation status.';
+        N'Foreign key referencing inventory.InventoryReservationStatus.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_INVRS_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_INVRS_id'
     )
     BEGIN
 
@@ -367,26 +532,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_INVRS_id';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_INVRS_id';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_INVRS_id';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_INVRS_id';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -402,14 +592,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_quantity'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_quantity'
     )
     BEGIN
 
@@ -431,26 +630,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_quantity';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_quantity';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_quantity';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_quantity';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -466,14 +690,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_reserved_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_reserved_at'
     )
     BEGIN
 
@@ -495,26 +728,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_reserved_at';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_reserved_at';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_reserved_at';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_reserved_at';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -530,14 +788,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_expires_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_expires_at'
     )
     BEGIN
 
@@ -559,26 +826,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_expires_at';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_expires_at';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_expires_at';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_expires_at';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -594,14 +886,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_closed_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_closed_at'
     )
     BEGIN
 
@@ -623,26 +924,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_closed_at';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_closed_at';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_closed_at';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_closed_at';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -653,19 +979,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVRE_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_created_at'
     )
     BEGIN
 
@@ -687,26 +1022,51 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_created_at';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_created_at';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_created_at';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_created_at';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
@@ -717,19 +1077,28 @@
     ----------------------------------------------------------------------*/
 
     SET @INVRE_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_updated_at'
     )
     BEGIN
 
@@ -751,29 +1120,56 @@
 
         SET @INVRE_existing_description = NULL;
 
+
         SELECT
             @INVRE_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
-        AND c.column_id = ep.minor_id
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.InventoryReservation')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INVRE_updated_at';
 
-        IF @INVRE_existing_description = @INVRE_expected_description
+        FROM sys.extended_properties AS ep
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = ep.major_id
+            AND c.column_id = ep.minor_id
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.InventoryReservation')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INVRE_updated_at';
+
+
+        IF @INVRE_existing_description =
+            @INVRE_expected_description
+        BEGIN
+
             PRINT N'        [•] Column description validated  : INVRE_updated_at';
+
+        END
         ELSE
         BEGIN
+
             PRINT N'        [!] Column description mismatch   : INVRE_updated_at';
-            PRINT N'            Expected                     : ' + @INVRE_expected_description;
+            PRINT N'            Expected                     : '
+                + @INVRE_expected_description;
             PRINT N'            Actual                       : '
-                + COALESCE(NULLIF(@INVRE_existing_description, N''), N'<NULL>');
+                + CASE
+                    WHEN @INVRE_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INVRE_existing_description) = 0
+                        THEN N'<EMPTY>'
+                    ELSE @INVRE_existing_description
+                  END;
+
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

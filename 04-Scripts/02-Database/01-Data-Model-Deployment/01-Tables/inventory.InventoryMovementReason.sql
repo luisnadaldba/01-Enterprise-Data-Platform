@@ -32,8 +32,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    inventory.InventoryMovementReason';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● inventory.InventoryMovementReason';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -43,8 +43,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -105,18 +108,28 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementReason')
-            AND c.name = N'INVMR_id'
-            AND TYPE_NAME(c.user_type_id) = N'smallint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementReason')
+
+            AND c.name =
+                    N'INVMR_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'smallint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -144,7 +157,8 @@
 
 
         SELECT
-            @INVMR_ActualPrimaryKeyName = kc.name
+            @INVMR_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -155,7 +169,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'inventory.InventoryMovementReason')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @INVMR_ActualPrimaryKeyName IS NULL
@@ -187,9 +202,11 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'inventory.InventoryMovementReason')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
@@ -198,8 +215,12 @@
 
                 FROM sys.index_columns AS ic
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -213,10 +234,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'INVMR_id'
+
+                AND c.name =
+                        N'INVMR_id'
             )
         )
         BEGIN
@@ -235,7 +262,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @INVMR_ActualPrimaryKeyName <> N'PK_INVMR'
+        IF @INVMR_ActualPrimaryKeyName <>
+                N'PK_INVMR'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -257,7 +285,11 @@
             COLUMN: INVMR_name
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovementReason', N'INVMR_name') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovementReason',
+            N'INVMR_name'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryMovementReason
@@ -277,8 +309,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryMovementReason')
 
-            AND c.name = N'INVMR_name'
-            AND TYPE_NAME(c.user_type_id) = N'nvarchar'
+            AND c.name =
+                    N'INVMR_name'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'nvarchar'
+
             AND c.max_length = 200
         )
         BEGIN
@@ -300,7 +336,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryMovementReason')
 
-            AND c.name = N'INVMR_name'
+            AND c.name =
+                    N'INVMR_name'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -323,7 +361,11 @@
             COLUMN: INVMR_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovementReason', N'INVMR_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovementReason',
+            N'INVMR_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryMovementReason
@@ -343,8 +385,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryMovementReason')
 
-            AND c.name = N'INVMR_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'INVMR_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -366,7 +412,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryMovementReason')
 
-            AND c.name = N'INVMR_created_at'
+            AND c.name =
+                    N'INVMR_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -389,7 +437,11 @@
             COLUMN: INVMR_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovementReason', N'INVMR_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovementReason',
+            N'INVMR_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryMovementReason
@@ -409,8 +461,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryMovementReason')
 
-            AND c.name = N'INVMR_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'INVMR_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -432,7 +488,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryMovementReason')
 
-            AND c.name = N'INVMR_updated_at'
+            AND c.name =
+                    N'INVMR_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -475,8 +533,11 @@
                 OBJECT_ID(N'inventory.InventoryMovementReason')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -496,4 +557,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

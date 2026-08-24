@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryMovementNote';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryMovementNote';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -41,7 +42,72 @@
 
 
     /*==============================================================================
+        DEPENDENCY VALIDATION
+    ==============================================================================*/
+
+    IF OBJECT_ID(N'inventory.InventoryMovementNote', N'U') IS NULL
+    BEGIN
+
+        PRINT N'        [X] Index dependency missing        : inventory.InventoryMovementNote';
+
+        ;THROW 51026,
+            N'Index IX_INVMN_INVMV cannot be deployed because inventory.InventoryMovementNote does not exist.',
+            1;
+
+    END;
+
+
+    IF COL_LENGTH
+    (
+        N'inventory.InventoryMovementNote',
+        N'INVMN_INVMV_id'
+    ) IS NULL
+    BEGIN
+
+        PRINT N'        [X] Index column missing            : INVMN_INVMV_id';
+
+        ;THROW 51027,
+            N'Index IX_INVMN_INVMV cannot be deployed because INVMN_INVMV_id does not exist.',
+            1;
+
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM sys.filegroups
+
+        WHERE name =
+                N'FG_CORE'
+    )
+    BEGIN
+
+        PRINT N'        [X] Index filegroup missing         : FG_CORE';
+
+        ;THROW 51028,
+            N'Index IX_INVMN_INVMV cannot be deployed because FG_CORE does not exist.',
+            1;
+
+    END;
+
+
+    /*==============================================================================
         COLLECT STRUCTURALLY EQUIVALENT INDEXES
+
+        Structural equivalence means:
+            - Nonclustered
+            - Nonunique
+            - Not PK
+            - Not UNIQUE CONSTRAINT
+            - Not hypothetical
+            - Exactly one key column
+            - Key 1 = INVMN_INVMV_id ASC
+            - No INCLUDE columns
+            - No filter
+
+        Physical placement on FG_CORE is validated separately.
     ==============================================================================*/
 
     DECLARE @INVMN_IX_equivalent_indexes TABLE
@@ -66,61 +132,104 @@
     FROM sys.indexes AS i
 
     INNER JOIN sys.data_spaces AS ds
-        ON ds.data_space_id = i.data_space_id
+        ON ds.data_space_id =
+            i.data_space_id
 
     WHERE i.object_id =
             OBJECT_ID(N'inventory.InventoryMovementNote')
 
     AND i.type = 2
+
     AND i.is_unique = 0
+
     AND i.is_primary_key = 0
+
     AND i.is_unique_constraint = 0
+
     AND i.is_hypothetical = 0
+
     AND i.has_filter = 0
 
+    /* Exactly one key column */
     AND
     (
         SELECT COUNT(*)
+
         FROM sys.index_columns AS ic
-        WHERE ic.object_id = i.object_id
-        AND ic.index_id = i.index_id
+
+        WHERE ic.object_id =
+                i.object_id
+
+        AND ic.index_id =
+                i.index_id
+
         AND ic.key_ordinal > 0
     ) = 1
 
+    /* Key 1 = INVMN_INVMV_id ASC */
     AND EXISTS
     (
         SELECT 1
+
         FROM sys.index_columns AS ic
 
         INNER JOIN sys.columns AS c
-            ON c.object_id = ic.object_id
-            AND c.column_id = ic.column_id
+            ON  c.object_id =
+                    ic.object_id
 
-        WHERE ic.object_id = i.object_id
-        AND ic.index_id = i.index_id
+            AND c.column_id =
+                    ic.column_id
+
+        WHERE ic.object_id =
+                i.object_id
+
+        AND ic.index_id =
+                i.index_id
+
         AND ic.key_ordinal = 1
+
         AND ic.is_descending_key = 0
-        AND c.name = N'INVMN_INVMV_id'
+
+        AND c.name =
+                N'INVMN_INVMV_id'
     )
 
+    /* No INCLUDE columns */
     AND NOT EXISTS
     (
         SELECT 1
+
         FROM sys.index_columns AS ic
-        WHERE ic.object_id = i.object_id
-        AND ic.index_id = i.index_id
+
+        WHERE ic.object_id =
+                i.object_id
+
+        AND ic.index_id =
+                i.index_id
+
         AND ic.is_included_column = 1
     );
 
 
     SELECT
-        @INVMN_IX_equivalent_count = COUNT(*)
+        @INVMN_IX_equivalent_count =
+            COUNT(*)
+
     FROM @INVMN_IX_equivalent_indexes;
 
 
     SELECT
         @INVMN_IX_equivalent_names =
-            STRING_AGG(CONVERT(nvarchar(max), index_name), N', ')
+            STRING_AGG
+            (
+                CONVERT
+                (
+                    nvarchar(max),
+                    index_name
+                ),
+                N', '
+            )
+
     FROM @INVMN_IX_equivalent_indexes;
 
 
@@ -131,17 +240,24 @@
                 CONVERT
                 (
                     nvarchar(max),
+
                     index_name
                     + N' ['
-                    + COALESCE(data_space_name, N'<UNKNOWN>')
+                    + COALESCE
+                    (
+                        data_space_name,
+                        N'<UNKNOWN>'
+                    )
                     + N']'
                     + CASE
-                        WHEN is_disabled = 1 THEN N' [DISABLED]'
+                        WHEN is_disabled = 1
+                            THEN N' [DISABLED]'
                         ELSE N''
-                      END
+                    END
                 ),
                 N', '
             )
+
     FROM @INVMN_IX_equivalent_indexes;
 
 
@@ -149,40 +265,62 @@
         IDENTIFY INDEX WITH EXPECTED NAME
     ==============================================================================*/
 
-    SET @INVMN_IX_expected_exists = 0;
-    SET @INVMN_IX_expected_is_equivalent = 0;
+    SET @INVMN_IX_expected_exists =
+        0;
+
+    SET @INVMN_IX_expected_is_equivalent =
+        0;
 
 
     IF EXISTS
     (
         SELECT 1
+
         FROM sys.indexes AS i
+
         WHERE i.object_id =
                 OBJECT_ID(N'inventory.InventoryMovementNote')
+
         AND i.name =
                 @INVMN_IX_expected_name
     )
     BEGIN
 
-        SET @INVMN_IX_expected_exists = 1;
+        SET @INVMN_IX_expected_exists =
+            1;
 
 
         SELECT
-            @INVMN_IX_actual_name = i.name,
-            @INVMN_IX_actual_type_desc = i.type_desc,
-            @INVMN_IX_actual_is_unique = i.is_unique,
-            @INVMN_IX_actual_is_disabled = i.is_disabled,
-            @INVMN_IX_actual_data_space = ds.name,
-            @INVMN_IX_actual_has_filter = i.has_filter,
-            @INVMN_IX_actual_filter = i.filter_definition
+            @INVMN_IX_actual_name =
+                i.name,
+
+            @INVMN_IX_actual_type_desc =
+                i.type_desc,
+
+            @INVMN_IX_actual_is_unique =
+                i.is_unique,
+
+            @INVMN_IX_actual_is_disabled =
+                i.is_disabled,
+
+            @INVMN_IX_actual_data_space =
+                ds.name,
+
+            @INVMN_IX_actual_has_filter =
+                i.has_filter,
+
+            @INVMN_IX_actual_filter =
+                i.filter_definition
 
         FROM sys.indexes AS i
 
         LEFT JOIN sys.data_spaces AS ds
-            ON ds.data_space_id = i.data_space_id
+            ON ds.data_space_id =
+                i.data_space_id
 
         WHERE i.object_id =
                 OBJECT_ID(N'inventory.InventoryMovementNote')
+
         AND i.name =
                 @INVMN_IX_expected_name;
 
@@ -194,11 +332,13 @@
                     CONVERT
                     (
                         nvarchar(max),
+
                         c.name
                         + CASE
-                            WHEN ic.is_descending_key = 1 THEN N' DESC'
+                            WHEN ic.is_descending_key = 1
+                                THEN N' DESC'
                             ELSE N' ASC'
-                          END
+                        END
                     ),
                     N', '
                 )
@@ -210,16 +350,24 @@
         FROM sys.indexes AS i
 
         INNER JOIN sys.index_columns AS ic
-            ON ic.object_id = i.object_id
-            AND ic.index_id = i.index_id
+            ON  ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
             AND ic.key_ordinal > 0
 
         INNER JOIN sys.columns AS c
-            ON c.object_id = ic.object_id
-            AND c.column_id = ic.column_id
+            ON  c.object_id =
+                    ic.object_id
+
+            AND c.column_id =
+                    ic.column_id
 
         WHERE i.object_id =
                 OBJECT_ID(N'inventory.InventoryMovementNote')
+
         AND i.name =
                 @INVMN_IX_expected_name;
 
@@ -228,7 +376,11 @@
             @INVMN_IX_actual_includes =
                 STRING_AGG
                 (
-                    CONVERT(nvarchar(max), c.name),
+                    CONVERT
+                    (
+                        nvarchar(max),
+                        c.name
+                    ),
                     N', '
                 )
                 WITHIN GROUP
@@ -239,16 +391,24 @@
         FROM sys.indexes AS i
 
         INNER JOIN sys.index_columns AS ic
-            ON ic.object_id = i.object_id
-            AND ic.index_id = i.index_id
+            ON  ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
             AND ic.is_included_column = 1
 
         INNER JOIN sys.columns AS c
-            ON c.object_id = ic.object_id
-            AND c.column_id = ic.column_id
+            ON  c.object_id =
+                    ic.object_id
+
+            AND c.column_id =
+                    ic.column_id
 
         WHERE i.object_id =
                 OBJECT_ID(N'inventory.InventoryMovementNote')
+
         AND i.name =
                 @INVMN_IX_expected_name;
 
@@ -256,13 +416,16 @@
         IF EXISTS
         (
             SELECT 1
+
             FROM @INVMN_IX_equivalent_indexes
+
             WHERE index_name =
                     @INVMN_IX_expected_name
         )
         BEGIN
 
-            SET @INVMN_IX_expected_is_equivalent = 1;
+            SET @INVMN_IX_expected_is_equivalent =
+                1;
 
         END;
 
@@ -278,24 +441,65 @@
     BEGIN
 
         PRINT N'        [X] Nonclustered index mismatch      : IX_INVMN_INVMV';
-        PRINT N'            Expected Type                  : NONCLUSTERED';
-        PRINT N'            Actual Type                    : '
-            + COALESCE(@INVMN_IX_actual_type_desc, N'<UNKNOWN>');
-        PRINT N'            Expected Unique                : 0';
-        PRINT N'            Actual Unique                  : '
-            + COALESCE(CONVERT(nvarchar(1), @INVMN_IX_actual_is_unique), N'<UNKNOWN>');
-        PRINT N'            Expected Key Columns           : INVMN_INVMV_id ASC';
-        PRINT N'            Actual Key Columns             : '
-            + COALESCE(@INVMN_IX_actual_keys, N'<NONE>');
-        PRINT N'            Expected Included Columns      : NONE';
-        PRINT N'            Actual Included Columns        : '
-            + COALESCE(@INVMN_IX_actual_includes, N'NONE');
-        PRINT N'            Expected Filter                : NONE';
-        PRINT N'            Actual Filter                  : '
-            + COALESCE(@INVMN_IX_actual_filter, N'NONE');
-        PRINT N'            Expected Filegroup             : FG_CORE';
-        PRINT N'            Actual Filegroup               : '
-            + COALESCE(@INVMN_IX_actual_data_space, N'<UNKNOWN>');
+
+        PRINT N'            Expected Type                   : NONCLUSTERED';
+
+        PRINT N'            Actual Type                     : '
+            + COALESCE
+            (
+                @INVMN_IX_actual_type_desc,
+                N'<UNKNOWN>'
+            );
+
+        PRINT N'            Expected Unique                 : 0';
+
+        PRINT N'            Actual Unique                   : '
+            + COALESCE
+            (
+                CONVERT
+                (
+                    nvarchar(1),
+                    @INVMN_IX_actual_is_unique
+                ),
+                N'<UNKNOWN>'
+            );
+
+        PRINT N'            Expected Key Columns            : INVMN_INVMV_id ASC';
+
+        PRINT N'            Actual Key Columns              : '
+            + COALESCE
+            (
+                @INVMN_IX_actual_keys,
+                N'<NONE>'
+            );
+
+        PRINT N'            Expected Included Columns       : NONE';
+
+        PRINT N'            Actual Included Columns         : '
+            + COALESCE
+            (
+                @INVMN_IX_actual_includes,
+                N'NONE'
+            );
+
+        PRINT N'            Expected Filter                 : NONE';
+
+        PRINT N'            Actual Filter                   : '
+            + COALESCE
+            (
+                @INVMN_IX_actual_filter,
+                N'NONE'
+            );
+
+        PRINT N'            Expected Filegroup              : FG_CORE';
+
+        PRINT N'            Actual Filegroup                : '
+            + COALESCE
+            (
+                @INVMN_IX_actual_data_space,
+                N'<UNKNOWN>'
+            );
+
         PRINT N'            Existing index was preserved for review.';
 
 
@@ -340,47 +544,89 @@
     BEGIN
 
         SELECT
-            @INVMN_IX_actual_name = index_name,
-            @INVMN_IX_actual_is_disabled = is_disabled,
-            @INVMN_IX_actual_data_space = data_space_name
+            @INVMN_IX_actual_name =
+                index_name,
+
+            @INVMN_IX_actual_is_disabled =
+                is_disabled,
+
+            @INVMN_IX_actual_data_space =
+                data_space_name
+
         FROM @INVMN_IX_equivalent_indexes;
 
+
+        /*--------------------------------------------------------------------------
+            EQUIVALENT INDEX IS DISABLED
+        --------------------------------------------------------------------------*/
 
         IF @INVMN_IX_actual_is_disabled = 1
         BEGIN
 
             PRINT N'        [!] Nonclustered index disabled    : '
                 + @INVMN_IX_actual_name;
-            PRINT N'            Expected Name                 : IX_INVMN_INVMV';
-            PRINT N'            Key Columns                   : INVMN_INVMV_id';
+
+            PRINT N'            Expected Name                  : IX_INVMN_INVMV';
+
+            PRINT N'            Key Columns                    : INVMN_INVMV_id';
+
             PRINT N'            Existing index was preserved for review.';
 
         END
 
-        ELSE IF @INVMN_IX_actual_data_space <> N'FG_CORE'
+
+        /*--------------------------------------------------------------------------
+            CORRECT STRUCTURE EXISTS WITH DIFFERENT PHYSICAL PLACEMENT
+        --------------------------------------------------------------------------*/
+
+        ELSE IF @INVMN_IX_actual_data_space <>
+                N'FG_CORE'
         BEGIN
 
             PRINT N'        [!] Nonclustered index storage divergence';
-            PRINT N'            Index                         : '
+
+            PRINT N'            Index                          : '
                 + @INVMN_IX_actual_name;
-            PRINT N'            Expected Filegroup            : FG_CORE';
-            PRINT N'            Actual Filegroup              : '
-                + COALESCE(@INVMN_IX_actual_data_space, N'<UNKNOWN>');
+
+            PRINT N'            Expected Filegroup             : FG_CORE';
+
+            PRINT N'            Actual Filegroup               : '
+                + COALESCE
+                (
+                    @INVMN_IX_actual_data_space,
+                    N'<UNKNOWN>'
+                );
+
             PRINT N'            Existing index was preserved for review.';
 
         END
 
-        ELSE IF @INVMN_IX_actual_name <> @INVMN_IX_expected_name
+
+        /*--------------------------------------------------------------------------
+            CORRECT STRUCTURE EXISTS WITH DIFFERENT NAME
+        --------------------------------------------------------------------------*/
+
+        ELSE IF @INVMN_IX_actual_name <>
+                @INVMN_IX_expected_name
         BEGIN
 
             PRINT N'        [!] Nonclustered index naming divergence';
-            PRINT N'            Expected                     : IX_INVMN_INVMV';
-            PRINT N'            Actual                       : '
+
+            PRINT N'            Expected                       : IX_INVMN_INVMV';
+
+            PRINT N'            Actual                         : '
                 + @INVMN_IX_actual_name;
-            PRINT N'            Key Columns                   : INVMN_INVMV_id';
-            PRINT N'            Action                        : Preserve existing index';
+
+            PRINT N'            Key Columns                    : INVMN_INVMV_id';
+
+            PRINT N'            Action                         : Preserve existing index';
 
         END
+
+
+        /*--------------------------------------------------------------------------
+            EXPECTED INDEX EXISTS AND IS VALID
+        --------------------------------------------------------------------------*/
 
         ELSE
         BEGIN
@@ -405,16 +651,35 @@
     BEGIN
 
         PRINT N'        [!] Equivalent nonclustered indexes detected : '
-            + CONVERT(nvarchar(10), @INVMN_IX_equivalent_count);
-        PRINT N'            Expected Index                : IX_INVMN_INVMV';
-        PRINT N'            Equivalent Indexes            : '
-            + COALESCE(@INVMN_IX_equivalent_names, N'<UNKNOWN>');
-        PRINT N'            Physical Placement            : '
-            + COALESCE(@INVMN_IX_equivalent_details, N'<UNKNOWN>');
-        PRINT N'            Action                        : Preserve all indexes for manual review';
-        PRINT N'            Automatic removal             : NOT PERMITTED';
+            + CONVERT
+            (
+                nvarchar(10),
+                @INVMN_IX_equivalent_count
+            );
+
+        PRINT N'            Expected Index                  : IX_INVMN_INVMV';
+
+        PRINT N'            Equivalent Indexes              : '
+            + COALESCE
+            (
+                @INVMN_IX_equivalent_names,
+                N'<UNKNOWN>'
+            );
+
+        PRINT N'            Physical Placement              : '
+            + COALESCE
+            (
+                @INVMN_IX_equivalent_details,
+                N'<UNKNOWN>'
+            );
+
+        PRINT N'            Action                          : Preserve all indexes for manual review';
+
+        PRINT N'            Automatic removal               : NOT PERMITTED';
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

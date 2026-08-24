@@ -1,5 +1,6 @@
-    PRINT N'    reference.Country';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● reference.Country';
+    PRINT N'';
 
     DECLARE @CTR_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

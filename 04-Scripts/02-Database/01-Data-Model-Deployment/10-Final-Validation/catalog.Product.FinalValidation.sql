@@ -1,5 +1,4 @@
-    PRINT N'    catalog.Product';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.Product';
 
 
     /*==========================================================================
@@ -12,13 +11,14 @@
     DECLARE @PRD_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRD_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRD_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PRD_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PRD_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PRD_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRD_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PRD_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRD_FV_foreign_keys_status        nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRD_FV_indexes_status             nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PRD_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
+
 
     /*==========================================================================
         TABLE VALIDATION
@@ -302,7 +302,7 @@
     (
         N'COLUMN',
         N'PRD_BRD_id',
-        N'Foreign key of catalog.Brand.'
+        N'Foreign key referencing catalog.Brand.'
     ),
     (
         N'COLUMN',
@@ -317,12 +317,12 @@
     (
         N'COLUMN',
         N'PRD_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PRD_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -427,31 +427,6 @@
     ELSE
     BEGIN
         SET @PRD_FV_documentation_status = N'FAILED';
-        SET @PRD_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'Product'
-        AND PFX_prefix = N'PRD'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @PRD_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @PRD_FV_seed_data_status = N'FAILED';
         SET @PRD_FV_validation_errors += 1;
     END;
 
@@ -872,11 +847,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PRD_FV_table_status;
@@ -890,23 +861,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @PRD_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PRD_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PRD_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PRD_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -916,14 +881,17 @@
                 @PRD_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PRD_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50200,
             N'Final validation failed for catalog.Product.',
             1;
 
     END;
-
-
-    PRINT N'';

@@ -1,5 +1,4 @@
-    PRINT N'    catalog.ProductAttributeValue';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.ProductAttributeValue';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @PATVL_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PATVL_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PATVL_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PATVL_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PATVL_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PATVL_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PATVL_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PATVL_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
@@ -246,7 +245,7 @@
     (
         N'COLUMN',
         N'PATVL_PAT_id',
-        N'Foreign key of catalog.ProductAttribute.'
+        N'Foreign key referencing catalog.ProductAttribute.'
     ),
     (
         N'COLUMN',
@@ -261,12 +260,12 @@
     (
         N'COLUMN',
         N'PATVL_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PATVL_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -330,29 +329,6 @@
     ELSE
     BEGIN
         SET @PATVL_FV_documentation_status = N'FAILED';
-        SET @PATVL_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'ProductAttributeValue'
-        AND PFX_prefix = N'PATVL'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @PATVL_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @PATVL_FV_seed_data_status = N'FAILED';
         SET @PATVL_FV_validation_errors += 1;
     END;
 
@@ -590,7 +566,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PATVL_FV_table_status;
@@ -604,29 +579,33 @@
     PRINT N'        Foreign Key Constraints       : ' + @PATVL_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PATVL_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PATVL_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PATVL_FV_validation_errors = 0
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
+
     END
     ELSE
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : FAILED';
+
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @PATVL_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PATVL_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50270,
             N'Final validation failed for catalog.ProductAttributeValue.',
             1;
+
     END;
-
-
-    PRINT N'';

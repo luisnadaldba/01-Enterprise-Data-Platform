@@ -35,8 +35,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    customer.CustomerContact';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● customer.CustomerContact';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -46,8 +46,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -114,6 +117,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -268,7 +272,7 @@
         --------------------------------------------------------------------------*/
 
         IF @CSTCN_ActualPrimaryKeyName <>
-            N'PK_CSTCN'
+                N'PK_CSTCN'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -307,11 +311,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_CST_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+
+            AND c.name =
+                    N'CSTCN_CST_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
 
@@ -325,10 +335,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_CST_id'
+
+            AND c.name =
+                    N'CSTCN_CST_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -367,11 +382,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_CTP_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            AND c.name =
+                    N'CSTCN_CTP_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -385,10 +406,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_CTP_id'
+
+            AND c.name =
+                    N'CSTCN_CTP_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -427,11 +453,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_value'
-            AND TYPE_NAME(c.user_type_id) = N'varchar'
+
+            AND c.name =
+                    N'CSTCN_value'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'varchar'
+
             AND c.max_length = 20
         )
         BEGIN
@@ -446,10 +479,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_value'
+
+            AND c.name =
+                    N'CSTCN_value'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -488,11 +526,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_is_primary'
-            AND TYPE_NAME(c.user_type_id) = N'bit'
+
+            AND c.name =
+                    N'CSTCN_is_primary'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bit'
         )
         BEGIN
 
@@ -506,10 +550,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_is_primary'
+
+            AND c.name =
+                    N'CSTCN_is_primary'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -548,11 +597,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_is_active'
-            AND TYPE_NAME(c.user_type_id) = N'bit'
+
+            AND c.name =
+                    N'CSTCN_is_active'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bit'
         )
         BEGIN
 
@@ -566,10 +621,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_is_active'
+
+            AND c.name =
+                    N'CSTCN_is_active'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -608,11 +668,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            AND c.name =
+                    N'CSTCN_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -627,10 +694,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_created_at'
+
+            AND c.name =
+                    N'CSTCN_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -669,11 +741,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            AND c.name =
+                    N'CSTCN_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -688,10 +767,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
+
             WHERE c.object_id =
                     OBJECT_ID(N'customer.CustomerContact')
-            AND c.name = N'CSTCN_updated_at'
+
+            AND c.name =
+                    N'CSTCN_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -757,4 +841,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

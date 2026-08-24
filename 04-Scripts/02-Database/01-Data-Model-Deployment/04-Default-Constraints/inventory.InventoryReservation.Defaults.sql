@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryReservation';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryReservation';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -51,7 +52,7 @@
 
         IF @INVRE_created_at_constraint_name = N'DF_INVRE_created_at'
         AND UPPER(REPLACE(REPLACE(@INVRE_created_at_definition, N'(', N''), N')', N''))
-                = N'SYSDATETIME'
+            = N'SYSDATETIME'
         BEGIN
 
             PRINT N'        [•] Default constraint validated  : DF_INVRE_created_at';
@@ -126,7 +127,7 @@
 
         IF @INVRE_updated_at_constraint_name = N'DF_INVRE_updated_at'
         AND UPPER(REPLACE(REPLACE(@INVRE_updated_at_definition, N'(', N''), N')', N''))
-                = N'SYSDATETIME'
+            = N'SYSDATETIME'
         BEGIN
 
             PRINT N'        [•] Default constraint validated  : DF_INVRE_updated_at';
@@ -152,4 +153,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

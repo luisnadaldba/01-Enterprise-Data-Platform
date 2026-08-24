@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryReservationStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryReservationStatus';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -198,7 +199,7 @@
 
             IF @INVRS_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @INVRS_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @INVRS_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @INVRS_UQ_actual_is_disabled = 0
 
@@ -360,9 +361,10 @@
 
             WHERE uq.UQ_columns COLLATE Latin1_General_100_BIN2
                     =
-                @INVRS_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                  @INVRS_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-            ORDER BY uq.UQ_name;
+            ORDER BY
+                uq.UQ_name;
 
 
             /*------------------------------------------------------------------
@@ -490,9 +492,10 @@
 
                 WHERE idx.IndexColumns COLLATE Latin1_General_100_BIN2
                         =
-                    @INVRS_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                      @INVRS_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-                ORDER BY idx.IndexName;
+                ORDER BY
+                    idx.IndexName;
 
 
                 /*--------------------------------------------------------------
@@ -658,4 +661,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

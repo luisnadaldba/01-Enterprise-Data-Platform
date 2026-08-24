@@ -37,8 +37,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    payment.Payment';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● payment.Payment';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -48,8 +48,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -107,7 +110,6 @@
         PRINT N'            Primary Key                     : PAY_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -121,18 +123,28 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -160,7 +172,8 @@
 
 
         SELECT
-            @PAY_ActualPrimaryKeyName = kc.name
+            @PAY_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -171,7 +184,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'payment.Payment')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @PAY_ActualPrimaryKeyName IS NULL
@@ -186,6 +200,10 @@
         END;
 
 
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY DEFINITION
+        --------------------------------------------------------------------------*/
+
         IF NOT EXISTS
         (
             SELECT 1
@@ -199,16 +217,25 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'payment.Payment')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
+
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
             (
                 SELECT COUNT(*)
+
                 FROM sys.index_columns AS ic
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -222,10 +249,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'PAY_id'
+
+                AND c.name =
+                        N'PAY_id'
             )
         )
         BEGIN
@@ -240,7 +273,12 @@
         END;
 
 
-        IF @PAY_ActualPrimaryKeyName <> N'PK_PAY'
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY NAME
+        --------------------------------------------------------------------------*/
+
+        IF @PAY_ActualPrimaryKeyName <>
+                N'PK_PAY'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -262,7 +300,11 @@
             COLUMN: PAY_TRN_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_TRN_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_TRN_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -275,10 +317,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_TRN_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_TRN_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
         )
         BEGIN
 
@@ -292,9 +341,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_TRN_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_TRN_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -316,7 +371,11 @@
             COLUMN: PAY_transaction_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_transaction_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_transaction_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -329,10 +388,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_transaction_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_transaction_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -347,9 +414,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_transaction_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_transaction_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -371,7 +444,11 @@
             COLUMN: PAY_PAYME_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_PAYME_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_PAYME_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -384,10 +461,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_PAYME_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_PAYME_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -401,9 +485,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_PAYME_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_PAYME_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -425,7 +515,11 @@
             COLUMN: PAY_PAYST_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_PAYST_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_PAYST_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -438,10 +532,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_PAYST_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_PAYST_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -455,9 +556,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_PAYST_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_PAYST_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -479,7 +586,11 @@
             COLUMN: PAY_amount
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_amount') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_amount'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -492,11 +603,20 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_amount'
-            AND TYPE_NAME(c.user_type_id) = N'decimal'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_amount'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'decimal'
+
             AND c.precision = 19
+
             AND c.scale = 2
         )
         BEGIN
@@ -511,9 +631,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_amount'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_amount'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -535,7 +661,11 @@
             COLUMN: PAY_installment_count
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_installment_count') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_installment_count'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -547,10 +677,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_installment_count'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_installment_count'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -574,7 +712,11 @@
             COLUMN: PAY_attempted_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_attempted_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_attempted_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -587,10 +729,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_attempted_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_attempted_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -605,9 +755,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_attempted_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_attempted_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -629,7 +785,11 @@
             COLUMN: PAY_approved_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_approved_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_approved_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -641,11 +801,20 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_approved_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_approved_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -669,7 +838,11 @@
             COLUMN: PAY_cancelled_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_cancelled_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_cancelled_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -681,11 +854,20 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_cancelled_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_cancelled_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -709,7 +891,11 @@
             COLUMN: PAY_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -722,10 +908,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -740,9 +934,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_created_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -764,7 +964,11 @@
             COLUMN: PAY_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'payment.Payment', N'PAY_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'payment.Payment',
+            N'PAY_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE payment.Payment
@@ -777,10 +981,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -795,9 +1007,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'payment.Payment')
-            AND c.name = N'PAY_updated_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'payment.Payment')
+
+            AND c.name =
+                    N'PAY_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -839,8 +1057,11 @@
                 OBJECT_ID(N'payment.Payment')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -860,4 +1081,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

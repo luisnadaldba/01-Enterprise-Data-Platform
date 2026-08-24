@@ -16,11 +16,11 @@
         Design Principles
         --------------------------------------------------------------------------
         - Represent the relationship between ProductVariant and
-        ProductAttributeValue.
+          ProductAttributeValue.
         - Use the two foreign key columns together as the natural primary key.
         - Do not introduce an artificial identity column.
         - Prevent the same attribute value from being assigned more than once
-        to the same product variant.
+          to the same product variant.
         - Keep lifecycle and audit columns outside this purely associative entity.
         - Deploy foreign key constraints in the dedicated FK stage.
         - Store catalog relationship data in FG_CORE.
@@ -32,8 +32,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    catalog.ProductVariantAttributeValue';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● catalog.ProductVariantAttributeValue';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -505,4 +505,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

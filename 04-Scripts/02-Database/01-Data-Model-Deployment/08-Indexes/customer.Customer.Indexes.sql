@@ -1,5 +1,6 @@
-    PRINT N'    customer.Customer';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.Customer';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -28,7 +29,7 @@
     DECLARE @CST_IX_actual_data_space           sysname;
     DECLARE @CST_IX_actual_keys                 nvarchar(4000);
     DECLARE @CST_IX_actual_includes             nvarchar(4000);
-    DECLARE @CST_IX_actual_has_filter            bit;
+    DECLARE @CST_IX_actual_has_filter           bit;
     DECLARE @CST_IX_actual_filter               nvarchar(4000);
 
     DECLARE @CST_IX_equivalent_count            int;
@@ -608,4 +609,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

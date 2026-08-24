@@ -33,8 +33,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    customer.Customer';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● customer.Customer';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -44,8 +44,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -98,7 +101,6 @@
         PRINT N'            Primary Key                     : CST_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -112,17 +114,25 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'customer.Customer')
-            AND c.name = N'CST_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+            WHERE c.object_id =
+                    OBJECT_ID(N'customer.Customer')
+
+            AND c.name =
+                    N'CST_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
+
             AND c.is_nullable = 0
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
             AND CONVERT(bigint, ic.increment_value) = 1
         )
@@ -151,7 +161,8 @@
 
 
         SELECT
-            @CST_ActualPrimaryKeyName = kc.name
+            @CST_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -162,7 +173,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'customer.Customer')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @CST_ActualPrimaryKeyName IS NULL
@@ -194,7 +206,8 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
             AND i.is_unique = 1
@@ -205,9 +218,13 @@
 
                 FROM sys.index_columns AS ic
 
-                WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal > 0
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
+                AND ic.key_ordinal > 0
             ) = 1
 
             AND EXISTS
@@ -220,10 +237,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal = 1
-                    AND c.name = N'CST_id'
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
+                AND ic.key_ordinal = 1
+
+                AND c.name =
+                        N'CST_id'
             )
         )
         BEGIN
@@ -242,7 +265,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @CST_ActualPrimaryKeyName <> N'PK_CST'
+        IF @CST_ActualPrimaryKeyName <>
+                N'PK_CST'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -264,17 +288,21 @@
             COLUMN: CST_CSTCT_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'customer.Customer', N'CST_CSTCT_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'customer.Customer',
+            N'CST_CSTCT_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE customer.Customer
                 ADD CST_CSTCT_id smallint NULL;
 
+
             PRINT N'            [+] Column added                  : CST_CSTCT_id';
             PRINT N'            [!] Pending action                : Backfill CST_CSTCT_id before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -284,8 +312,11 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_CSTCT_id'
-            AND TYPE_NAME(c.user_type_id) = N'smallint'
+            AND c.name =
+                    N'CST_CSTCT_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'smallint'
         )
         BEGIN
 
@@ -296,7 +327,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -306,7 +336,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_CSTCT_id'
+            AND c.name =
+                    N'CST_CSTCT_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -316,75 +348,10 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
             PRINT N'            [•] Column validated              : CST_CSTCT_id';
-
-        END;
-
-        /*--------------------------------------------------------------------------
-            COLUMN: CST_is_active
-        --------------------------------------------------------------------------*/
-
-        IF COL_LENGTH(N'customer.Customer', N'CST_is_active') IS NULL
-        BEGIN
-
-            ALTER TABLE customer.Customer
-                ADD CST_is_active bit NULL;
-
-            PRINT N'            [+] Column added                  : CST_is_active';
-            PRINT N'            [!] Pending action                : Backfill CST_is_active before enforcing NOT NULL';
-
-        END
-
-        ELSE IF NOT EXISTS
-        (
-            SELECT 1
-
-            FROM sys.columns AS c
-
-            WHERE c.object_id =
-                    OBJECT_ID(N'customer.Customer')
-
-            AND c.name = N'CST_is_active'
-            AND TYPE_NAME(c.user_type_id) = N'bit'
-        )
-        BEGIN
-
-            PRINT N'            [X] Column definition mismatch    : CST_is_active';
-
-            ;THROW 50345,
-                N'Column CST_is_active does not match the expected data type bit.',
-                1;
-
-        END
-
-        ELSE IF EXISTS
-        (
-            SELECT 1
-
-            FROM sys.columns AS c
-
-            WHERE c.object_id =
-                    OBJECT_ID(N'customer.Customer')
-
-            AND c.name = N'CST_is_active'
-            AND c.is_nullable = 1
-        )
-        BEGIN
-
-            PRINT N'            [!] Column nullable               : CST_is_active';
-            PRINT N'            [!] Expected final definition     : bit NOT NULL';
-            PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
-
-        END
-
-        ELSE
-        BEGIN
-
-            PRINT N'            [•] Column validated              : CST_is_active';
 
         END;
 
@@ -393,17 +360,21 @@
             COLUMN: CST_name
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'customer.Customer', N'CST_name') IS NULL
+        IF COL_LENGTH
+        (
+            N'customer.Customer',
+            N'CST_name'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE customer.Customer
                 ADD CST_name nvarchar(200) NULL;
 
+
             PRINT N'            [+] Column added                  : CST_name';
             PRINT N'            [!] Pending action                : Backfill CST_name before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -413,8 +384,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_name'
-            AND TYPE_NAME(c.user_type_id) = N'nvarchar'
+            AND c.name =
+                    N'CST_name'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'nvarchar'
+
             AND c.max_length = 400
         )
         BEGIN
@@ -426,7 +401,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -436,7 +410,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_name'
+            AND c.name =
+                    N'CST_name'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -446,7 +422,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -459,16 +434,20 @@
             COLUMN: CST_birth_date
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'customer.Customer', N'CST_birth_date') IS NULL
+        IF COL_LENGTH
+        (
+            N'customer.Customer',
+            N'CST_birth_date'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE customer.Customer
                 ADD CST_birth_date date NULL;
 
+
             PRINT N'            [+] Column added                  : CST_birth_date';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -478,8 +457,11 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_birth_date'
-            AND TYPE_NAME(c.user_type_id) = N'date'
+            AND c.name =
+                    N'CST_birth_date'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'date'
         )
         BEGIN
 
@@ -490,7 +472,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -500,7 +481,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_birth_date'
+            AND c.name =
+                    N'CST_birth_date'
+
             AND c.is_nullable = 0
         )
         BEGIN
@@ -512,7 +495,6 @@
                 1;
 
         END
-
         ELSE
         BEGIN
 
@@ -522,20 +504,24 @@
 
 
         /*--------------------------------------------------------------------------
-            COLUMN: CST_created_at
+            COLUMN: CST_is_active
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'customer.Customer', N'CST_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'customer.Customer',
+            N'CST_is_active'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE customer.Customer
-                ADD CST_created_at datetime2(0) NULL;
+                ADD CST_is_active bit NULL;
 
-            PRINT N'            [+] Column added                  : CST_created_at';
-            PRINT N'            [!] Pending action                : Backfill CST_created_at before enforcing NOT NULL';
+
+            PRINT N'            [+] Column added                  : CST_is_active';
+            PRINT N'            [!] Pending action                : Backfill CST_is_active before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -545,8 +531,84 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'CST_is_active'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bit'
+        )
+        BEGIN
+
+            PRINT N'            [X] Column definition mismatch    : CST_is_active';
+
+            ;THROW 50345,
+                N'Column CST_is_active does not match the expected data type bit.',
+                1;
+
+        END
+        ELSE IF EXISTS
+        (
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'customer.Customer')
+
+            AND c.name =
+                    N'CST_is_active'
+
+            AND c.is_nullable = 1
+        )
+        BEGIN
+
+            PRINT N'            [!] Column nullable               : CST_is_active';
+            PRINT N'            [!] Expected final definition     : bit NOT NULL';
+            PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+
+        END
+        ELSE
+        BEGIN
+
+            PRINT N'            [•] Column validated              : CST_is_active';
+
+        END;
+
+
+        /*--------------------------------------------------------------------------
+            COLUMN: CST_created_at
+        --------------------------------------------------------------------------*/
+
+        IF COL_LENGTH
+        (
+            N'customer.Customer',
+            N'CST_created_at'
+        ) IS NULL
+        BEGIN
+
+            ALTER TABLE customer.Customer
+                ADD CST_created_at datetime2(0) NULL;
+
+
+            PRINT N'            [+] Column added                  : CST_created_at';
+            PRINT N'            [!] Pending action                : Backfill CST_created_at before enforcing NOT NULL';
+
+        END
+        ELSE IF NOT EXISTS
+        (
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'customer.Customer')
+
+            AND c.name =
+                    N'CST_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -558,7 +620,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -568,7 +629,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_created_at'
+            AND c.name =
+                    N'CST_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -578,7 +641,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -591,17 +653,21 @@
             COLUMN: CST_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'customer.Customer', N'CST_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'customer.Customer',
+            N'CST_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE customer.Customer
                 ADD CST_updated_at datetime2(0) NULL;
 
+
             PRINT N'            [+] Column added                  : CST_updated_at';
             PRINT N'            [!] Pending action                : Backfill CST_updated_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -611,8 +677,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'CST_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -624,7 +694,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -634,7 +703,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'customer.Customer')
 
-            AND c.name = N'CST_updated_at'
+            AND c.name =
+                    N'CST_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -644,7 +715,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -678,7 +748,9 @@
 
         AND i.type = 1
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -698,4 +770,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

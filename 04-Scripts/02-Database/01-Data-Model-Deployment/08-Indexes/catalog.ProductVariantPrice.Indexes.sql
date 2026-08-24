@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductVariantPrice';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductVariantPrice';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -239,7 +240,7 @@
                     + CASE
                         WHEN is_disabled = 1 THEN N' [DISABLED]'
                         ELSE N''
-                      END
+                    END
                 ),
                 N', '
             )
@@ -291,7 +292,7 @@
                         + CASE
                             WHEN ic.is_descending_key = 1 THEN N' DESC'
                             ELSE N' ASC'
-                          END
+                        END
                     ),
                     N', '
                 )
@@ -712,7 +713,7 @@
                     + CASE
                         WHEN is_disabled = 1 THEN N' [DISABLED]'
                         ELSE N''
-                      END
+                    END
                 ),
                 N', '
             )
@@ -763,7 +764,7 @@
                         + CASE
                             WHEN ic.is_descending_key = 1 THEN N' DESC'
                             ELSE N' ASC'
-                          END
+                        END
                     ),
                     N', '
                 )
@@ -955,4 +956,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    payment.PaymentRefundReason';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.PaymentRefundReason';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -198,7 +199,7 @@
 
             IF @PAYRR_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @PAYRR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @PAYRR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @PAYRR_UQ_actual_is_disabled = 0
 
@@ -658,4 +659,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

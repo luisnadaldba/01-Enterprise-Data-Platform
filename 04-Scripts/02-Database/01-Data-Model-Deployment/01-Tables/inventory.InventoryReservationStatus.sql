@@ -16,7 +16,7 @@
         Design Principles
         --------------------------------------------------------------------------
         - Use controlled inventory reservation statuses instead of free-text
-        classifications.
+          classifications.
         - Support consistent operational and analytical interpretation.
         - Store only the inventory reservation status master data in this table.
         - Keep inventory reservation events and lifecycle dates outside this table.
@@ -26,14 +26,14 @@
         - Store inventory reference data in FG_CORE.
         - Do not partition this reference table.
 
-    ===========================================================-- :r $===================*/
+    ==============================================================================*/
 
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    inventory.InventoryReservationStatus';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● inventory.InventoryReservationStatus';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -43,8 +43,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -105,6 +108,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -114,11 +118,18 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND c.name = N'INVRS_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+            AND c.name =
+                    N'INVRS_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -146,7 +157,8 @@
 
 
         SELECT
-            @INVRS_ActualPrimaryKeyName = kc.name
+            @INVRS_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -157,7 +169,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @INVRS_ActualPrimaryKeyName IS NULL
@@ -189,9 +202,11 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
@@ -200,8 +215,12 @@
 
                 FROM sys.index_columns AS ic
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -215,10 +234,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'INVRS_id'
+
+                AND c.name =
+                        N'INVRS_id'
             )
         )
         BEGIN
@@ -237,7 +262,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @INVRS_ActualPrimaryKeyName <> N'PK_INVRS'
+        IF @INVRS_ActualPrimaryKeyName <>
+                N'PK_INVRS'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -273,7 +299,6 @@
             PRINT N'            [!] Pending action                : Backfill INVRS_name before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -283,8 +308,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND c.name = N'INVRS_name'
-            AND TYPE_NAME(c.user_type_id) = N'nvarchar'
+            AND c.name =
+                    N'INVRS_name'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'nvarchar'
+
             AND c.max_length = 100
         )
         BEGIN
@@ -296,7 +325,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -306,7 +334,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND c.name = N'INVRS_name'
+            AND c.name =
+                    N'INVRS_name'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -316,7 +346,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -343,7 +372,6 @@
             PRINT N'            [!] Pending action                : Backfill INVRS_created_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -353,8 +381,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND c.name = N'INVRS_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'INVRS_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -366,7 +398,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -376,7 +407,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND c.name = N'INVRS_created_at'
+            AND c.name =
+                    N'INVRS_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -386,7 +419,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -413,7 +445,6 @@
             PRINT N'            [!] Pending action                : Backfill INVRS_updated_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -423,8 +454,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND c.name = N'INVRS_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'INVRS_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -436,7 +471,6 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
@@ -446,7 +480,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'inventory.InventoryReservationStatus')
 
-            AND c.name = N'INVRS_updated_at'
+            AND c.name =
+                    N'INVRS_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -456,7 +492,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -489,8 +524,11 @@
                 OBJECT_ID(N'inventory.InventoryReservationStatus')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -510,4 +548,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

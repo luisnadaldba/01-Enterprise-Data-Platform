@@ -1,5 +1,6 @@
-    PRINT N'    shipping.Shipment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● shipping.Shipment';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -200,7 +201,7 @@
 
             IF @SHP_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @SHP_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @SHP_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @SHP_UQ_actual_is_disabled = 0
 
@@ -361,9 +362,10 @@
 
             WHERE uq.UQ_columns COLLATE Latin1_General_100_BIN2
                     =
-                @SHP_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                  @SHP_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-            ORDER BY uq.UQ_name;
+            ORDER BY
+                uq.UQ_name;
 
 
             IF @SHP_UQ_equivalent_name IS NOT NULL
@@ -487,9 +489,10 @@
 
                 WHERE idx.IndexColumns COLLATE Latin1_General_100_BIN2
                         =
-                    @SHP_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                      @SHP_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-                ORDER BY idx.IndexName;
+                ORDER BY
+                    idx.IndexName;
 
 
                 IF @SHP_UQ_unique_index_name IS NOT NULL
@@ -651,4 +654,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

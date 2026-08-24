@@ -19,8 +19,8 @@
         N'';
 
 
-    PRINT N'    Sales partition function';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● Sales partition function';
     PRINT N'';
 
 
@@ -108,4 +108,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

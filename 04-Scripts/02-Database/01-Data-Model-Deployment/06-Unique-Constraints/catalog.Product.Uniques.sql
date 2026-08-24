@@ -1,5 +1,6 @@
-    PRINT N'    catalog.Product';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.Product';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -199,7 +200,7 @@
 
             IF @PRD_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @PRD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @PRD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @PRD_UQ_actual_is_disabled = 0
 
@@ -659,4 +660,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

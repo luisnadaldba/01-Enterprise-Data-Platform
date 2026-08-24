@@ -1,5 +1,6 @@
-    PRINT N'    payment.PaymentStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.PaymentStatus';
+    PRINT N'';
 
     DECLARE @PAYST_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -318,4 +319,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

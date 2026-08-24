@@ -1,11 +1,16 @@
-    PRINT N'    sales.TransactionItem';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.TransactionItem';
+    PRINT N'';
 
     DECLARE @TRNIT_seed_timestamp datetime2(0) = SYSDATETIME();
 
 
+    /*==============================================================================
+        PREFIX REGISTRATION
+    ==============================================================================*/
+
     /*----------------------------------------------------------------------
-        sales.TransactionItem -> sales.TransactionItem / TRNIT
+        sales.TransactionItem -> TRNIT
     ----------------------------------------------------------------------*/
 
     IF NOT EXISTS
@@ -16,6 +21,7 @@
         AND PFX_table_name = N'TransactionItem'
     )
     BEGIN
+
         INSERT INTO metadata.TablePrefix
         (
             PFX_schema_name,
@@ -36,9 +42,11 @@
         );
 
         PRINT N'        [+] Prefix registration added     : sales.TransactionItem -> TRNIT';
+
     END
     ELSE
     BEGIN
+
         IF EXISTS
         (
             SELECT 1
@@ -49,19 +57,29 @@
             AND PFX_is_active = 1
         )
         BEGIN
+
             PRINT N'        [•] Prefix registration validated : sales.TransactionItem -> TRNIT';
+
         END
         ELSE
         BEGIN
-            DECLARE @TRNIT_actual_prefix     nvarchar(5);
-            DECLARE @TRNIT_actual_is_active  bit;
+
+            DECLARE @TRNIT_actual_prefix    nvarchar(5);
+            DECLARE @TRNIT_actual_is_active bit;
+
 
             SELECT
-                @TRNIT_actual_prefix     = PFX_prefix,
-                @TRNIT_actual_is_active  = PFX_is_active
+                @TRNIT_actual_prefix =
+                    PFX_prefix,
+
+                @TRNIT_actual_is_active =
+                    PFX_is_active
+
             FROM metadata.TablePrefix
+
             WHERE PFX_schema_name = N'sales'
             AND PFX_table_name = N'TransactionItem';
+
 
             PRINT N'        [!] Prefix registration mismatch  : sales.TransactionItem';
             PRINT N'            Expected Prefix              : TRNIT';
@@ -69,9 +87,18 @@
                 + COALESCE(@TRNIT_actual_prefix, N'<NULL>');
             PRINT N'            Expected Active              : 1';
             PRINT N'            Actual Active                : '
-                + COALESCE(CONVERT(nvarchar(1), @TRNIT_actual_is_active), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT(nvarchar(1), @TRNIT_actual_is_active),
+                    N'<NULL>'
+                );
             PRINT N'            Existing registration was preserved for review.';
+
         END;
+
     END;
 
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

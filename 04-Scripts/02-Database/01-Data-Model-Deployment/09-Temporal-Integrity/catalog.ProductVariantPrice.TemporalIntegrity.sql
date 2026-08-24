@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductVariantPrice';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductVariantPrice';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -49,9 +50,12 @@
 
     DECLARE @PRDVP_TI_expected_name                 sysname;
     DECLARE @PRDVP_TI_actual_name                   sysname;
+
     DECLARE @PRDVP_TI_actual_parent                 nvarchar(517);
+
     DECLARE @PRDVP_TI_actual_is_disabled            bit;
     DECLARE @PRDVP_TI_actual_is_instead_of          bit;
+
     DECLARE @PRDVP_TI_actual_definition             nvarchar(max);
 
     DECLARE @PRDVP_TI_expected_definition           nvarchar(max);
@@ -119,8 +123,23 @@
     /*------------------------------------------------------------------------------
         INDEX DEPENDENCY
 
-        The temporal validation deliberately depends on the historical access
-        index because it is also used to serialize affected ProductVariant ranges.
+        Temporal concurrency protection explicitly references
+        IX_PRDVP_PRDVA_valid_from.
+
+        Therefore, the dependency must validate not only the existence of the
+        deterministic index name, but also the physical index definition required
+        by the temporal serialization strategy.
+
+        Expected:
+            Type              : NONCLUSTERED
+            Unique            : NO
+            Key 1             : PRDVP_PRDVA_id ASC
+            Key 2             : PRDVP_valid_from DESC
+            Included Columns  : PRDVP_valid_to, PRDVP_price
+            Filter            : NONE
+            Filegroup         : FG_CORE
+            Enabled           : YES
+            Hypothetical      : NO
     ------------------------------------------------------------------------------*/
 
     IF NOT EXISTS
@@ -128,6 +147,10 @@
         SELECT 1
 
         FROM sys.indexes AS i
+
+        INNER JOIN sys.data_spaces AS ds
+            ON ds.data_space_id =
+                    i.data_space_id
 
         WHERE i.object_id =
                 OBJECT_ID(N'catalog.ProductVariantPrice')
@@ -137,16 +160,161 @@
 
         AND i.type = 2
 
+        AND i.is_unique = 0
+
+        AND i.is_primary_key = 0
+
+        AND i.is_unique_constraint = 0
+
         AND i.is_disabled = 0
 
         AND i.is_hypothetical = 0
+
+        AND i.has_filter = 0
+
+        AND ds.name =
+                N'FG_CORE'
+
+        AND
+        (
+            SELECT COUNT(*)
+
+            FROM sys.index_columns AS ic
+
+            WHERE ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
+            AND ic.key_ordinal > 0
+        ) = 2
+
+        AND EXISTS
+        (
+            SELECT 1
+
+            FROM sys.index_columns AS ic
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id =
+                        ic.object_id
+
+                AND c.column_id =
+                        ic.column_id
+
+            WHERE ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
+            AND ic.key_ordinal = 1
+
+            AND ic.is_descending_key = 0
+
+            AND c.name =
+                    N'PRDVP_PRDVA_id'
+        )
+
+        AND EXISTS
+        (
+            SELECT 1
+
+            FROM sys.index_columns AS ic
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id =
+                        ic.object_id
+
+                AND c.column_id =
+                        ic.column_id
+
+            WHERE ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
+            AND ic.key_ordinal = 2
+
+            AND ic.is_descending_key = 1
+
+            AND c.name =
+                    N'PRDVP_valid_from'
+        )
+
+        AND
+        (
+            SELECT COUNT(*)
+
+            FROM sys.index_columns AS ic
+
+            WHERE ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
+            AND ic.is_included_column = 1
+        ) = 2
+
+        AND EXISTS
+        (
+            SELECT 1
+
+            FROM sys.index_columns AS ic
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id =
+                        ic.object_id
+
+                AND c.column_id =
+                        ic.column_id
+
+            WHERE ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
+            AND ic.is_included_column = 1
+
+            AND c.name =
+                    N'PRDVP_valid_to'
+        )
+
+        AND EXISTS
+        (
+            SELECT 1
+
+            FROM sys.index_columns AS ic
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id =
+                        ic.object_id
+
+                AND c.column_id =
+                        ic.column_id
+
+            WHERE ic.object_id =
+                    i.object_id
+
+            AND ic.index_id =
+                    i.index_id
+
+            AND ic.is_included_column = 1
+
+            AND c.name =
+                    N'PRDVP_price'
+        )
     )
     BEGIN
 
-        PRINT N'        [X] Temporal integrity index dependency missing : IX_PRDVP_PRDVA_valid_from';
+        PRINT N'        [X] Temporal integrity index dependency invalid : IX_PRDVP_PRDVA_valid_from';
 
         ;THROW 50532,
-            N'Temporal integrity requires enabled index IX_PRDVP_PRDVA_valid_from.',
+            N'Temporal integrity requires a valid and enabled IX_PRDVP_PRDVA_valid_from index on FG_CORE.',
             1;
 
     END;
@@ -641,4 +809,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

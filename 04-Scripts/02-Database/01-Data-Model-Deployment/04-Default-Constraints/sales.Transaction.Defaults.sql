@@ -1,5 +1,6 @@
-    PRINT N'    sales.Transaction';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.Transaction';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -54,6 +55,7 @@
 
         IF OBJECT_ID(N'sales.DF_TRN_discount_amount', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @TRN_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -63,27 +65,32 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'sales.DF_TRN_discount_amount', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_TRN_discount_amount';
-            PRINT N'            Expected Table                  : sales.Transaction';
-            PRINT N'            Expected Column                 : TRN_discount_amount';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : sales.Transaction';
+            PRINT N'            Expected Column               : TRN_discount_amount';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@TRN_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50046,
                 N'Default constraint DF_TRN_discount_amount already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE sales.[Transaction]
             ADD CONSTRAINT DF_TRN_discount_amount
             DEFAULT (0.00) FOR TRN_discount_amount;
 
-        PRINT N'        [+] Default constraint added        : DF_TRN_discount_amount';
-        PRINT N'            Column                          : TRN_discount_amount';
-        PRINT N'            Definition                      : DEFAULT (0.00)';
-    END
 
+        PRINT N'        [+] Default constraint added      : DF_TRN_discount_amount';
+        PRINT N'            Column                        : TRN_discount_amount';
+        PRINT N'            Definition                    : DEFAULT (0.00)';
+
+    END
     ELSE
     BEGIN
 
@@ -121,22 +128,26 @@
         IF @TRN_default_actual_name = @TRN_default_expected_name
         AND TRY_CONVERT(decimal(19,2), @TRN_default_normalized_definition) = 0.00
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_TRN_discount_amount';
-            PRINT N'            Column                          : TRN_discount_amount';
-            PRINT N'            Definition                      : DEFAULT (0.00)';
-        END
 
+            PRINT N'        [•] Default constraint validated  : DF_TRN_discount_amount';
+            PRINT N'            Column                        : TRN_discount_amount';
+            PRINT N'            Definition                    : DEFAULT (0.00)';
+
+        END
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : TRN_discount_amount';
-            PRINT N'            Expected Name                   : DF_TRN_discount_amount';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : TRN_discount_amount';
+            PRINT N'            Expected Name                 : DF_TRN_discount_amount';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@TRN_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (0.00)';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (0.00)';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@TRN_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
@@ -176,6 +187,7 @@
 
         IF OBJECT_ID(N'sales.DF_TRN_created_at', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @TRN_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -185,27 +197,32 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'sales.DF_TRN_created_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_TRN_created_at';
-            PRINT N'            Expected Table                  : sales.Transaction';
-            PRINT N'            Expected Column                 : TRN_created_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : sales.Transaction';
+            PRINT N'            Expected Column               : TRN_created_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@TRN_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50048,
                 N'Default constraint DF_TRN_created_at already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE sales.[Transaction]
             ADD CONSTRAINT DF_TRN_created_at
             DEFAULT (SYSDATETIME()) FOR TRN_created_at;
 
-        PRINT N'        [+] Default constraint added        : DF_TRN_created_at';
-        PRINT N'            Column                          : TRN_created_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
-    END
 
+        PRINT N'        [+] Default constraint added      : DF_TRN_created_at';
+        PRINT N'            Column                        : TRN_created_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
+    END
     ELSE
     BEGIN
 
@@ -235,25 +252,30 @@
                 )
             );
 
+
         IF @TRN_default_actual_name = @TRN_default_expected_name
         AND @TRN_default_normalized_definition = N'sysdatetime'
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_TRN_created_at';
-            PRINT N'            Column                          : TRN_created_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
-        END
 
+            PRINT N'        [•] Default constraint validated  : DF_TRN_created_at';
+            PRINT N'            Column                        : TRN_created_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
+        END
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : TRN_created_at';
-            PRINT N'            Expected Name                   : DF_TRN_created_at';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : TRN_created_at';
+            PRINT N'            Expected Name                 : DF_TRN_created_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@TRN_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@TRN_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
@@ -293,6 +315,7 @@
 
         IF OBJECT_ID(N'sales.DF_TRN_updated_at', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @TRN_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -302,27 +325,32 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'sales.DF_TRN_updated_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_TRN_updated_at';
-            PRINT N'            Expected Table                  : sales.Transaction';
-            PRINT N'            Expected Column                 : TRN_updated_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : sales.Transaction';
+            PRINT N'            Expected Column               : TRN_updated_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@TRN_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50049,
                 N'Default constraint DF_TRN_updated_at already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE sales.[Transaction]
             ADD CONSTRAINT DF_TRN_updated_at
             DEFAULT (SYSDATETIME()) FOR TRN_updated_at;
 
-        PRINT N'        [+] Default constraint added        : DF_TRN_updated_at';
-        PRINT N'            Column                          : TRN_updated_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
-    END
 
+        PRINT N'        [+] Default constraint added      : DF_TRN_updated_at';
+        PRINT N'            Column                        : TRN_updated_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
+    END
     ELSE
     BEGIN
 
@@ -352,26 +380,33 @@
                 )
             );
 
+
         IF @TRN_default_actual_name = @TRN_default_expected_name
         AND @TRN_default_normalized_definition = N'sysdatetime'
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_TRN_updated_at';
-            PRINT N'            Column                          : TRN_updated_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
-        END
 
+            PRINT N'        [•] Default constraint validated  : DF_TRN_updated_at';
+            PRINT N'            Column                        : TRN_updated_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
+        END
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : TRN_updated_at';
-            PRINT N'            Expected Name                   : DF_TRN_updated_at';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : TRN_updated_at';
+            PRINT N'            Expected Name                 : DF_TRN_updated_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@TRN_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@TRN_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

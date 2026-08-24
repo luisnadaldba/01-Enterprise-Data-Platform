@@ -1,5 +1,5 @@
-    PRINT N'    catalog.Brand';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.Brand';
+
 
     /*==========================================================================
         FINAL VALIDATION STATE
@@ -11,13 +11,14 @@
     DECLARE @BRD_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @BRD_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @BRD_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @BRD_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @BRD_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @BRD_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @BRD_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @BRD_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @BRD_FV_foreign_keys_status        nvarchar(20) = N'NOT APPLICABLE';
+    DECLARE @BRD_FV_foreign_keys_status        nvarchar(20) = N'NOT REQUIRED';
     DECLARE @BRD_FV_indexes_status             nvarchar(20) = N'NOT REQUIRED';
     DECLARE @BRD_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
+
 
     /*==========================================================================
         TABLE VALIDATION
@@ -269,12 +270,12 @@
     (
         N'COLUMN',
         N'BRD_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'BRD_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -364,31 +365,6 @@
     ELSE
     BEGIN
         SET @BRD_FV_documentation_status = N'FAILED';
-        SET @BRD_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'Brand'
-        AND PFX_prefix = N'BRD'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @BRD_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @BRD_FV_seed_data_status = N'FAILED';
         SET @BRD_FV_validation_errors += 1;
     END;
 
@@ -646,7 +622,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @BRD_FV_table_status;
@@ -660,33 +635,33 @@
     PRINT N'        Foreign Key Constraints       : ' + @BRD_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @BRD_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @BRD_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @BRD_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
+
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @BRD_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @BRD_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50076,
             N'Final validation failed for catalog.Brand.',
             1;
 
     END;
-
-
-    PRINT N'';

@@ -1,5 +1,7 @@
-    PRINT N'    sales.TransactionChannel';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.TransactionChannel';
+    PRINT N'';
+
 
     DECLARE @TRNCH_expected_description nvarchar(4000);
     DECLARE @TRNCH_existing_description nvarchar(4000);
@@ -10,16 +12,23 @@
     ----------------------------------------------------------------------*/
 
     SET @TRNCH_expected_description =
-        N'Maintains the authoritative set of transaction channels used by the sales transactional model.';
+        N'Maintains the controlled transaction channels used to classify how sales transactions are originated in Atlas Commerce.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,16 +48,26 @@
 
         SET @TRNCH_existing_description = NULL;
 
+
         SELECT
             @TRNCH_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @TRNCH_existing_description = @TRNCH_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @TRNCH_existing_description =
+            @TRNCH_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : sales.TransactionChannel';
@@ -67,7 +86,7 @@
                     WHEN LEN(@TRNCH_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @TRNCH_existing_description
-                END;
+                  END;
 
         END;
 
@@ -84,6 +103,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -91,9 +111,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_id'
     )
     BEGIN
 
@@ -115,6 +141,7 @@
 
         SET @TRNCH_existing_description = NULL;
 
+
         SELECT
             @TRNCH_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -126,11 +153,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_id';
 
-        IF @TRNCH_existing_description = @TRNCH_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_id';
+
+
+        IF @TRNCH_existing_description =
+            @TRNCH_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : TRNCH_id';
@@ -144,10 +179,12 @@
                 + @TRNCH_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @TRNCH_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@TRNCH_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @TRNCH_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@TRNCH_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @TRNCH_existing_description
-                END;
+                  END;
 
         END;
 
@@ -164,6 +201,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -171,9 +209,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_code'
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_code'
     )
     BEGIN
 
@@ -195,6 +239,7 @@
 
         SET @TRNCH_existing_description = NULL;
 
+
         SELECT
             @TRNCH_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -206,11 +251,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_code';
 
-        IF @TRNCH_existing_description = @TRNCH_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_code';
+
+
+        IF @TRNCH_existing_description =
+            @TRNCH_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : TRNCH_code';
@@ -224,10 +277,12 @@
                 + @TRNCH_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @TRNCH_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@TRNCH_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @TRNCH_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@TRNCH_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @TRNCH_existing_description
-                END;
+                  END;
 
         END;
 
@@ -244,6 +299,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -251,9 +307,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_name'
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_name'
     )
     BEGIN
 
@@ -275,6 +337,7 @@
 
         SET @TRNCH_existing_description = NULL;
 
+
         SELECT
             @TRNCH_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -286,11 +349,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_name';
 
-        IF @TRNCH_existing_description = @TRNCH_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_name';
+
+
+        IF @TRNCH_existing_description =
+            @TRNCH_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : TRNCH_name';
@@ -304,10 +375,12 @@
                 + @TRNCH_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @TRNCH_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@TRNCH_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @TRNCH_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@TRNCH_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @TRNCH_existing_description
-                END;
+                  END;
 
         END;
 
@@ -324,6 +397,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -331,9 +405,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_is_active'
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_is_active'
     )
     BEGIN
 
@@ -355,6 +435,7 @@
 
         SET @TRNCH_existing_description = NULL;
 
+
         SELECT
             @TRNCH_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -366,11 +447,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_is_active';
 
-        IF @TRNCH_existing_description = @TRNCH_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_is_active';
+
+
+        IF @TRNCH_existing_description =
+            @TRNCH_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : TRNCH_is_active';
@@ -384,10 +473,12 @@
                 + @TRNCH_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @TRNCH_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@TRNCH_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @TRNCH_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@TRNCH_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @TRNCH_existing_description
-                END;
+                  END;
 
         END;
 
@@ -399,11 +490,12 @@
     ----------------------------------------------------------------------*/
 
     SET @TRNCH_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -411,9 +503,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_created_at'
     )
     BEGIN
 
@@ -435,6 +533,7 @@
 
         SET @TRNCH_existing_description = NULL;
 
+
         SELECT
             @TRNCH_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -446,11 +545,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_created_at';
 
-        IF @TRNCH_existing_description = @TRNCH_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_created_at';
+
+
+        IF @TRNCH_existing_description =
+            @TRNCH_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : TRNCH_created_at';
@@ -464,10 +571,12 @@
                 + @TRNCH_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @TRNCH_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@TRNCH_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @TRNCH_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@TRNCH_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @TRNCH_existing_description
-                END;
+                  END;
 
         END;
 
@@ -479,11 +588,12 @@
     ----------------------------------------------------------------------*/
 
     SET @TRNCH_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -491,9 +601,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_updated_at'
     )
     BEGIN
 
@@ -515,6 +631,7 @@
 
         SET @TRNCH_existing_description = NULL;
 
+
         SELECT
             @TRNCH_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -526,11 +643,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'sales.TransactionChannel')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'TRNCH_updated_at';
 
-        IF @TRNCH_existing_description = @TRNCH_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'sales.TransactionChannel')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'TRNCH_updated_at';
+
+
+        IF @TRNCH_existing_description =
+            @TRNCH_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : TRNCH_updated_at';
@@ -544,14 +669,18 @@
                 + @TRNCH_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @TRNCH_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@TRNCH_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @TRNCH_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@TRNCH_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @TRNCH_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

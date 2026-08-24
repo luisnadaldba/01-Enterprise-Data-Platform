@@ -1,5 +1,4 @@
-    PRINT N'    catalog.ProductAttribute';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.ProductAttribute';
 
 
     /*==========================================================================
@@ -12,13 +11,14 @@
     DECLARE @PAT_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAT_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAT_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PAT_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAT_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PAT_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAT_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PAT_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAT_FV_foreign_keys_status        nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PAT_FV_indexes_status             nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PAT_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
+
 
     /*==========================================================================
         TABLE VALIDATION
@@ -242,12 +242,12 @@
     (
         N'COLUMN',
         N'PAT_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PAT_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -311,29 +311,6 @@
     ELSE
     BEGIN
         SET @PAT_FV_documentation_status = N'FAILED';
-        SET @PAT_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'ProductAttribute'
-        AND PFX_prefix = N'PAT'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @PAT_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @PAT_FV_seed_data_status = N'FAILED';
         SET @PAT_FV_validation_errors += 1;
     END;
 
@@ -492,7 +469,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PAT_FV_table_status;
@@ -506,29 +482,33 @@
     PRINT N'        Foreign Key Constraints       : ' + @PAT_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PAT_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PAT_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PAT_FV_validation_errors = 0
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
+
     END
     ELSE
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : FAILED';
+
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @PAT_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PAT_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50210,
             N'Final validation failed for catalog.ProductAttribute.',
             1;
+
     END;
-
-
-    PRINT N'';

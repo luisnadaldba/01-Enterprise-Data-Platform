@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerDocumentType';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerDocumentType';
+    PRINT N'';
 
     DECLARE @DTP_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -127,7 +128,7 @@
             @DTP_seed_timestamp
         );
 
-        PRINT N'        [+] Customer document type added   : CPF';
+        PRINT N'        [+] Customer document type added : CPF';
 
     END
     ELSE
@@ -163,7 +164,7 @@
             @DTP_seed_timestamp
         );
 
-        PRINT N'        [+] Customer document type added   : CNPJ';
+        PRINT N'        [+] Customer document type added : CNPJ';
 
     END
     ELSE
@@ -199,7 +200,7 @@
             @DTP_seed_timestamp
         );
 
-        PRINT N'        [+] Customer document type added   : RG';
+        PRINT N'        [+] Customer document type added : RG';
 
     END
     ELSE
@@ -235,7 +236,7 @@
             @DTP_seed_timestamp
         );
 
-        PRINT N'        [+] Customer document type added   : CNH';
+        PRINT N'        [+] Customer document type added : CNH';
 
     END
     ELSE
@@ -271,7 +272,7 @@
             @DTP_seed_timestamp
         );
 
-        PRINT N'        [+] Customer document type added   : PASSPORT';
+        PRINT N'        [+] Customer document type added : PASSPORT';
 
     END
     ELSE
@@ -282,4 +283,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

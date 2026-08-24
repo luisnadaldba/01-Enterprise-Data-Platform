@@ -1,5 +1,6 @@
-    PRINT N'    sales.TransactionChannel';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.TransactionChannel';
+    PRINT N'';
 
     DECLARE @TRNCH_SEEDRUN_timestamp datetime2(0) = SYSDATETIME();
 
@@ -66,6 +67,7 @@
             DECLARE @TRNCH_PREFIXSEED_actual_prefix    nvarchar(5);
             DECLARE @TRNCH_PREFIXSEED_actual_is_active bit;
 
+
             SELECT
                 @TRNCH_PREFIXSEED_actual_prefix =
                     PFX_prefix,
@@ -95,9 +97,6 @@
         END;
 
     END;
-
-
-    PRINT N'';
 
 
     /*==============================================================================
@@ -328,4 +327,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

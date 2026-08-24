@@ -1,5 +1,4 @@
-    PRINT N'    payment.PaymentRefundReason';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● payment.PaymentRefundReason';
 
 
     /*==========================================================================
@@ -272,12 +271,12 @@
     (
         N'COLUMN',
         N'PAYRR_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PAYRR_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -390,47 +389,95 @@
         SEED DATA VALIDATION
     ==========================================================================*/
 
-    IF EXISTS
+    DECLARE @PAYRR_FV_invalid_seed_data int = 0;
+
+
+    IF NOT EXISTS
     (
         SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'payment'
-        AND PFX_table_name = N'PaymentRefundReason'
-        AND PFX_prefix = N'PAYRR'
-        AND PFX_is_active = 1
+
+        FROM payment.PaymentRefundReason
+
+        WHERE PAYRR_name =
+                N'CUSTOMER_RETURN'
     )
-    AND
+    BEGIN
+        SET @PAYRR_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentRefundReason
+
+        WHERE PAYRR_name =
+                N'DUPLICATE_CHARGE'
+    )
+    BEGIN
+        SET @PAYRR_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentRefundReason
+
+        WHERE PAYRR_name =
+                N'FRAUD'
+    )
+    BEGIN
+        SET @PAYRR_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentRefundReason
+
+        WHERE PAYRR_name =
+                N'OPERATIONAL_ERROR'
+    )
+    BEGIN
+        SET @PAYRR_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentRefundReason
+
+        WHERE PAYRR_name =
+                N'ORDER_CANCELLATION'
+    )
+    BEGIN
+        SET @PAYRR_FV_invalid_seed_data += 1;
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        ENSURE EXACT EXPECTED DOMAIN ROW COUNT
+    --------------------------------------------------------------------------*/
+
+    IF
     (
         SELECT COUNT(*)
+
         FROM payment.PaymentRefundReason
-        WHERE PAYRR_name IN
-        (
-            N'CUSTOMER_RETURN',
-            N'DUPLICATE_CHARGE',
-            N'FRAUD',
-            N'OPERATIONAL_ERROR',
-            N'ORDER_CANCELLATION'
-        )
-    ) = 5
-    AND NOT EXISTS
-    (
-        SELECT V.PAYRR_name
-        FROM
-        (
-            VALUES
-                (N'CUSTOMER_RETURN'),
-                (N'DUPLICATE_CHARGE'),
-                (N'FRAUD'),
-                (N'OPERATIONAL_ERROR'),
-                (N'ORDER_CANCELLATION')
-        ) AS V(PAYRR_name)
-        WHERE NOT EXISTS
-        (
-            SELECT 1
-            FROM payment.PaymentRefundReason AS PRR
-            WHERE PRR.PAYRR_name = V.PAYRR_name
-        )
-    )
+    ) <> 5
+    BEGIN
+        SET @PAYRR_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF @PAYRR_FV_invalid_seed_data = 0
     BEGIN
         SET @PAYRR_FV_seed_data_status = N'VALID';
     END
@@ -710,11 +757,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PAYRR_FV_table_status;
@@ -728,23 +771,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @PAYRR_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PAYRR_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PAYRR_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PAYRR_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -754,14 +791,17 @@
                 @PAYRR_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PAYRR_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50330,
             N'Final validation failed for payment.PaymentRefundReason.',
             1;
 
     END;
-
-
-    PRINT N'';

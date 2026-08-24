@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductImage';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductImage';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -57,10 +58,10 @@
 
     DECLARE @PRDIM_UX_equivalent_indexes TABLE
     (
-        index_name       sysname         NOT NULL,
-        is_disabled      bit             NOT NULL,
-        data_space_name  sysname         NULL,
-        filter_definition nvarchar(4000) NULL
+        index_name        sysname         NOT NULL,
+        is_disabled       bit             NOT NULL,
+        data_space_name   sysname         NULL,
+        filter_definition nvarchar(4000)  NULL
     );
 
 
@@ -1466,4 +1467,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

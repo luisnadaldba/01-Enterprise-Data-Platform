@@ -1,5 +1,4 @@
-    PRINT N'    sales.TransactionChannel';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● sales.TransactionChannel';
 
     /*==========================================================================
         FINAL VALIDATION STATE
@@ -15,7 +14,7 @@
     DECLARE @TRNCH_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @TRNCH_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @TRNCH_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @TRNCH_FV_foreign_keys_status        nvarchar(20) = N'NOT APPLICABLE';
+    DECLARE @TRNCH_FV_foreign_keys_status        nvarchar(20) = N'NOT REQUIRED';
     DECLARE @TRNCH_FV_indexes_status             nvarchar(20) = N'NOT REQUIRED';
     DECLARE @TRNCH_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
 
@@ -231,7 +230,7 @@
     (
         N'TABLE',
         NULL,
-        N'Maintains the authoritative set of transaction channels used by the sales transactional model.'
+        N'Maintains the controlled transaction channels used to classify how sales transactions are originated in Atlas Commerce.'
     ),
     (
         N'COLUMN',
@@ -256,12 +255,12 @@
     (
         N'COLUMN',
         N'TRNCH_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'TRNCH_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -661,7 +660,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @TRNCH_FV_table_status;
@@ -675,33 +673,32 @@
     PRINT N'        Foreign Key Constraints       : ' + @TRNCH_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @TRNCH_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @TRNCH_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @TRNCH_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @TRNCH_FV_validation_errors);
-        PRINT N'';
-
-        ;THROW 50091,
-        N'Final validation failed for sales.TransactionChannel.',
-            1;
 
     END;
 
-
     PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @TRNCH_FV_validation_errors > 0
+    BEGIN
+
+        ;THROW 50091,
+            N'Final validation failed for sales.TransactionChannel.',
+            1;
+
+    END;

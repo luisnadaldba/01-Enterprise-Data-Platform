@@ -1,5 +1,6 @@
-    PRINT N'    sales.TransactionStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.TransactionStatus';
+    PRINT N'';
 
     DECLARE @TRNST_SEEDRUN_timestamp datetime2(0) = SYSDATETIME();
 
@@ -66,6 +67,7 @@
             DECLARE @TRNST_PREFIXSEED_actual_prefix    nvarchar(5);
             DECLARE @TRNST_PREFIXSEED_actual_is_active bit;
 
+
             SELECT
                 @TRNST_PREFIXSEED_actual_prefix =
                     PFX_prefix,
@@ -95,9 +97,6 @@
         END;
 
     END;
-
-
-    PRINT N'';
 
 
     /*==============================================================================
@@ -343,4 +342,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

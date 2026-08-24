@@ -1,5 +1,4 @@
-    PRINT N'    payment.PaymentMethod';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● payment.PaymentMethod';
 
 
     /*==========================================================================
@@ -272,12 +271,12 @@
     (
         N'COLUMN',
         N'PAYME_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PAYME_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -390,66 +389,98 @@
         SEED DATA VALIDATION
     ==========================================================================*/
 
-    IF EXISTS
+    DECLARE @PAYME_FV_invalid_seed_data int = 0;
+
+
+    IF NOT EXISTS
     (
         SELECT 1
 
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'payment'
-        AND PFX_table_name = N'PaymentMethod'
-        AND PFX_prefix = N'PAYME'
-        AND PFX_is_active = 1
-    )
-
-    AND EXISTS
-    (
-        SELECT 1
         FROM payment.PaymentMethod
+
         WHERE PAYME_name = N'PIX'
     )
+    BEGIN
 
-    AND EXISTS
+        SET @PAYME_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    IF NOT EXISTS
     (
         SELECT 1
+
         FROM payment.PaymentMethod
+
         WHERE PAYME_name = N'CREDIT_CARD'
     )
+    BEGIN
 
-    AND EXISTS
+        SET @PAYME_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    IF NOT EXISTS
     (
         SELECT 1
+
         FROM payment.PaymentMethod
+
         WHERE PAYME_name = N'DEBIT_CARD'
     )
+    BEGIN
 
-    AND EXISTS
+        SET @PAYME_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    IF NOT EXISTS
     (
         SELECT 1
+
         FROM payment.PaymentMethod
+
         WHERE PAYME_name = N'CASH'
     )
+    BEGIN
 
-    AND
+        SET @PAYME_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        ENSURE EXACT EXPECTED DOMAIN ROW COUNT
+    --------------------------------------------------------------------------*/
+
+    IF
     (
         SELECT COUNT(*)
-        FROM payment.PaymentMethod
-        WHERE PAYME_name IN
-        (
-            N'PIX',
-            N'CREDIT_CARD',
-            N'DEBIT_CARD',
-            N'CASH'
-        )
-    ) = 4
 
+        FROM payment.PaymentMethod
+    ) <> 4
     BEGIN
+
+        SET @PAYME_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    IF @PAYME_FV_invalid_seed_data = 0
+    BEGIN
+
         SET @PAYME_FV_seed_data_status = N'VALID';
+
     END
     ELSE
     BEGIN
+
         SET @PAYME_FV_seed_data_status = N'FAILED';
         SET @PAYME_FV_validation_errors += 1;
+
     END;
 
 
@@ -722,11 +753,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PAYME_FV_table_status;
@@ -740,23 +767,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @PAYME_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PAYME_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PAYME_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PAYME_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -766,14 +787,17 @@
                 @PAYME_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PAYME_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50330,
             N'Final validation failed for payment.PaymentMethod.',
             1;
 
     END;
-
-
-    PRINT N'';

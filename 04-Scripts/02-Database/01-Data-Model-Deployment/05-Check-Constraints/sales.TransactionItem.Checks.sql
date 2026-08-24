@@ -1,5 +1,6 @@
-    PRINT N'    sales.TransactionItem';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.TransactionItem';
+    PRINT N'';
 
 
     DECLARE @TRNIT_check_expected_name          sysname;
@@ -486,4 +487,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

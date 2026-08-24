@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryReservationStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryReservationStatus';
+    PRINT N'';
 
     DECLARE @INVRS_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -63,7 +64,7 @@
         ELSE
         BEGIN
 
-            DECLARE @INVRS_actual_prefix     nvarchar(5);
+            DECLARE @INVRS_actual_prefix    nvarchar(5);
             DECLARE @INVRS_actual_is_active bit;
 
 
@@ -127,7 +128,7 @@
             @INVRS_seed_timestamp
         );
 
-        PRINT N'        [+] Inventory reservation status added     : ACTIVE';
+        PRINT N'        [+] Inventory reservation status added : ACTIVE';
 
     END
     ELSE
@@ -163,7 +164,7 @@
             @INVRS_seed_timestamp
         );
 
-        PRINT N'        [+] Inventory reservation status added     : CONSUMED';
+        PRINT N'        [+] Inventory reservation status added : CONSUMED';
 
     END
     ELSE
@@ -199,7 +200,7 @@
             @INVRS_seed_timestamp
         );
 
-        PRINT N'        [+] Inventory reservation status added     : RELEASED';
+        PRINT N'        [+] Inventory reservation status added : RELEASED';
 
     END
     ELSE
@@ -235,7 +236,7 @@
             @INVRS_seed_timestamp
         );
 
-        PRINT N'        [+] Inventory reservation status added     : EXPIRED';
+        PRINT N'        [+] Inventory reservation status added : EXPIRED';
 
     END
     ELSE
@@ -246,4 +247,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,4 @@
-    PRINT N'    catalog.ProductVariant';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.ProductVariant';
 
 
     /*==========================================================================
@@ -281,7 +280,7 @@
     (
         N'COLUMN',
         N'PRDVA_PRD_id',
-        N'Foreign key of catalog.Product.'
+        N'Foreign key referencing catalog.Product.'
     ),
     (
         N'COLUMN',
@@ -296,17 +295,17 @@
     (
         N'COLUMN',
         N'PRDVA_is_active',
-        N'Indicates whether the product is currently available for use in catalog operations while preserving inactive products for historical integrity.'
+        N'Indicates whether the product variant is currently available for use in catalog operations while preserving inactive variants for historical integrity.'
     ),
     (
         N'COLUMN',
         N'PRDVA_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PRDVA_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -709,16 +708,16 @@
         ADDITIONAL INDEXES VALIDATION
     ==========================================================================*/
 
-    DECLARE @PRDVA_FV_index_actual_name             sysname;
-    DECLARE @PRDVA_FV_index_actual_type             tinyint;
-    DECLARE @PRDVA_FV_index_actual_is_unique        bit;
-    DECLARE @PRDVA_FV_index_actual_is_disabled      bit;
-    DECLARE @PRDVA_FV_index_actual_has_filter       bit;
-    DECLARE @PRDVA_FV_index_actual_filter           nvarchar(4000);
+    DECLARE @PRDVA_FV_index_actual_name              sysname;
+    DECLARE @PRDVA_FV_index_actual_type              tinyint;
+    DECLARE @PRDVA_FV_index_actual_is_unique         bit;
+    DECLARE @PRDVA_FV_index_actual_is_disabled       bit;
+    DECLARE @PRDVA_FV_index_actual_has_filter        bit;
+    DECLARE @PRDVA_FV_index_actual_filter            nvarchar(4000);
     DECLARE @PRDVA_FV_index_actual_normalized_filter nvarchar(4000);
-    DECLARE @PRDVA_FV_index_actual_columns          nvarchar(4000);
-    DECLARE @PRDVA_FV_index_actual_includes         nvarchar(4000);
-    DECLARE @PRDVA_FV_index_actual_data_space       sysname;
+    DECLARE @PRDVA_FV_index_actual_columns           nvarchar(4000);
+    DECLARE @PRDVA_FV_index_actual_includes          nvarchar(4000);
+    DECLARE @PRDVA_FV_index_actual_data_space        sysname;
 
 
     SELECT
@@ -829,7 +828,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PRDVA_FV_table_status;
@@ -843,23 +841,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @PRDVA_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PRDVA_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PRDVA_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PRDVA_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -869,14 +861,17 @@
                 @PRDVA_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PRDVA_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50330,
             N'Final validation failed for catalog.ProductVariant.',
             1;
 
     END;
-
-
-    PRINT N'';

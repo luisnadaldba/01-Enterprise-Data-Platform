@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryMovementReason';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryMovementReason';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -10,8 +11,8 @@
     (
         INVMR_uq_id               tinyint IDENTITY(1,1) NOT NULL,
         INVMR_uq_name             sysname               NOT NULL,
-        INV_expected_columns    nvarchar(4000)         NOT NULL,
-        INV_create_columns      nvarchar(4000)         NOT NULL
+        INVMR_expected_columns    nvarchar(4000)         NOT NULL,
+        INVMR_create_columns      nvarchar(4000)         NOT NULL
     );
 
 
@@ -28,8 +29,8 @@
     INSERT INTO @INVMR_UQ_expected_uniques
     (
         INVMR_uq_name,
-        INV_expected_columns,
-        INV_create_columns
+        INVMR_expected_columns,
+        INVMR_create_columns
     )
     VALUES
     (
@@ -121,10 +122,10 @@
                 INVMR_uq_name,
 
             @INVMR_UQ_expected_columns =
-                INV_expected_columns,
+                INVMR_expected_columns,
 
             @INVMR_UQ_create_columns =
-                INV_create_columns
+                INVMR_create_columns
 
         FROM @INVMR_UQ_expected_uniques
 
@@ -205,7 +206,7 @@
 
             IF @INVMR_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @INVMR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @INVMR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @INVMR_UQ_actual_is_disabled = 0
 
@@ -226,6 +227,7 @@
                 PRINT N'            Filegroup                       : FG_CORE';
 
             END
+
             ELSE
             BEGIN
 
@@ -367,9 +369,10 @@
 
             WHERE uq.UQ_columns COLLATE Latin1_General_100_BIN2
                     =
-                @INVMR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                  @INVMR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-            ORDER BY uq.UQ_name;
+            ORDER BY
+                uq.UQ_name;
 
 
             /*------------------------------------------------------------------
@@ -504,9 +507,10 @@
 
                 WHERE idx.IndexColumns COLLATE Latin1_General_100_BIN2
                         =
-                    @INVMR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                      @INVMR_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-                ORDER BY idx.IndexName;
+                ORDER BY
+                    idx.IndexName;
 
 
                 /*--------------------------------------------------------------
@@ -672,4 +676,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

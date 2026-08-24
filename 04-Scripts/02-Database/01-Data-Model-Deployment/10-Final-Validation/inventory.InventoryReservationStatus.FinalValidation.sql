@@ -1,5 +1,4 @@
-    PRINT N'    inventory.InventoryReservationStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● inventory.InventoryReservationStatus';
 
 
     /*==========================================================================
@@ -264,12 +263,12 @@
     (
         N'COLUMN',
         N'INVRS_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'INVRS_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -382,45 +381,65 @@
         SEED DATA VALIDATION
     ==========================================================================*/
 
+    DECLARE @INVRS_FV_invalid_seed_rows int = 0;
+
+    DECLARE @INVRS_FV_expected_statuses TABLE
+    (
+        INVRS_status_name nvarchar(50) NOT NULL
+    );
+
+
+    INSERT INTO @INVRS_FV_expected_statuses
+    (
+        INVRS_status_name
+    )
+    VALUES
+        (N'ACTIVE'),
+        (N'CONSUMED'),
+        (N'RELEASED'),
+        (N'EXPIRED');
+
+
+    /*--------------------------------------------------------------------------
+        All contracted statuses must exist.
+    --------------------------------------------------------------------------*/
+
     IF EXISTS
     (
         SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'inventory'
-        AND PFX_table_name = N'InventoryReservationStatus'
-        AND PFX_prefix = N'INVRS'
-        AND PFX_is_active = 1
-    )
-    AND
-    (
-        SELECT COUNT(*)
-        FROM inventory.InventoryReservationStatus
-        WHERE INVRS_name IN
-        (
-            N'ACTIVE',
-            N'CONSUMED',
-            N'RELEASED',
-            N'EXPIRED'
-        )
-    ) = 4
-    AND NOT EXISTS
-    (
-        SELECT V.INVRS_name
-        FROM
-        (
-            VALUES
-                (N'ACTIVE'),
-                (N'CONSUMED'),
-                (N'RELEASED'),
-                (N'EXPIRED')
-        ) AS V(INVRS_name)
+
+        FROM @INVRS_FV_expected_statuses AS expected
+
         WHERE NOT EXISTS
         (
             SELECT 1
-            FROM inventory.InventoryReservationStatus AS IRS
-            WHERE IRS.INVRS_name = V.INVRS_name
+
+            FROM inventory.InventoryReservationStatus AS actual
+
+            WHERE actual.INVRS_name =
+                    expected.INVRS_status_name
         )
     )
+    BEGIN
+        SET @INVRS_FV_invalid_seed_rows += 1;
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        No additional status rows are allowed.
+    --------------------------------------------------------------------------*/
+
+    IF
+    (
+        SELECT COUNT(*)
+        FROM inventory.InventoryReservationStatus
+    ) <> 4
+    BEGIN
+        SET @INVRS_FV_invalid_seed_rows += 1;
+    END;
+
+
+    IF @INVRS_FV_invalid_seed_rows = 0
     BEGIN
         SET @INVRS_FV_seed_data_status = N'VALID';
     END
@@ -700,11 +719,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @INVRS_FV_table_status;
@@ -718,23 +733,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @INVRS_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @INVRS_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @INVRS_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @INVRS_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -744,14 +753,17 @@
                 @INVRS_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @INVRS_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50931,
             N'Final validation failed for inventory.InventoryReservationStatus.',
             1;
 
     END;
-
-
-    PRINT N'';

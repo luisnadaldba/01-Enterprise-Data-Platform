@@ -1,5 +1,6 @@
-    PRINT N'    payment.PaymentMethod';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.PaymentMethod';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -198,7 +199,7 @@
 
             IF @PAYME_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @PAYME_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @PAYME_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @PAYME_UQ_actual_is_disabled = 0
 
@@ -230,7 +231,11 @@
                     + @PAYME_UQ_expected_name;
 
                 PRINT N'            Actual Name                     : '
-                    + COALESCE(@PAYME_UQ_actual_name, N'<NULL>');
+                    + COALESCE
+                    (
+                        @PAYME_UQ_actual_name,
+                        N'<NULL>'
+                    );
 
                 PRINT N'            Expected Columns                : '
                     + REPLACE
@@ -658,4 +663,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

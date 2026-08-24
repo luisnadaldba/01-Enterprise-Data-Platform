@@ -1,5 +1,4 @@
-    PRINT N'    sales.TransactionItem';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● sales.TransactionItem';
 
     /*==========================================================================
         FINAL VALIDATION STATE
@@ -163,7 +162,7 @@
     (
         N'TABLE',
         NULL,
-        N'Stores the individual product items associated with a sales transaction.'
+        N'Maintains the individual product items associated with sales transactions in Atlas Commerce, including product variant, quantity, unit price, unit discount, and the originating transaction timestamp.'
     ),
     (
         N'COLUMN',
@@ -173,42 +172,42 @@
     (
         N'COLUMN',
         N'TRNIT_transaction_at',
-        N'Records the date and time of the parent sales transaction and supports aligned partitioning.'
+        N'Records the date and time of the parent sales transaction and supports aligned partitioning with sales.Transaction.'
     ),
     (
         N'COLUMN',
         N'TRNIT_TRN_id',
-        N'Foreign key of sales.Transaction.'
+        N'Foreign key referencing sales.Transaction.'
     ),
     (
         N'COLUMN',
         N'TRNIT_PRDVA_id',
-        N'Foreign key of catalog.ProductVariant.'
+        N'Foreign key referencing catalog.ProductVariant.'
     ),
     (
         N'COLUMN',
         N'TRNIT_quantity',
-        N'Quantity of the product variant included in the transaction.'
+        N'Stores the quantity of the product variant included in the transaction item.'
     ),
     (
         N'COLUMN',
         N'TRNIT_unit_price',
-        N'Unit price of the product variant recorded at the time of the transaction.'
+        N'Stores the unit price of the product variant recorded for the transaction item.'
     ),
     (
         N'COLUMN',
         N'TRNIT_unit_discount',
-        N'Unit discount applied to the product variant at the time of the transaction.'
+        N'Stores the unit discount applied to the product variant for the transaction item.'
     ),
     (
         N'COLUMN',
         N'TRNIT_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'TRNIT_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -1072,9 +1071,7 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
-
 
     PRINT N'        Table                         : ' + @TRNIT_FV_table_status;
     PRINT N'        Primary Key                   : ' + @TRNIT_FV_primary_key_status;
@@ -1086,34 +1083,33 @@
     PRINT N'        Unique Constraints            : ' + @TRNIT_FV_uniques_status;
     PRINT N'        Foreign Key Constraints       : ' + @TRNIT_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @TRNIT_FV_indexes_status;
-    PRINT N'        Temporal Integrity            : ' + @TRNIT_FV_temporal_integrity_status;  
-
+    PRINT N'        Temporal Integrity            : ' + @TRNIT_FV_temporal_integrity_status;
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @TRNIT_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @TRNIT_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @TRNIT_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50078,
             N'Final validation failed for sales.TransactionItem.',
             1;
 
     END;
-
-
-    PRINT N'';

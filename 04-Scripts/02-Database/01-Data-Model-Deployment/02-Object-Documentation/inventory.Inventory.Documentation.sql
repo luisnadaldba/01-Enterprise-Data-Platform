@@ -1,5 +1,6 @@
-    PRINT N'    inventory.Inventory';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.Inventory';
+    PRINT N'';
 
     DECLARE @INV_expected_description nvarchar(4000);
     DECLARE @INV_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,16 +47,26 @@
 
         SET @INV_existing_description = NULL;
 
+
         SELECT
             @INV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @INV_existing_description = @INV_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @INV_existing_description =
+            @INV_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : inventory.Inventory';
@@ -67,7 +85,7 @@
                     WHEN LEN(@INV_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @INV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -84,6 +102,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -91,9 +110,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_id'
     )
     BEGIN
 
@@ -115,6 +140,7 @@
 
         SET @INV_existing_description = NULL;
 
+
         SELECT
             @INV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -126,11 +152,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_id';
 
-        IF @INV_existing_description = @INV_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_id';
+
+
+        IF @INV_existing_description =
+            @INV_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : INV_id';
@@ -144,10 +178,12 @@
                 + @INV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -159,11 +195,12 @@
     ----------------------------------------------------------------------*/
 
     SET @INV_expected_description =
-        N'Foreign key of catalog.ProductVariant.';
+        N'Foreign key referencing catalog.ProductVariant.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -171,9 +208,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_PRDVA_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_PRDVA_id'
     )
     BEGIN
 
@@ -195,6 +238,7 @@
 
         SET @INV_existing_description = NULL;
 
+
         SELECT
             @INV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -206,11 +250,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_PRDVA_id';
 
-        IF @INV_existing_description = @INV_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_PRDVA_id';
+
+
+        IF @INV_existing_description =
+            @INV_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : INV_PRDVA_id';
@@ -224,10 +276,12 @@
                 + @INV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -244,6 +298,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -251,9 +306,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_quantity_on_hand'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_quantity_on_hand'
     )
     BEGIN
 
@@ -275,6 +336,7 @@
 
         SET @INV_existing_description = NULL;
 
+
         SELECT
             @INV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -286,11 +348,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_quantity_on_hand';
 
-        IF @INV_existing_description = @INV_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_quantity_on_hand';
+
+
+        IF @INV_existing_description =
+            @INV_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : INV_quantity_on_hand';
@@ -304,10 +374,12 @@
                 + @INV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -324,6 +396,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -331,9 +404,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_quantity_reserved'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_quantity_reserved'
     )
     BEGIN
 
@@ -355,6 +434,7 @@
 
         SET @INV_existing_description = NULL;
 
+
         SELECT
             @INV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -366,11 +446,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_quantity_reserved';
 
-        IF @INV_existing_description = @INV_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_quantity_reserved';
+
+
+        IF @INV_existing_description =
+            @INV_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : INV_quantity_reserved';
@@ -384,10 +472,12 @@
                 + @INV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -399,11 +489,12 @@
     ----------------------------------------------------------------------*/
 
     SET @INV_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -411,9 +502,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_created_at'
     )
     BEGIN
 
@@ -435,6 +532,7 @@
 
         SET @INV_existing_description = NULL;
 
+
         SELECT
             @INV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -446,11 +544,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_created_at';
 
-        IF @INV_existing_description = @INV_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_created_at';
+
+
+        IF @INV_existing_description =
+            @INV_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : INV_created_at';
@@ -464,10 +570,12 @@
                 + @INV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INV_existing_description
-                END;
+                  END;
 
         END;
 
@@ -479,11 +587,12 @@
     ----------------------------------------------------------------------*/
 
     SET @INV_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -491,9 +600,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_updated_at'
     )
     BEGIN
 
@@ -515,6 +630,7 @@
 
         SET @INV_existing_description = NULL;
 
+
         SELECT
             @INV_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -526,11 +642,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'inventory.Inventory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'INV_updated_at';
 
-        IF @INV_existing_description = @INV_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'inventory.Inventory')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'INV_updated_at';
+
+
+        IF @INV_existing_description =
+            @INV_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : INV_updated_at';
@@ -544,14 +668,18 @@
                 + @INV_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @INV_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@INV_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @INV_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@INV_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @INV_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

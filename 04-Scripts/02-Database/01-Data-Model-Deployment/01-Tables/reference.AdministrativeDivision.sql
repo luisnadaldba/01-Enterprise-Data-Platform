@@ -29,8 +29,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    reference.AdministrativeDivision';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● reference.AdministrativeDivision';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -40,26 +40,11 @@
     IF NOT EXISTS
     (
         SELECT 1
-        FROM sys.schemas
-        WHERE name = N'reference'
-    )
-    BEGIN
 
-        ;THROW 50250,
-            N'Required schema reference does not exist.',
-            1;
-
-    END;
-
-
-    PRINT N'        [✓] Schema dependency validated     : reference';
-
-
-    IF NOT EXISTS
-    (
-        SELECT 1
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -123,6 +108,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -132,11 +118,18 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+            AND c.name =
+                    N'ADV_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -164,7 +157,8 @@
 
 
         SELECT
-            @ADV_ActualPrimaryKeyName = kc.name
+            @ADV_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -175,7 +169,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'reference.AdministrativeDivision')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @ADV_ActualPrimaryKeyName IS NULL
@@ -207,9 +202,11 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
@@ -218,8 +215,12 @@
 
                 FROM sys.index_columns AS ic
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -233,10 +234,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'ADV_id'
+
+                AND c.name =
+                        N'ADV_id'
             )
         )
         BEGIN
@@ -255,7 +262,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @ADV_ActualPrimaryKeyName <> N'PK_ADV'
+        IF @ADV_ActualPrimaryKeyName <>
+                N'PK_ADV'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -301,8 +309,11 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_CTR_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+            AND c.name =
+                    N'ADV_CTR_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -323,7 +334,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_CTR_id'
+            AND c.name =
+                    N'ADV_CTR_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -370,8 +383,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_code'
-            AND TYPE_NAME(c.user_type_id) = N'char'
+            AND c.name =
+                    N'ADV_code'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'char'
+
             AND c.max_length = 2
         )
         BEGIN
@@ -393,7 +410,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_code'
+            AND c.name =
+                    N'ADV_code'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -440,8 +459,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_name'
-            AND TYPE_NAME(c.user_type_id) = N'nvarchar'
+            AND c.name =
+                    N'ADV_name'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'nvarchar'
+
             AND c.max_length = 200
         )
         BEGIN
@@ -463,7 +486,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_name'
+            AND c.name =
+                    N'ADV_name'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -510,8 +535,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'ADV_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -533,7 +562,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_created_at'
+            AND c.name =
+                    N'ADV_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -580,8 +611,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'ADV_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -603,7 +638,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'reference.AdministrativeDivision')
 
-            AND c.name = N'ADV_updated_at'
+            AND c.name =
+                    N'ADV_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -646,8 +683,11 @@
                 OBJECT_ID(N'reference.AdministrativeDivision')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -667,4 +707,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

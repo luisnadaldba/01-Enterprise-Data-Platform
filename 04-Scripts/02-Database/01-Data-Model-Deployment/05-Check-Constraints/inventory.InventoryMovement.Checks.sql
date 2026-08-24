@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryMovement';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryMovement';
+    PRINT N'';
 
 
     DECLARE @INVMV_check_expected_name          sysname;
@@ -180,6 +181,7 @@
     SET @INVMV_check_is_not_trusted = NULL;
     SET @INVMV_check_parent_object = NULL;
 
+
     SELECT
         @INVMV_check_actual_name = cc.name,
         @INVMV_check_actual_definition = cc.definition,
@@ -190,8 +192,10 @@
     AND cc.definition LIKE N'%INVMV_TRNIT_id%'
     AND cc.definition LIKE N'%INVMV_TRNIT_transaction_at%';
 
+
     IF @INVMV_check_actual_name IS NULL
     BEGIN
+
         ALTER TABLE inventory.InventoryMovement WITH CHECK
             ADD CONSTRAINT CK_INVMV_TRNIT_reference
             CHECK
@@ -201,35 +205,77 @@
                 (INVMV_TRNIT_id IS NOT NULL AND INVMV_TRNIT_transaction_at IS NOT NULL)
             );
 
+
         PRINT N'        [+] Check constraint added         : CK_INVMV_TRNIT_reference';
         PRINT N'            Columns                        : INVMV_TRNIT_id, INVMV_TRNIT_transaction_at';
         PRINT N'            Definition                     : CHECK (both TransactionItem key values are NULL or both are NOT NULL)';
+
     END
     ELSE
     BEGIN
+
         SET @INVMV_check_normalized_definition =
-            LOWER(REPLACE(REPLACE(REPLACE(REPLACE(
-                @INVMV_check_actual_definition,
-                N'[', N''), N']', N''), N' ', N''), NCHAR(9), N''));
+            LOWER
+            (
+                REPLACE
+                (
+                    REPLACE
+                    (
+                        REPLACE
+                        (
+                            REPLACE
+                            (
+                                @INVMV_check_actual_definition,
+                                N'[',
+                                N''
+                            ),
+                            N']',
+                            N''
+                        ),
+                        N' ',
+                        N''
+                    ),
+                    NCHAR(9),
+                    N''
+                )
+            );
+
 
         IF @INVMV_check_actual_name = @INVMV_check_expected_name
-        AND @INVMV_check_normalized_definition LIKE N'%invmv_trnit_idisnull%'
-        AND @INVMV_check_normalized_definition LIKE N'%invmv_trnit_transaction_atisnull%'
-        AND @INVMV_check_normalized_definition LIKE N'%invmv_trnit_idisnotnull%'
-        AND @INVMV_check_normalized_definition LIKE N'%invmv_trnit_transaction_atisnotnull%'
+
+        AND @INVMV_check_normalized_definition LIKE
+            N'%invmv_trnit_idisnull%'
+
+        AND @INVMV_check_normalized_definition LIKE
+            N'%invmv_trnit_transaction_atisnull%'
+
+        AND @INVMV_check_normalized_definition LIKE
+            N'%invmv_trnit_idisnotnull%'
+
+        AND @INVMV_check_normalized_definition LIKE
+            N'%invmv_trnit_transaction_atisnotnull%'
+
         AND @INVMV_check_is_disabled = 0
+
         AND @INVMV_check_is_not_trusted = 0
         BEGIN
+
             PRINT N'        [•] Check constraint validated     : CK_INVMV_TRNIT_reference';
             PRINT N'            Columns                        : INVMV_TRNIT_id, INVMV_TRNIT_transaction_at';
             PRINT N'            Definition                     : CHECK (both TransactionItem key values are NULL or both are NOT NULL)';
+
         END
         ELSE
         BEGIN
+
             PRINT N'        [!] Check constraint mismatch      : CK_INVMV_TRNIT_reference';
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

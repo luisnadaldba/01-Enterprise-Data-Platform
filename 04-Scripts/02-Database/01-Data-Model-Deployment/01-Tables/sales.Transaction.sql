@@ -34,8 +34,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    sales.Transaction';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● sales.Transaction';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -45,8 +45,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.partition_functions
-        WHERE name = N'PF_SALES_MONTHLY'
+
+        WHERE name =
+                N'PF_SALES_MONTHLY'
     )
     BEGIN
 
@@ -60,8 +63,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.partition_schemes
-        WHERE name = N'PS_SALES_MONTHLY'
+
+        WHERE name =
+                N'PS_SALES_MONTHLY'
     )
     BEGIN
 
@@ -129,17 +135,25 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 0
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
             AND CONVERT(bigint, ic.increment_value) = 1
         )
@@ -167,9 +181,14 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_transaction_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_transaction_at'
         )
         BEGIN
 
@@ -183,10 +202,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_transaction_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_transaction_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
             AND c.is_nullable = 0
         )
@@ -213,14 +240,22 @@
 
         DECLARE @TRN_ActualPrimaryKeyName sysname;
 
+
         SELECT
-            @TRN_ActualPrimaryKeyName = kc.name
+            @TRN_ActualPrimaryKeyName =
+                kc.name
+
         FROM sys.key_constraints AS kc
+
         INNER JOIN sys.indexes AS i
             ON  i.object_id = kc.parent_object_id
             AND i.index_id = kc.unique_index_id
-        WHERE kc.parent_object_id = OBJECT_ID(N'sales.[Transaction]')
-          AND kc.type = N'PK';
+
+        WHERE kc.parent_object_id =
+                OBJECT_ID(N'sales.[Transaction]')
+
+        AND kc.type =
+                N'PK';
 
 
         IF @TRN_ActualPrimaryKeyName IS NULL
@@ -242,65 +277,85 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.key_constraints AS kc
 
             INNER JOIN sys.indexes AS i
                 ON  i.object_id = kc.parent_object_id
                 AND i.index_id = kc.unique_index_id
 
-            WHERE kc.parent_object_id = OBJECT_ID(N'sales.[Transaction]')
-              AND kc.type = N'PK'
+            WHERE kc.parent_object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
 
-              -- Clustered and unique
-              AND i.type = 1
-              AND i.is_unique = 1
+            AND kc.type =
+                    N'PK'
 
-              -- Exactly two key columns
-              AND
-              (
-                  SELECT COUNT(*)
-                  FROM sys.index_columns AS ic
-                  WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal > 0
-              ) = 2
+            AND i.type = 1
+            AND i.is_unique = 1
 
-              -- First key column: TRN_id
-              AND EXISTS
-              (
-                  SELECT 1
-                  FROM sys.index_columns AS ic
+            AND
+            (
+                SELECT COUNT(*)
 
-                  INNER JOIN sys.columns AS c
-                      ON  c.object_id = ic.object_id
-                      AND c.column_id = ic.column_id
+                FROM sys.index_columns AS ic
 
-                  WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal = 1
-                    AND c.name = N'TRN_id'
-              )
+                WHERE ic.object_id =
+                        kc.parent_object_id
 
-              -- Second key column: TRN_transaction_at
-              AND EXISTS
-              (
-                  SELECT 1
-                  FROM sys.index_columns AS ic
+                AND ic.index_id =
+                        kc.unique_index_id
 
-                  INNER JOIN sys.columns AS c
-                      ON  c.object_id = ic.object_id
-                      AND c.column_id = ic.column_id
+                AND ic.key_ordinal > 0
+            ) = 2
 
-                  WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal = 2
-                    AND c.name = N'TRN_transaction_at'
-              )
+            AND EXISTS
+            (
+                SELECT 1
+
+                FROM sys.index_columns AS ic
+
+                INNER JOIN sys.columns AS c
+                    ON  c.object_id = ic.object_id
+                    AND c.column_id = ic.column_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
+                AND ic.key_ordinal = 1
+
+                AND c.name =
+                        N'TRN_id'
+            )
+
+            AND EXISTS
+            (
+                SELECT 1
+
+                FROM sys.index_columns AS ic
+
+                INNER JOIN sys.columns AS c
+                    ON  c.object_id = ic.object_id
+                    AND c.column_id = ic.column_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
+                AND ic.key_ordinal = 2
+
+                AND c.name =
+                        N'TRN_transaction_at'
+            )
         )
         BEGIN
 
             PRINT N'            [X] Primary key definition mismatch : '
-                  + @TRN_ActualPrimaryKeyName;
+                + @TRN_ActualPrimaryKeyName;
 
             ;THROW 50036,
                 N'Primary key does not match the expected clustered definition TRN_id, TRN_transaction_at.',
@@ -313,13 +368,14 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @TRN_ActualPrimaryKeyName <> N'PK_TRN'
+        IF @TRN_ActualPrimaryKeyName <>
+                N'PK_TRN'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
             PRINT N'                Expected                     : PK_TRN';
             PRINT N'                Actual                       : '
-                  + @TRN_ActualPrimaryKeyName;
+                + @TRN_ActualPrimaryKeyName;
             PRINT N'                Action                       : Preserve existing primary key';
 
         END
@@ -335,11 +391,16 @@
             COLUMN: TRN_CST_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_CST_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.[Transaction]',
+            N'TRN_CST_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.[Transaction]
                 ADD TRN_CST_id int NULL;
+
 
             PRINT N'            [+] Column added                  : TRN_CST_id';
 
@@ -347,10 +408,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_CST_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_CST_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -374,11 +443,16 @@
             COLUMN: TRN_TRNST_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_TRNST_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.[Transaction]',
+            N'TRN_TRNST_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.[Transaction]
                 ADD TRN_TRNST_id tinyint NULL;
+
 
             PRINT N'            [+] Column added                  : TRN_TRNST_id';
             PRINT N'            [!] Pending action                : Backfill TRN_TRNST_id before enforcing NOT NULL';
@@ -387,10 +461,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_TRNST_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_TRNST_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -404,9 +485,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_TRNST_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_TRNST_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -428,11 +515,16 @@
             COLUMN: TRN_TRNCH_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_TRNCH_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.[Transaction]',
+            N'TRN_TRNCH_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.[Transaction]
                 ADD TRN_TRNCH_id tinyint NULL;
+
 
             PRINT N'            [+] Column added                  : TRN_TRNCH_id';
             PRINT N'            [!] Pending action                : Backfill TRN_TRNCH_id before enforcing NOT NULL';
@@ -441,10 +533,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_TRNCH_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_TRNCH_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
         )
         BEGIN
 
@@ -458,9 +557,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_TRNCH_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_TRNCH_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -477,15 +582,21 @@
 
         END;
 
-        /*----------------------------------------------------------------------
-            COLUMN: TRN_gross_amount
-        ----------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_gross_amount') IS NULL
+        /*--------------------------------------------------------------------------
+            COLUMN: TRN_gross_amount
+        --------------------------------------------------------------------------*/
+
+        IF COL_LENGTH
+        (
+            N'sales.[Transaction]',
+            N'TRN_gross_amount'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.[Transaction]
                 ADD TRN_gross_amount decimal(19,2) NULL;
+
 
             PRINT N'            [+] Column added                  : TRN_gross_amount';
             PRINT N'            [!] Pending action                : Backfill TRN_gross_amount before enforcing NOT NULL';
@@ -494,10 +605,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_gross_amount'
-            AND TYPE_NAME(c.user_type_id) = N'decimal'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_gross_amount'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'decimal'
+
             AND c.precision = 19
             AND c.scale = 2
         )
@@ -513,9 +632,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_gross_amount'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_gross_amount'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -533,15 +658,20 @@
         END;
 
 
-        /*----------------------------------------------------------------------
+        /*--------------------------------------------------------------------------
             COLUMN: TRN_discount_amount
-        ----------------------------------------------------------------------*/
+        --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_discount_amount') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.[Transaction]',
+            N'TRN_discount_amount'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.[Transaction]
                 ADD TRN_discount_amount decimal(19,2) NULL;
+
 
             PRINT N'            [+] Column added                  : TRN_discount_amount';
             PRINT N'            [!] Pending action                : Backfill TRN_discount_amount before enforcing NOT NULL';
@@ -550,10 +680,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_discount_amount'
-            AND TYPE_NAME(c.user_type_id) = N'decimal'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_discount_amount'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'decimal'
+
             AND c.precision = 19
             AND c.scale = 2
         )
@@ -569,9 +707,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_discount_amount'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_discount_amount'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -589,15 +733,20 @@
         END;
 
 
-        /*----------------------------------------------------------------------
+        /*--------------------------------------------------------------------------
             COLUMN: TRN_created_at
-        ----------------------------------------------------------------------*/
+        --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.[Transaction]',
+            N'TRN_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.[Transaction]
                 ADD TRN_created_at datetime2(0) NULL;
+
 
             PRINT N'            [+] Column added                  : TRN_created_at';
             PRINT N'            [!] Pending action                : Backfill TRN_created_at before enforcing NOT NULL';
@@ -606,10 +755,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -624,9 +781,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_created_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -644,15 +807,20 @@
         END;
 
 
-        /*----------------------------------------------------------------------
+        /*--------------------------------------------------------------------------
             COLUMN: TRN_updated_at
-        ----------------------------------------------------------------------*/
+        --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.[Transaction]', N'TRN_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.[Transaction]',
+            N'TRN_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.[Transaction]
                 ADD TRN_updated_at datetime2(0) NULL;
+
 
             PRINT N'            [+] Column added                  : TRN_updated_at';
             PRINT N'            [!] Pending action                : Backfill TRN_updated_at before enforcing NOT NULL';
@@ -661,10 +829,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -679,9 +855,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.[Transaction]')
-            AND c.name = N'TRN_updated_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.[Transaction]')
+
+            AND c.name =
+                    N'TRN_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -700,6 +882,7 @@
 
     END;
 
+
     /*==============================================================================
         PARTITION STRUCTURE VALIDATION
     ==============================================================================*/
@@ -707,6 +890,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.indexes AS i
 
         INNER JOIN sys.key_constraints AS kc
@@ -732,12 +916,20 @@
             ON  c.object_id = ic.object_id
             AND c.column_id = ic.column_id
 
-        WHERE i.object_id = OBJECT_ID(N'sales.[Transaction]')
-          AND i.type = 1
-          AND i.is_unique = 1
-          AND ps.name = N'PS_SALES_MONTHLY'
-          AND pf.name = N'PF_SALES_MONTHLY'
-          AND c.name = N'TRN_transaction_at'
+        WHERE i.object_id =
+                OBJECT_ID(N'sales.[Transaction]')
+
+        AND i.type = 1
+        AND i.is_unique = 1
+
+        AND ps.name =
+                N'PS_SALES_MONTHLY'
+
+        AND pf.name =
+                N'PF_SALES_MONTHLY'
+
+        AND c.name =
+                N'TRN_transaction_at'
     )
     BEGIN
 
@@ -758,4 +950,7 @@
 
     END;
 
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

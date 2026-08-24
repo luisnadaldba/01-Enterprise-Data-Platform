@@ -1,5 +1,6 @@
-    PRINT N'    payment.Payment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.Payment';
+    PRINT N'';
 
 
     DECLARE @PAY_check_expected_name          sysname;
@@ -717,4 +718,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

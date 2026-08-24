@@ -1,5 +1,6 @@
-    PRINT N'    customer.Customer';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.Customer';
+    PRINT N'';
 
     DECLARE @CST_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

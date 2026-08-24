@@ -14,10 +14,15 @@
 
     DECLARE @SalesFilegroupSql nvarchar(max);
 
+    DECLARE @SalesFileOperationAttempt int;
+    DECLARE @SalesFileOperationMaxAttempts int =
+        10;
 
-    PRINT N'    Sales partition filegroups';
-    PRINT N'    --------------------------------------------------------------------------';
+
     PRINT N'';
+    PRINT N'    ● Sales partition filegroups';
+    PRINT N'';
+
 
     /*==============================================================================
         FG_SALES_LEGACY
@@ -39,8 +44,62 @@
             + N';';
 
 
-        EXEC sys.sp_executesql
-            @SalesFilegroupSql;
+        SET @SalesFileOperationAttempt = 1;
+
+
+        WHILE 1 = 1
+        BEGIN
+
+            BEGIN TRY
+
+                EXEC sys.sp_executesql
+                    @SalesFilegroupSql;
+
+                BREAK;
+
+            END TRY
+            BEGIN CATCH
+
+                IF ERROR_NUMBER() = 3023
+                AND @SalesFileOperationAttempt < @SalesFileOperationMaxAttempts
+                BEGIN
+
+                    /*
+                        A preceding database file operation may still be completing
+                        internally.
+
+                        Recheck the catalog before retrying because the requested
+                        operation may already have become visible.
+                    */
+
+                    IF EXISTS
+                    (
+                        SELECT 1
+                        FROM sys.filegroups
+                        WHERE name = @SalesLegacyFilegroup
+                    )
+                    BEGIN
+
+                        BREAK;
+
+                    END;
+
+
+                    WAITFOR DELAY '00:00:00.500';
+
+
+                    SET @SalesFileOperationAttempt += 1;
+
+                    CONTINUE;
+
+                END;
+
+
+                THROW;
+
+            END CATCH;
+
+        END;
 
 
         PRINT N'        [+] Filegroup created              : '
@@ -109,8 +168,61 @@
             + N';';
 
 
-        EXEC sys.sp_executesql
-            @SalesFilegroupSql;
+        SET @SalesFileOperationAttempt = 1;
+
+
+        WHILE 1 = 1
+        BEGIN
+
+            BEGIN TRY
+
+                EXEC sys.sp_executesql
+                    @SalesFilegroupSql;
+
+                BREAK;
+
+            END TRY
+            BEGIN CATCH
+
+                IF ERROR_NUMBER() = 3023
+                AND @SalesFileOperationAttempt < @SalesFileOperationMaxAttempts
+                BEGIN
+
+                    /*
+                        Error 3023 is transient when SQL Server is still completing
+                        another database file manipulation operation.
+
+                        Recheck the catalog before retrying.
+                    */
+
+                    IF EXISTS
+                    (
+                        SELECT 1
+                        FROM sys.database_files
+                        WHERE name = @SalesLegacyLogicalFile
+                    )
+                    BEGIN
+
+                        BREAK;
+
+                    END;
+
+
+                    WAITFOR DELAY '00:00:00.500';
+
+
+                    SET @SalesFileOperationAttempt += 1;
+
+                    CONTINUE;
+
+                END;
+
+
+                THROW;
+
+            END CATCH;
+
+        END;
 
 
         PRINT N'        [+] Data file created              : '
@@ -140,15 +252,16 @@
         MONTHLY PARTITION FILEGROUPS
     ==============================================================================*/
 
-    DECLARE @SalesPartitionSlot int = 1;
+    DECLARE @SalesPartitionSlot int =
+        1;
 
     DECLARE @SalesPartitionFilegroup sysname;
     DECLARE @SalesPartitionLogicalFile sysname;
     DECLARE @SalesPartitionPhysicalFile nvarchar(4000);
 
+
     PRINT N'';
-    PRINT N'    Monthly partition filegroups';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'    ● Monthly partition filegroups';
     PRINT N'';
 
 
@@ -157,11 +270,31 @@
 
         SET @SalesPartitionFilegroup =
             N'FG_SALES_PART_'
-            + RIGHT(N'00' + CONVERT(nvarchar(2), @SalesPartitionSlot), 2);
+            + RIGHT
+            (
+                N'00'
+                + CONVERT
+                (
+                    nvarchar(2),
+                    @SalesPartitionSlot
+                ),
+                2
+            );
+
 
         SET @SalesPartitionLogicalFile =
             N'AtlasCommerce_Sales_Part_'
-            + RIGHT(N'00' + CONVERT(nvarchar(2), @SalesPartitionSlot), 2);
+            + RIGHT
+            (
+                N'00'
+                + CONVERT
+                (
+                    nvarchar(2),
+                    @SalesPartitionSlot
+                ),
+                2
+            );
+
 
         SET @SalesPartitionPhysicalFile =
             @SalesPartitionDataPath
@@ -189,8 +322,54 @@
                 + N';';
 
 
-            EXEC sys.sp_executesql
-                @SalesFilegroupSql;
+            SET @SalesFileOperationAttempt = 1;
+
+
+            WHILE 1 = 1
+            BEGIN
+
+                BEGIN TRY
+
+                    EXEC sys.sp_executesql
+                        @SalesFilegroupSql;
+
+                    BREAK;
+
+                END TRY
+                BEGIN CATCH
+
+                    IF ERROR_NUMBER() = 3023
+                    AND @SalesFileOperationAttempt < @SalesFileOperationMaxAttempts
+                    BEGIN
+
+                        IF EXISTS
+                        (
+                            SELECT 1
+                            FROM sys.filegroups
+                            WHERE name = @SalesPartitionFilegroup
+                        )
+                        BEGIN
+
+                            BREAK;
+
+                        END;
+
+
+                        WAITFOR DELAY '00:00:00.500';
+
+
+                        SET @SalesFileOperationAttempt += 1;
+
+                        CONTINUE;
+
+                    END;
+
+
+                    THROW;
+
+                END CATCH;
+
+            END;
 
 
             PRINT N'        [+] Filegroup created              : '
@@ -259,8 +438,59 @@
                 + N';';
 
 
-            EXEC sys.sp_executesql
-                @SalesFilegroupSql;
+            SET @SalesFileOperationAttempt = 1;
+
+
+            WHILE 1 = 1
+            BEGIN
+
+                BEGIN TRY
+
+                    EXEC sys.sp_executesql
+                        @SalesFilegroupSql;
+
+                    BREAK;
+
+                END TRY
+                BEGIN CATCH
+
+                    IF ERROR_NUMBER() = 3023
+                    AND @SalesFileOperationAttempt < @SalesFileOperationMaxAttempts
+                    BEGIN
+
+                        /*
+                            The target file may have become visible while SQL Server
+                            was completing the preceding file manipulation operation.
+                        */
+
+                        IF EXISTS
+                        (
+                            SELECT 1
+                            FROM sys.database_files
+                            WHERE name = @SalesPartitionLogicalFile
+                        )
+                        BEGIN
+
+                            BREAK;
+
+                        END;
+
+
+                        WAITFOR DELAY '00:00:00.500';
+
+
+                        SET @SalesFileOperationAttempt += 1;
+
+                        CONTINUE;
+
+                    END;
+
+
+                    THROW;
+
+                END CATCH;
+
+            END;
 
 
             PRINT N'        [+] Data file created              : '
@@ -290,6 +520,7 @@
 
     END;
 
+
     /*==============================================================================
         FG_SALES_FUTURE
     ==============================================================================*/
@@ -306,8 +537,7 @@
 
 
     PRINT N'';
-    PRINT N'    Future partition filegroup';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'    ● Future partition filegroup';
     PRINT N'';
 
 
@@ -331,8 +561,54 @@
             + N';';
 
 
-        EXEC sys.sp_executesql
-            @SalesFilegroupSql;
+        SET @SalesFileOperationAttempt = 1;
+
+
+        WHILE 1 = 1
+        BEGIN
+
+            BEGIN TRY
+
+                EXEC sys.sp_executesql
+                    @SalesFilegroupSql;
+
+                BREAK;
+
+            END TRY
+            BEGIN CATCH
+
+                IF ERROR_NUMBER() = 3023
+                AND @SalesFileOperationAttempt < @SalesFileOperationMaxAttempts
+                BEGIN
+
+                    IF EXISTS
+                    (
+                        SELECT 1
+                        FROM sys.filegroups
+                        WHERE name = @SalesFutureFilegroup
+                    )
+                    BEGIN
+
+                        BREAK;
+
+                    END;
+
+
+                    WAITFOR DELAY '00:00:00.500';
+
+
+                    SET @SalesFileOperationAttempt += 1;
+
+                    CONTINUE;
+
+                END;
+
+
+                THROW;
+
+            END CATCH;
+
+        END;
 
 
         PRINT N'        [+] Filegroup created              : '
@@ -396,8 +672,54 @@
             + N';';
 
 
-        EXEC sys.sp_executesql
-            @SalesFilegroupSql;
+        SET @SalesFileOperationAttempt = 1;
+
+
+        WHILE 1 = 1
+        BEGIN
+
+            BEGIN TRY
+
+                EXEC sys.sp_executesql
+                    @SalesFilegroupSql;
+
+                BREAK;
+
+            END TRY
+            BEGIN CATCH
+
+                IF ERROR_NUMBER() = 3023
+                AND @SalesFileOperationAttempt < @SalesFileOperationMaxAttempts
+                BEGIN
+
+                    IF EXISTS
+                    (
+                        SELECT 1
+                        FROM sys.database_files
+                        WHERE name = @SalesFutureLogicalFile
+                    )
+                    BEGIN
+
+                        BREAK;
+
+                    END;
+
+
+                    WAITFOR DELAY '00:00:00.500';
+
+
+                    SET @SalesFileOperationAttempt += 1;
+
+                    CONTINUE;
+
+                END;
+
+
+                THROW;
+
+            END CATCH;
+
+        END;
 
 
         PRINT N'        [+] Data file created              : '
@@ -424,5 +746,5 @@
 
 
     PRINT N'';
-
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

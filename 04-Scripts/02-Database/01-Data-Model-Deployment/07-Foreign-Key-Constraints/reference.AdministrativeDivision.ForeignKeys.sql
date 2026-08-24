@@ -1,5 +1,6 @@
-    PRINT N'    reference.AdministrativeDivision';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● reference.AdministrativeDivision';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -141,7 +142,7 @@
     END;
 
 
-    PRINT N'        [✓] Foreign key dependencies validated';
+    PRINT N'        [✓] Foreign key dependencies validated : FK_ADV_CTR';
 
 
     /*==========================================================================
@@ -287,7 +288,11 @@
 
             PRINT N'            Expected Table                  : reference.AdministrativeDivision';
             PRINT N'            Actual Table                    : '
-                + COALESCE(@ADV_FK_actual_parent_table, N'<NULL>');
+                + COALESCE
+                (
+                    @ADV_FK_actual_parent_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Column                 : ADV_CTR_id';
             PRINT N'            Actual Column                   : '
@@ -305,7 +310,11 @@
             PRINT N'            Expected Reference              : reference.Country.CTR_id';
 
             PRINT N'            Actual Reference Table         : '
-                + COALESCE(@ADV_FK_actual_referenced_table, N'<NULL>');
+                + COALESCE
+                (
+                    @ADV_FK_actual_referenced_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Actual Reference Column        : '
                 + COALESCE
@@ -321,11 +330,19 @@
 
             PRINT N'            Expected ON DELETE              : NO ACTION';
             PRINT N'            Actual ON DELETE                : '
-                + COALESCE(@ADV_FK_actual_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @ADV_FK_actual_delete_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected ON UPDATE              : NO ACTION';
             PRINT N'            Actual ON UPDATE                : '
-                + COALESCE(@ADV_FK_actual_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @ADV_FK_actual_update_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Disabled               : 0';
             PRINT N'            Actual Disabled                 : '
@@ -585,4 +602,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

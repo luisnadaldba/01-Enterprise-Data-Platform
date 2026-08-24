@@ -1,5 +1,6 @@
-    PRINT N'    shipping.Shipment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● shipping.Shipment';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -130,11 +131,21 @@
                         (
                             REPLACE
                             (
-                                COALESCE(@SHP_TRK_IX_actual_filter, N''),
-                                N'[',
+                                REPLACE
+                                (
+                                    REPLACE
+                                    (
+                                        COALESCE(@SHP_TRK_IX_actual_filter, N''),
+                                        N'[',
+                                        N''
+                                    ),
+                                    N']',
+                                    N''
+                                ),
+                                N'(',
                                 N''
                             ),
-                            N']',
+                            N')',
                             N''
                         ),
                         N' ',
@@ -634,4 +645,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

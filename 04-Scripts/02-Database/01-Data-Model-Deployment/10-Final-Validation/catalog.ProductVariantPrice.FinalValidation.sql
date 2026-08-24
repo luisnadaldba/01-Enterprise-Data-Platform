@@ -1,5 +1,4 @@
-    PRINT N'    catalog.ProductVariantPrice';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.ProductVariantPrice';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @PRDVP_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDVP_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDVP_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PRDVP_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PRDVP_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PRDVP_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDVP_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDVP_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
@@ -320,7 +319,7 @@
     (
         N'COLUMN',
         N'PRDVP_PRDVA_id',
-        N'Foreign key of catalog.ProductVariant identifying the sellable variant whose price history is represented by the row.'
+        N'Foreign key referencing catalog.ProductVariant.'
     ),
     (
         N'COLUMN',
@@ -340,7 +339,7 @@
     (
         N'COLUMN',
         N'PRDVP_created_at',
-        N'Records the date and time when the historical price row was initially created.'
+        N'Records the date and time when the row was created.'
     );
 
 
@@ -448,35 +447,6 @@
     BEGIN
 
         SET @PRDVP_FV_documentation_status = N'FAILED';
-        SET @PRDVP_FV_validation_errors += 1;
-
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'ProductVariantPrice'
-        AND PFX_prefix = N'PRDVP'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-
-        SET @PRDVP_FV_seed_data_status = N'VALID';
-
-    END
-    ELSE
-    BEGIN
-
-        SET @PRDVP_FV_seed_data_status = N'FAILED';
         SET @PRDVP_FV_validation_errors += 1;
 
     END;
@@ -1372,7 +1342,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PRDVP_FV_table_status;
@@ -1386,23 +1355,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @PRDVP_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PRDVP_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PRDVP_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PRDVP_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -1412,14 +1375,17 @@
                 @PRDVP_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PRDVP_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50540,
             N'Final validation failed for catalog.ProductVariantPrice.',
             1;
 
     END;
-
-
-    PRINT N'';

@@ -31,8 +31,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    shipping.ShipmentMethod';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● shipping.ShipmentMethod';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -42,8 +42,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -90,7 +93,6 @@
         PRINT N'            Primary Key                     : SHPMT_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -104,18 +106,28 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'shipping.ShipmentMethod')
-            AND c.name = N'SHPMT_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'shipping.ShipmentMethod')
+
+            AND c.name =
+                    N'SHPMT_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -143,7 +155,8 @@
 
 
         SELECT
-            @SHPMT_ActualPrimaryKeyName = kc.name
+            @SHPMT_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -154,7 +167,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'shipping.ShipmentMethod')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @SHPMT_ActualPrimaryKeyName IS NULL
@@ -186,9 +200,11 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'shipping.ShipmentMethod')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
@@ -197,8 +213,12 @@
 
                 FROM sys.index_columns AS ic
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
@@ -212,10 +232,16 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'SHPMT_id'
+
+                AND c.name =
+                        N'SHPMT_id'
             )
         )
         BEGIN
@@ -234,7 +260,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @SHPMT_ActualPrimaryKeyName <> N'PK_SHPMT'
+        IF @SHPMT_ActualPrimaryKeyName <>
+                N'PK_SHPMT'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -256,7 +283,11 @@
             COLUMN: SHPMT_name
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.ShipmentMethod', N'SHPMT_name') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.ShipmentMethod',
+            N'SHPMT_name'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.ShipmentMethod
@@ -276,8 +307,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'shipping.ShipmentMethod')
 
-            AND c.name = N'SHPMT_name'
-            AND TYPE_NAME(c.user_type_id) = N'varchar'
+            AND c.name =
+                    N'SHPMT_name'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'varchar'
+
             AND c.max_length = 30
         )
         BEGIN
@@ -299,7 +334,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'shipping.ShipmentMethod')
 
-            AND c.name = N'SHPMT_name'
+            AND c.name =
+                    N'SHPMT_name'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -309,7 +346,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -322,7 +358,11 @@
             COLUMN: SHPMT_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.ShipmentMethod', N'SHPMT_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.ShipmentMethod',
+            N'SHPMT_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.ShipmentMethod
@@ -342,8 +382,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'shipping.ShipmentMethod')
 
-            AND c.name = N'SHPMT_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'SHPMT_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -365,7 +409,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'shipping.ShipmentMethod')
 
-            AND c.name = N'SHPMT_created_at'
+            AND c.name =
+                    N'SHPMT_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -375,7 +421,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -388,7 +433,11 @@
             COLUMN: SHPMT_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'shipping.ShipmentMethod', N'SHPMT_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'shipping.ShipmentMethod',
+            N'SHPMT_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE shipping.ShipmentMethod
@@ -408,8 +457,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'shipping.ShipmentMethod')
 
-            AND c.name = N'SHPMT_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            AND c.name =
+                    N'SHPMT_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -431,7 +484,9 @@
             WHERE c.object_id =
                     OBJECT_ID(N'shipping.ShipmentMethod')
 
-            AND c.name = N'SHPMT_updated_at'
+            AND c.name =
+                    N'SHPMT_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -441,7 +496,6 @@
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
 
         END
-
         ELSE
         BEGIN
 
@@ -474,8 +528,11 @@
                 OBJECT_ID(N'shipping.ShipmentMethod')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -495,4 +552,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

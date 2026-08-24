@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductAttribute';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductAttribute';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -77,9 +78,9 @@
 
 
             PRINT N'        [!] Default constraint name conflict : DF_PAT_is_active';
-            PRINT N'            Expected Table                  : catalog.ProductAttribute';
-            PRINT N'            Expected Column                 : PAT_is_active';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.ProductAttribute';
+            PRINT N'            Expected Column               : PAT_is_active';
+            PRINT N'            Existing Parent               : '
                 + COALESCE
                 (
                     @PAT_default_parent_object,
@@ -101,9 +102,9 @@
             DEFAULT (1) FOR PAT_is_active;
 
 
-        PRINT N'        [+] Default constraint added        : DF_PAT_is_active';
-        PRINT N'            Column                          : PAT_is_active';
-        PRINT N'            Definition                      : DEFAULT (1)';
+        PRINT N'        [+] Default constraint added      : DF_PAT_is_active';
+        PRINT N'            Column                        : PAT_is_active';
+        PRINT N'            Definition                    : DEFAULT (1)';
 
     END
 
@@ -147,25 +148,25 @@
             ) = 1
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_PAT_is_active';
-            PRINT N'            Column                          : PAT_is_active';
-            PRINT N'            Definition                      : DEFAULT (1)';
+            PRINT N'        [•] Default constraint validated  : DF_PAT_is_active';
+            PRINT N'            Column                        : PAT_is_active';
+            PRINT N'            Definition                    : DEFAULT (1)';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : PAT_is_active';
-            PRINT N'            Expected Name                   : DF_PAT_is_active';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : PAT_is_active';
+            PRINT N'            Expected Name                 : DF_PAT_is_active';
+            PRINT N'            Actual Name                   : '
                 + COALESCE
                 (
                     @PAT_default_actual_name,
                     N'<NULL>'
                 );
 
-            PRINT N'            Expected Definition             : DEFAULT (1)';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (1)';
+            PRINT N'            Actual Definition             : '
                 + COALESCE
                 (
                     @PAT_default_actual_definition,
@@ -243,9 +244,9 @@
 
 
             PRINT N'        [!] Default constraint name conflict : DF_PAT_created_at';
-            PRINT N'            Expected Table                  : catalog.ProductAttribute';
-            PRINT N'            Expected Column                 : PAT_created_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.ProductAttribute';
+            PRINT N'            Expected Column               : PAT_created_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE
                 (
                     @PAT_default_parent_object,
@@ -267,9 +268,9 @@
             DEFAULT (SYSDATETIME()) FOR PAT_created_at;
 
 
-        PRINT N'        [+] Default constraint added        : DF_PAT_created_at';
-        PRINT N'            Column                          : PAT_created_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+        PRINT N'        [+] Default constraint added      : DF_PAT_created_at';
+        PRINT N'            Column                        : PAT_created_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
     END
 
@@ -310,25 +311,25 @@
                 N'sysdatetime'
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_PAT_created_at';
-            PRINT N'            Column                          : PAT_created_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+            PRINT N'        [•] Default constraint validated  : DF_PAT_created_at';
+            PRINT N'            Column                        : PAT_created_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : PAT_created_at';
-            PRINT N'            Expected Name                   : DF_PAT_created_at';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : PAT_created_at';
+            PRINT N'            Expected Name                 : DF_PAT_created_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE
                 (
                     @PAT_default_actual_name,
                     N'<NULL>'
                 );
 
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE
                 (
                     @PAT_default_actual_definition,
@@ -406,9 +407,9 @@
 
 
             PRINT N'        [!] Default constraint name conflict : DF_PAT_updated_at';
-            PRINT N'            Expected Table                  : catalog.ProductAttribute';
-            PRINT N'            Expected Column                 : PAT_updated_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.ProductAttribute';
+            PRINT N'            Expected Column               : PAT_updated_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE
                 (
                     @PAT_default_parent_object,
@@ -430,9 +431,9 @@
             DEFAULT (SYSDATETIME()) FOR PAT_updated_at;
 
 
-        PRINT N'        [+] Default constraint added        : DF_PAT_updated_at';
-        PRINT N'            Column                          : PAT_updated_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+        PRINT N'        [+] Default constraint added      : DF_PAT_updated_at';
+        PRINT N'            Column                        : PAT_updated_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
     END
 
@@ -473,25 +474,25 @@
                 N'sysdatetime'
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_PAT_updated_at';
-            PRINT N'            Column                          : PAT_updated_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+            PRINT N'        [•] Default constraint validated  : DF_PAT_updated_at';
+            PRINT N'            Column                        : PAT_updated_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : PAT_updated_at';
-            PRINT N'            Expected Name                   : DF_PAT_updated_at';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : PAT_updated_at';
+            PRINT N'            Expected Name                 : DF_PAT_updated_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE
                 (
                     @PAT_default_actual_name,
                     N'<NULL>'
                 );
 
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE
                 (
                     @PAT_default_actual_definition,
@@ -505,4 +506,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -19,7 +19,7 @@
         - Use the two foreign key columns together as the natural primary key.
         - Do not introduce an artificial identity column.
         - Prevent the same product from being associated with the same category
-        more than once.
+          more than once.
         - Keep lifecycle and audit columns outside this purely associative entity.
         - Deploy foreign key constraints in the dedicated FK stage.
         - Store catalog relationship data in FG_CORE.
@@ -31,8 +31,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    catalog.ProductCategory';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● catalog.ProductCategory';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -504,4 +504,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

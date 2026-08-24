@@ -1,5 +1,6 @@
-    PRINT N'    payment.Payment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.Payment';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -133,8 +134,11 @@
         WHERE parent_column.object_id =
                 OBJECT_ID(N'payment.Payment')
 
-        AND parent_column.name = N'PAY_TRN_id'
-        AND referenced_column.name = N'TRN_id'
+        AND parent_column.name =
+                N'PAY_TRN_id'
+
+        AND referenced_column.name =
+                N'TRN_id'
 
         AND parent_column.system_type_id =
                 referenced_column.system_type_id
@@ -148,8 +152,11 @@
         AND parent_column.scale =
                 referenced_column.scale
 
-        AND TYPE_NAME(parent_column.user_type_id) = N'bigint'
-        AND TYPE_NAME(referenced_column.user_type_id) = N'bigint'
+        AND TYPE_NAME(parent_column.user_type_id) =
+                N'bigint'
+
+        AND TYPE_NAME(referenced_column.user_type_id) =
+                N'bigint'
     )
     BEGIN
 
@@ -175,8 +182,11 @@
         WHERE parent_column.object_id =
                 OBJECT_ID(N'payment.Payment')
 
-        AND parent_column.name = N'PAY_transaction_at'
-        AND referenced_column.name = N'TRN_transaction_at'
+        AND parent_column.name =
+                N'PAY_transaction_at'
+
+        AND referenced_column.name =
+                N'TRN_transaction_at'
 
         AND parent_column.system_type_id =
                 referenced_column.system_type_id
@@ -190,8 +200,11 @@
         AND parent_column.scale =
                 referenced_column.scale
 
-        AND TYPE_NAME(parent_column.user_type_id) = N'datetime2'
-        AND TYPE_NAME(referenced_column.user_type_id) = N'datetime2'
+        AND TYPE_NAME(parent_column.user_type_id) =
+                N'datetime2'
+
+        AND TYPE_NAME(referenced_column.user_type_id) =
+                N'datetime2'
     )
     BEGIN
 
@@ -216,14 +229,26 @@
             fk.name,
 
         @PAY_TRN_FK_actual_parent_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.parent_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.parent_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.parent_object_id)
+            ),
 
         @PAY_TRN_FK_actual_referenced_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.referenced_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.referenced_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.referenced_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.referenced_object_id)
+            ),
 
         @PAY_TRN_FK_actual_delete_action =
             fk.delete_referential_action_desc,
@@ -338,7 +363,11 @@
 
             PRINT N'            Expected Table                  : payment.Payment';
             PRINT N'            Actual Table                    : '
-                + COALESCE(@PAY_TRN_FK_actual_parent_table, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_TRN_FK_actual_parent_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Columns                : PAY_TRN_id, PAY_transaction_at';
             PRINT N'            Actual Columns                  : '
@@ -356,7 +385,11 @@
             PRINT N'            Expected Reference              : sales.Transaction(TRN_id, TRN_transaction_at)';
 
             PRINT N'            Actual Reference Table         : '
-                + COALESCE(@PAY_TRN_FK_actual_referenced_table, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_TRN_FK_actual_referenced_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Actual Reference Columns       : '
                 + COALESCE
@@ -372,17 +405,29 @@
 
             PRINT N'            Expected ON DELETE              : NO ACTION';
             PRINT N'            Actual ON DELETE                : '
-                + COALESCE(@PAY_TRN_FK_actual_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_TRN_FK_actual_delete_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected ON UPDATE              : NO ACTION';
             PRINT N'            Actual ON UPDATE                : '
-                + COALESCE(@PAY_TRN_FK_actual_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_TRN_FK_actual_update_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Disabled               : 0';
             PRINT N'            Actual Disabled                 : '
                 + COALESCE
                 (
-                    CONVERT(nvarchar(1), @PAY_TRN_FK_actual_is_disabled),
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_TRN_FK_actual_is_disabled
+                    ),
                     N'<NULL>'
                 );
 
@@ -390,7 +435,11 @@
             PRINT N'            Actual Not Trusted              : '
                 + COALESCE
                 (
-                    CONVERT(nvarchar(1), @PAY_TRN_FK_actual_is_not_trusted),
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_TRN_FK_actual_is_not_trusted
+                    ),
                     N'<NULL>'
                 );
 
@@ -403,11 +452,12 @@
     ELSE
     BEGIN
 
-        /*==========================================================================
+        /*==============================================================================
             SEARCH FOR FUNCTIONALLY EQUIVALENT FOREIGN KEY WITH ANOTHER NAME
-        ==========================================================================*/
+        ==============================================================================*/
 
         SELECT TOP (1)
+
             @PAY_TRN_FK_equivalent_name =
                 fk.name,
 
@@ -441,9 +491,12 @@
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.foreign_key_columns AS fkc
+
             WHERE fkc.constraint_object_id =
                     fk.object_id
+
         ) = 2
 
         AND EXISTS
@@ -465,9 +518,11 @@
 
             AND fkc.constraint_column_id = 1
 
-            AND pc.name = N'PAY_TRN_id'
+            AND pc.name =
+                    N'PAY_TRN_id'
 
-            AND rc.name = N'TRN_id'
+            AND rc.name =
+                    N'TRN_id'
         )
 
         AND EXISTS
@@ -489,13 +544,19 @@
 
             AND fkc.constraint_column_id = 2
 
-            AND pc.name = N'PAY_transaction_at'
+            AND pc.name =
+                    N'PAY_transaction_at'
 
-            AND rc.name = N'TRN_transaction_at'
+            AND rc.name =
+                    N'TRN_transaction_at'
         )
 
         ORDER BY fk.name;
 
+
+        /*--------------------------------------------------------------------------
+            EQUIVALENT FK EXISTS WITH ANOTHER NAME
+        --------------------------------------------------------------------------*/
 
         IF @PAY_TRN_FK_equivalent_name IS NOT NULL
         BEGIN
@@ -503,29 +564,47 @@
             PRINT N'        [!] Foreign key naming mismatch';
 
             PRINT N'            Expected Name                  : FK_PAY_TRN';
+
             PRINT N'            Actual Name                    : '
                 + @PAY_TRN_FK_equivalent_name;
 
-            PRINT N'            Columns                        : PAY_TRN_id, PAY_transaction_at';
+            PRINT N'            Columns                         : PAY_TRN_id, PAY_transaction_at';
+
             PRINT N'            References                     : sales.Transaction(TRN_id, TRN_transaction_at)';
 
             PRINT N'            ON DELETE                      : '
-                + COALESCE(@PAY_TRN_FK_equivalent_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_TRN_FK_equivalent_delete_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            ON UPDATE                      : '
-                + COALESCE(@PAY_TRN_FK_equivalent_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_TRN_FK_equivalent_update_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Disabled                       : '
                 + COALESCE
                 (
-                    CONVERT(nvarchar(1), @PAY_TRN_FK_equivalent_is_disabled),
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_TRN_FK_equivalent_is_disabled
+                    ),
                     N'<NULL>'
                 );
 
             PRINT N'            Not Trusted                    : '
                 + COALESCE
                 (
-                    CONVERT(nvarchar(1), @PAY_TRN_FK_equivalent_is_not_trusted),
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_TRN_FK_equivalent_is_not_trusted
+                    ),
                     N'<NULL>'
                 );
 
@@ -536,25 +615,49 @@
         ELSE
         BEGIN
 
+            /*==============================================================================
+                VALIDATE EXPECTED NAME IS NOT USED BY ANOTHER FK
+            ==============================================================================*/
+
             IF OBJECT_ID(N'payment.FK_PAY_TRN', N'F') IS NOT NULL
             BEGIN
 
                 SELECT
                     @PAY_TRN_FK_conflict_parent =
-                        QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+                        QUOTENAME
+                        (
+                            OBJECT_SCHEMA_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
                         + N'.'
-                        + QUOTENAME(OBJECT_NAME(fk.parent_object_id))
+                        + QUOTENAME
+                        (
+                            OBJECT_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
 
                 FROM sys.foreign_keys AS fk
 
                 WHERE fk.object_id =
-                        OBJECT_ID(N'payment.FK_PAY_TRN', N'F');
+                        OBJECT_ID
+                        (
+                            N'payment.FK_PAY_TRN',
+                            N'F'
+                        );
 
 
                 PRINT N'        [!] Foreign key name conflict       : FK_PAY_TRN';
                 PRINT N'            Expected Table                  : payment.Payment';
                 PRINT N'            Existing Parent                 : '
-                    + COALESCE(@PAY_TRN_FK_conflict_parent, N'<UNKNOWN>');
+                    + COALESCE
+                    (
+                        @PAY_TRN_FK_conflict_parent,
+                        N'<UNKNOWN>'
+                    );
 
                 PRINT N'            Constraint was not created. Manual review is required.';
 
@@ -565,6 +668,10 @@
 
             END;
 
+
+            /*==============================================================================
+                CREATE FOREIGN KEY
+            ==============================================================================*/
 
             ALTER TABLE payment.Payment
                 WITH CHECK
@@ -683,6 +790,10 @@
 
     /*--------------------------------------------------------------------------
         VALIDATE COLUMN COMPATIBILITY
+
+        Expected:
+            PAY_PAYME_id -> tinyint NOT NULL
+            PAYME_id     -> tinyint NOT NULL
     --------------------------------------------------------------------------*/
 
     IF NOT EXISTS
@@ -745,14 +856,26 @@
             fk.name,
 
         @PAY_PAYME_FK_actual_parent_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.parent_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.parent_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.parent_object_id)
+            ),
 
         @PAY_PAYME_FK_actual_referenced_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.referenced_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.referenced_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.referenced_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.referenced_object_id)
+            ),
 
         @PAY_PAYME_FK_actual_delete_action =
             fk.delete_referential_action_desc,
@@ -768,24 +891,48 @@
 
         @PAY_PAYME_FK_actual_parent_columns =
         (
-            SELECT STRING_AGG(CONVERT(nvarchar(max), pc.name), N'|')
-                WITHIN GROUP (ORDER BY fkc.constraint_column_id)
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), pc.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY fkc.constraint_column_id
+                )
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
-                ON pc.object_id = fkc.parent_object_id
+                ON  pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         ),
 
         @PAY_PAYME_FK_actual_referenced_columns =
         (
-            SELECT STRING_AGG(CONVERT(nvarchar(max), rc.name), N'|')
-                WITHIN GROUP (ORDER BY fkc.constraint_column_id)
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), rc.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY fkc.constraint_column_id
+                )
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS rc
-                ON rc.object_id = fkc.referenced_object_id
+                ON  rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         )
 
     FROM sys.foreign_keys AS fk
@@ -804,13 +951,26 @@
     IF @PAY_PAYME_FK_actual_name IS NOT NULL
     BEGIN
 
-        IF @PAY_PAYME_FK_actual_parent_table = N'[payment].[Payment]'
-        AND @PAY_PAYME_FK_actual_parent_columns = N'PAY_PAYME_id'
-        AND @PAY_PAYME_FK_actual_referenced_table = N'[payment].[PaymentMethod]'
-        AND @PAY_PAYME_FK_actual_referenced_columns = N'PAYME_id'
-        AND @PAY_PAYME_FK_actual_delete_action = N'NO_ACTION'
-        AND @PAY_PAYME_FK_actual_update_action = N'NO_ACTION'
+        IF @PAY_PAYME_FK_actual_parent_table =
+                N'[payment].[Payment]'
+
+        AND @PAY_PAYME_FK_actual_parent_columns =
+                N'PAY_PAYME_id'
+
+        AND @PAY_PAYME_FK_actual_referenced_table =
+                N'[payment].[PaymentMethod]'
+
+        AND @PAY_PAYME_FK_actual_referenced_columns =
+                N'PAYME_id'
+
+        AND @PAY_PAYME_FK_actual_delete_action =
+                N'NO_ACTION'
+
+        AND @PAY_PAYME_FK_actual_update_action =
+                N'NO_ACTION'
+
         AND @PAY_PAYME_FK_actual_is_disabled = 0
+
         AND @PAY_PAYME_FK_actual_is_not_trusted = 0
         BEGIN
 
@@ -827,29 +987,89 @@
         BEGIN
 
             PRINT N'        [!] Foreign key mismatch             : FK_PAY_PAYME';
+
             PRINT N'            Expected Table                  : payment.Payment';
             PRINT N'            Actual Table                    : '
-                + COALESCE(@PAY_PAYME_FK_actual_parent_table, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYME_FK_actual_parent_table,
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Column                 : PAY_PAYME_id';
             PRINT N'            Actual Column                   : '
-                + COALESCE(REPLACE(@PAY_PAYME_FK_actual_parent_columns, N'|', N', '), N'<NULL>');
+                + COALESCE
+                (
+                    REPLACE
+                    (
+                        @PAY_PAYME_FK_actual_parent_columns,
+                        N'|',
+                        N', '
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Reference              : payment.PaymentMethod.PAYME_id';
+
             PRINT N'            Actual Reference Table         : '
-                + COALESCE(@PAY_PAYME_FK_actual_referenced_table, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYME_FK_actual_referenced_table,
+                    N'<NULL>'
+                );
+
             PRINT N'            Actual Reference Column        : '
-                + COALESCE(REPLACE(@PAY_PAYME_FK_actual_referenced_columns, N'|', N', '), N'<NULL>');
+                + COALESCE
+                (
+                    REPLACE
+                    (
+                        @PAY_PAYME_FK_actual_referenced_columns,
+                        N'|',
+                        N', '
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected ON DELETE              : NO ACTION';
             PRINT N'            Actual ON DELETE                : '
-                + COALESCE(@PAY_PAYME_FK_actual_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYME_FK_actual_delete_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected ON UPDATE              : NO ACTION';
             PRINT N'            Actual ON UPDATE                : '
-                + COALESCE(@PAY_PAYME_FK_actual_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYME_FK_actual_update_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Disabled               : 0';
             PRINT N'            Actual Disabled                 : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYME_FK_actual_is_disabled), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYME_FK_actual_is_disabled
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Not Trusted            : 0';
             PRINT N'            Actual Not Trusted              : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYME_FK_actual_is_not_trusted), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYME_FK_actual_is_not_trusted
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Existing constraint was preserved for review.';
 
         END;
@@ -859,16 +1079,26 @@
     ELSE
     BEGIN
 
-        /*==========================================================================
+        /*==============================================================================
             SEARCH FOR FUNCTIONALLY EQUIVALENT FOREIGN KEY WITH ANOTHER NAME
-        ==========================================================================*/
+        ==============================================================================*/
 
         SELECT TOP (1)
-            @PAY_PAYME_FK_equivalent_name = fk.name,
-            @PAY_PAYME_FK_equivalent_delete_action = fk.delete_referential_action_desc,
-            @PAY_PAYME_FK_equivalent_update_action = fk.update_referential_action_desc,
-            @PAY_PAYME_FK_equivalent_is_disabled = fk.is_disabled,
-            @PAY_PAYME_FK_equivalent_is_not_trusted = fk.is_not_trusted
+
+            @PAY_PAYME_FK_equivalent_name =
+                fk.name,
+
+            @PAY_PAYME_FK_equivalent_delete_action =
+                fk.delete_referential_action_desc,
+
+            @PAY_PAYME_FK_equivalent_update_action =
+                fk.update_referential_action_desc,
+
+            @PAY_PAYME_FK_equivalent_is_disabled =
+                fk.is_disabled,
+
+            @PAY_PAYME_FK_equivalent_is_not_trusted =
+                fk.is_not_trusted
 
         FROM sys.foreign_keys AS fk
 
@@ -878,53 +1108,107 @@
         AND fk.referenced_object_id =
                 OBJECT_ID(N'payment.PaymentMethod')
 
-        AND fk.name <> @PAY_PAYME_FK_expected_name
+        AND fk.name <>
+                @PAY_PAYME_FK_expected_name
+
         AND fk.delete_referential_action = 0
+
         AND fk.update_referential_action = 0
 
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.foreign_key_columns AS fkc
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
         ) = 1
 
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
-                ON pc.object_id = fkc.parent_object_id
+                ON  pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
+
             INNER JOIN sys.columns AS rc
-                ON rc.object_id = fkc.referenced_object_id
+                ON  rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
             AND fkc.constraint_column_id = 1
-            AND pc.name = N'PAY_PAYME_id'
-            AND rc.name = N'PAYME_id'
+
+            AND pc.name =
+                    N'PAY_PAYME_id'
+
+            AND rc.name =
+                    N'PAYME_id'
         )
 
         ORDER BY fk.name;
 
 
+        /*--------------------------------------------------------------------------
+            EQUIVALENT FK EXISTS WITH ANOTHER NAME
+        --------------------------------------------------------------------------*/
+
         IF @PAY_PAYME_FK_equivalent_name IS NOT NULL
         BEGIN
 
             PRINT N'        [!] Foreign key naming mismatch';
+
             PRINT N'            Expected Name                  : FK_PAY_PAYME';
+
             PRINT N'            Actual Name                    : '
                 + @PAY_PAYME_FK_equivalent_name;
+
             PRINT N'            Column                         : PAY_PAYME_id';
+
             PRINT N'            References                     : payment.PaymentMethod.PAYME_id';
+
             PRINT N'            ON DELETE                      : '
-                + COALESCE(@PAY_PAYME_FK_equivalent_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYME_FK_equivalent_delete_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            ON UPDATE                      : '
-                + COALESCE(@PAY_PAYME_FK_equivalent_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYME_FK_equivalent_update_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            Disabled                       : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYME_FK_equivalent_is_disabled), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYME_FK_equivalent_is_disabled
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Not Trusted                    : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYME_FK_equivalent_is_not_trusted), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYME_FK_equivalent_is_not_trusted
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Existing constraint was preserved for review.';
 
         END
@@ -932,23 +1216,52 @@
         ELSE
         BEGIN
 
+            /*==============================================================================
+                VALIDATE EXPECTED NAME IS NOT USED BY ANOTHER FK
+            ==============================================================================*/
+
             IF OBJECT_ID(N'payment.FK_PAY_PAYME', N'F') IS NOT NULL
             BEGIN
 
                 SELECT
                     @PAY_PAYME_FK_conflict_parent =
-                        QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+                        QUOTENAME
+                        (
+                            OBJECT_SCHEMA_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
                         + N'.'
-                        + QUOTENAME(OBJECT_NAME(fk.parent_object_id))
+                        + QUOTENAME
+                        (
+                            OBJECT_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
+
                 FROM sys.foreign_keys AS fk
+
                 WHERE fk.object_id =
-                        OBJECT_ID(N'payment.FK_PAY_PAYME', N'F');
+                        OBJECT_ID
+                        (
+                            N'payment.FK_PAY_PAYME',
+                            N'F'
+                        );
+
 
                 PRINT N'        [!] Foreign key name conflict       : FK_PAY_PAYME';
                 PRINT N'            Expected Table                  : payment.Payment';
                 PRINT N'            Existing Parent                 : '
-                    + COALESCE(@PAY_PAYME_FK_conflict_parent, N'<UNKNOWN>');
+                    + COALESCE
+                    (
+                        @PAY_PAYME_FK_conflict_parent,
+                        N'<UNKNOWN>'
+                    );
+
                 PRINT N'            Constraint was not created. Manual review is required.';
+
 
                 ;THROW 50965,
                     N'Foreign key name conflict prevents safe deployment.',
@@ -956,6 +1269,10 @@
 
             END;
 
+
+            /*==============================================================================
+                CREATE FOREIGN KEY
+            ==============================================================================*/
 
             ALTER TABLE payment.Payment
                 WITH CHECK
@@ -1072,6 +1389,10 @@
 
     /*--------------------------------------------------------------------------
         VALIDATE COLUMN COMPATIBILITY
+
+        Expected:
+            PAY_PAYST_id -> tinyint NOT NULL
+            PAYST_id     -> tinyint NOT NULL
     --------------------------------------------------------------------------*/
 
     IF NOT EXISTS
@@ -1134,14 +1455,26 @@
             fk.name,
 
         @PAY_PAYST_FK_actual_parent_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.parent_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.parent_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.parent_object_id)
+            ),
 
         @PAY_PAYST_FK_actual_referenced_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.referenced_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.referenced_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.referenced_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.referenced_object_id)
+            ),
 
         @PAY_PAYST_FK_actual_delete_action =
             fk.delete_referential_action_desc,
@@ -1157,24 +1490,48 @@
 
         @PAY_PAYST_FK_actual_parent_columns =
         (
-            SELECT STRING_AGG(CONVERT(nvarchar(max), pc.name), N'|')
-                WITHIN GROUP (ORDER BY fkc.constraint_column_id)
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), pc.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY fkc.constraint_column_id
+                )
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
-                ON pc.object_id = fkc.parent_object_id
+                ON  pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         ),
 
         @PAY_PAYST_FK_actual_referenced_columns =
         (
-            SELECT STRING_AGG(CONVERT(nvarchar(max), rc.name), N'|')
-                WITHIN GROUP (ORDER BY fkc.constraint_column_id)
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), rc.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY fkc.constraint_column_id
+                )
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS rc
-                ON rc.object_id = fkc.referenced_object_id
+                ON  rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         )
 
     FROM sys.foreign_keys AS fk
@@ -1193,13 +1550,26 @@
     IF @PAY_PAYST_FK_actual_name IS NOT NULL
     BEGIN
 
-        IF @PAY_PAYST_FK_actual_parent_table = N'[payment].[Payment]'
-        AND @PAY_PAYST_FK_actual_parent_columns = N'PAY_PAYST_id'
-        AND @PAY_PAYST_FK_actual_referenced_table = N'[payment].[PaymentStatus]'
-        AND @PAY_PAYST_FK_actual_referenced_columns = N'PAYST_id'
-        AND @PAY_PAYST_FK_actual_delete_action = N'NO_ACTION'
-        AND @PAY_PAYST_FK_actual_update_action = N'NO_ACTION'
+        IF @PAY_PAYST_FK_actual_parent_table =
+                N'[payment].[Payment]'
+
+        AND @PAY_PAYST_FK_actual_parent_columns =
+                N'PAY_PAYST_id'
+
+        AND @PAY_PAYST_FK_actual_referenced_table =
+                N'[payment].[PaymentStatus]'
+
+        AND @PAY_PAYST_FK_actual_referenced_columns =
+                N'PAYST_id'
+
+        AND @PAY_PAYST_FK_actual_delete_action =
+                N'NO_ACTION'
+
+        AND @PAY_PAYST_FK_actual_update_action =
+                N'NO_ACTION'
+
         AND @PAY_PAYST_FK_actual_is_disabled = 0
+
         AND @PAY_PAYST_FK_actual_is_not_trusted = 0
         BEGIN
 
@@ -1216,29 +1586,89 @@
         BEGIN
 
             PRINT N'        [!] Foreign key mismatch             : FK_PAY_PAYST';
+
             PRINT N'            Expected Table                  : payment.Payment';
             PRINT N'            Actual Table                    : '
-                + COALESCE(@PAY_PAYST_FK_actual_parent_table, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYST_FK_actual_parent_table,
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Column                 : PAY_PAYST_id';
             PRINT N'            Actual Column                   : '
-                + COALESCE(REPLACE(@PAY_PAYST_FK_actual_parent_columns, N'|', N', '), N'<NULL>');
+                + COALESCE
+                (
+                    REPLACE
+                    (
+                        @PAY_PAYST_FK_actual_parent_columns,
+                        N'|',
+                        N', '
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Reference              : payment.PaymentStatus.PAYST_id';
+
             PRINT N'            Actual Reference Table         : '
-                + COALESCE(@PAY_PAYST_FK_actual_referenced_table, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYST_FK_actual_referenced_table,
+                    N'<NULL>'
+                );
+
             PRINT N'            Actual Reference Column        : '
-                + COALESCE(REPLACE(@PAY_PAYST_FK_actual_referenced_columns, N'|', N', '), N'<NULL>');
+                + COALESCE
+                (
+                    REPLACE
+                    (
+                        @PAY_PAYST_FK_actual_referenced_columns,
+                        N'|',
+                        N', '
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected ON DELETE              : NO ACTION';
             PRINT N'            Actual ON DELETE                : '
-                + COALESCE(@PAY_PAYST_FK_actual_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYST_FK_actual_delete_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected ON UPDATE              : NO ACTION';
             PRINT N'            Actual ON UPDATE                : '
-                + COALESCE(@PAY_PAYST_FK_actual_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYST_FK_actual_update_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Disabled               : 0';
             PRINT N'            Actual Disabled                 : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYST_FK_actual_is_disabled), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYST_FK_actual_is_disabled
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Expected Not Trusted            : 0';
             PRINT N'            Actual Not Trusted              : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYST_FK_actual_is_not_trusted), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYST_FK_actual_is_not_trusted
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Existing constraint was preserved for review.';
 
         END;
@@ -1248,16 +1678,26 @@
     ELSE
     BEGIN
 
-        /*==========================================================================
+        /*==============================================================================
             SEARCH FOR FUNCTIONALLY EQUIVALENT FOREIGN KEY WITH ANOTHER NAME
-        ==========================================================================*/
+        ==============================================================================*/
 
         SELECT TOP (1)
-            @PAY_PAYST_FK_equivalent_name = fk.name,
-            @PAY_PAYST_FK_equivalent_delete_action = fk.delete_referential_action_desc,
-            @PAY_PAYST_FK_equivalent_update_action = fk.update_referential_action_desc,
-            @PAY_PAYST_FK_equivalent_is_disabled = fk.is_disabled,
-            @PAY_PAYST_FK_equivalent_is_not_trusted = fk.is_not_trusted
+
+            @PAY_PAYST_FK_equivalent_name =
+                fk.name,
+
+            @PAY_PAYST_FK_equivalent_delete_action =
+                fk.delete_referential_action_desc,
+
+            @PAY_PAYST_FK_equivalent_update_action =
+                fk.update_referential_action_desc,
+
+            @PAY_PAYST_FK_equivalent_is_disabled =
+                fk.is_disabled,
+
+            @PAY_PAYST_FK_equivalent_is_not_trusted =
+                fk.is_not_trusted
 
         FROM sys.foreign_keys AS fk
 
@@ -1267,53 +1707,107 @@
         AND fk.referenced_object_id =
                 OBJECT_ID(N'payment.PaymentStatus')
 
-        AND fk.name <> @PAY_PAYST_FK_expected_name
+        AND fk.name <>
+                @PAY_PAYST_FK_expected_name
+
         AND fk.delete_referential_action = 0
+
         AND fk.update_referential_action = 0
 
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.foreign_key_columns AS fkc
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
         ) = 1
 
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
-                ON pc.object_id = fkc.parent_object_id
+                ON  pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
+
             INNER JOIN sys.columns AS rc
-                ON rc.object_id = fkc.referenced_object_id
+                ON  rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
             AND fkc.constraint_column_id = 1
-            AND pc.name = N'PAY_PAYST_id'
-            AND rc.name = N'PAYST_id'
+
+            AND pc.name =
+                    N'PAY_PAYST_id'
+
+            AND rc.name =
+                    N'PAYST_id'
         )
 
         ORDER BY fk.name;
 
 
+        /*--------------------------------------------------------------------------
+            EQUIVALENT FK EXISTS WITH ANOTHER NAME
+        --------------------------------------------------------------------------*/
+
         IF @PAY_PAYST_FK_equivalent_name IS NOT NULL
         BEGIN
 
             PRINT N'        [!] Foreign key naming mismatch';
+
             PRINT N'            Expected Name                  : FK_PAY_PAYST';
+
             PRINT N'            Actual Name                    : '
                 + @PAY_PAYST_FK_equivalent_name;
+
             PRINT N'            Column                         : PAY_PAYST_id';
+
             PRINT N'            References                     : payment.PaymentStatus.PAYST_id';
+
             PRINT N'            ON DELETE                      : '
-                + COALESCE(@PAY_PAYST_FK_equivalent_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYST_FK_equivalent_delete_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            ON UPDATE                      : '
-                + COALESCE(@PAY_PAYST_FK_equivalent_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @PAY_PAYST_FK_equivalent_update_action,
+                    N'<NULL>'
+                );
+
             PRINT N'            Disabled                       : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYST_FK_equivalent_is_disabled), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYST_FK_equivalent_is_disabled
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Not Trusted                    : '
-                + COALESCE(CONVERT(nvarchar(1), @PAY_PAYST_FK_equivalent_is_not_trusted), N'<NULL>');
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @PAY_PAYST_FK_equivalent_is_not_trusted
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Existing constraint was preserved for review.';
 
         END
@@ -1321,23 +1815,52 @@
         ELSE
         BEGIN
 
+            /*==============================================================================
+                VALIDATE EXPECTED NAME IS NOT USED BY ANOTHER FK
+            ==============================================================================*/
+
             IF OBJECT_ID(N'payment.FK_PAY_PAYST', N'F') IS NOT NULL
             BEGIN
 
                 SELECT
                     @PAY_PAYST_FK_conflict_parent =
-                        QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+                        QUOTENAME
+                        (
+                            OBJECT_SCHEMA_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
                         + N'.'
-                        + QUOTENAME(OBJECT_NAME(fk.parent_object_id))
+                        + QUOTENAME
+                        (
+                            OBJECT_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
+
                 FROM sys.foreign_keys AS fk
+
                 WHERE fk.object_id =
-                        OBJECT_ID(N'payment.FK_PAY_PAYST', N'F');
+                        OBJECT_ID
+                        (
+                            N'payment.FK_PAY_PAYST',
+                            N'F'
+                        );
+
 
                 PRINT N'        [!] Foreign key name conflict       : FK_PAY_PAYST';
                 PRINT N'            Expected Table                  : payment.Payment';
                 PRINT N'            Existing Parent                 : '
-                    + COALESCE(@PAY_PAYST_FK_conflict_parent, N'<UNKNOWN>');
+                    + COALESCE
+                    (
+                        @PAY_PAYST_FK_conflict_parent,
+                        N'<UNKNOWN>'
+                    );
+
                 PRINT N'            Constraint was not created. Manual review is required.';
+
 
                 ;THROW 50975,
                     N'Foreign key name conflict prevents safe deployment.',
@@ -1345,6 +1868,10 @@
 
             END;
 
+
+            /*==============================================================================
+                CREATE FOREIGN KEY
+            ==============================================================================*/
 
             ALTER TABLE payment.Payment
                 WITH CHECK
@@ -1376,4 +1903,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

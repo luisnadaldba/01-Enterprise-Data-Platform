@@ -1,5 +1,6 @@
-    PRINT N'    catalog.Brand';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.Brand';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -49,6 +50,7 @@
 
         IF OBJECT_ID(N'catalog.DF_BRD_is_active', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @BRD_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -58,25 +60,31 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'catalog.DF_BRD_is_active', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_BRD_is_active';
-            PRINT N'            Expected Table                  : catalog.Brand';
-            PRINT N'            Expected Column                 : BRD_is_active';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.Brand';
+            PRINT N'            Expected Column               : BRD_is_active';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@BRD_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50110,
                 N'Default constraint DF_BRD_is_active already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE catalog.Brand
             ADD CONSTRAINT DF_BRD_is_active
             DEFAULT (1) FOR BRD_is_active;
 
-        PRINT N'        [+] Default constraint added        : DF_BRD_is_active';
-        PRINT N'            Column                          : BRD_is_active';
-        PRINT N'            Definition                      : DEFAULT (1)';
+
+        PRINT N'        [+] Default constraint added      : DF_BRD_is_active';
+        PRINT N'            Column                        : BRD_is_active';
+        PRINT N'            Definition                    : DEFAULT (1)';
+
     END
 
     ELSE
@@ -108,25 +116,31 @@
                 )
             );
 
+
         IF @BRD_default_actual_name = @BRD_default_expected_name
         AND TRY_CONVERT(int, @BRD_default_normalized_definition) = 1
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_BRD_is_active';
-            PRINT N'            Column                          : BRD_is_active';
-            PRINT N'            Definition                      : DEFAULT (1)';
+
+            PRINT N'        [•] Default constraint validated  : DF_BRD_is_active';
+            PRINT N'            Column                        : BRD_is_active';
+            PRINT N'            Definition                    : DEFAULT (1)';
+
         END
 
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : BRD_is_active';
-            PRINT N'            Expected Name                   : DF_BRD_is_active';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : BRD_is_active';
+            PRINT N'            Expected Name                 : DF_BRD_is_active';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@BRD_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (1)';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (1)';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@BRD_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
@@ -142,6 +156,10 @@
     SET @BRD_default_parent_object = NULL;
 
 
+    /*----------------------------------------------------------------------
+        VALIDATE DEFAULT CURRENTLY ASSOCIATED WITH BRD_created_at
+    ----------------------------------------------------------------------*/
+
     SELECT
         @BRD_default_actual_name = dc.name,
         @BRD_default_actual_definition = dc.definition
@@ -153,11 +171,16 @@
     AND c.name = N'BRD_created_at';
 
 
+    /*----------------------------------------------------------------------
+        NO DEFAULT CURRENTLY EXISTS ON BRD_created_at
+    ----------------------------------------------------------------------*/
+
     IF @BRD_default_actual_name IS NULL
     BEGIN
 
         IF OBJECT_ID(N'catalog.DF_BRD_created_at', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @BRD_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -167,25 +190,31 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'catalog.DF_BRD_created_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_BRD_created_at';
-            PRINT N'            Expected Table                  : catalog.Brand';
-            PRINT N'            Expected Column                 : BRD_created_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.Brand';
+            PRINT N'            Expected Column               : BRD_created_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@BRD_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50111,
                 N'Default constraint DF_BRD_created_at already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE catalog.Brand
             ADD CONSTRAINT DF_BRD_created_at
             DEFAULT (SYSDATETIME()) FOR BRD_created_at;
 
-        PRINT N'        [+] Default constraint added        : DF_BRD_created_at';
-        PRINT N'            Column                          : BRD_created_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+        PRINT N'        [+] Default constraint added      : DF_BRD_created_at';
+        PRINT N'            Column                        : BRD_created_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
     END
 
     ELSE
@@ -217,25 +246,31 @@
                 )
             );
 
+
         IF @BRD_default_actual_name = @BRD_default_expected_name
         AND @BRD_default_normalized_definition = N'sysdatetime'
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_BRD_created_at';
-            PRINT N'            Column                          : BRD_created_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+            PRINT N'        [•] Default constraint validated  : DF_BRD_created_at';
+            PRINT N'            Column                        : BRD_created_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
         END
 
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : BRD_created_at';
-            PRINT N'            Expected Name                   : DF_BRD_created_at';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : BRD_created_at';
+            PRINT N'            Expected Name                 : DF_BRD_created_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@BRD_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@BRD_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
@@ -251,6 +286,10 @@
     SET @BRD_default_parent_object = NULL;
 
 
+    /*----------------------------------------------------------------------
+        VALIDATE DEFAULT CURRENTLY ASSOCIATED WITH BRD_updated_at
+    ----------------------------------------------------------------------*/
+
     SELECT
         @BRD_default_actual_name = dc.name,
         @BRD_default_actual_definition = dc.definition
@@ -262,11 +301,16 @@
     AND c.name = N'BRD_updated_at';
 
 
+    /*----------------------------------------------------------------------
+        NO DEFAULT CURRENTLY EXISTS ON BRD_updated_at
+    ----------------------------------------------------------------------*/
+
     IF @BRD_default_actual_name IS NULL
     BEGIN
 
         IF OBJECT_ID(N'catalog.DF_BRD_updated_at', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @BRD_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -276,25 +320,31 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'catalog.DF_BRD_updated_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_BRD_updated_at';
-            PRINT N'            Expected Table                  : catalog.Brand';
-            PRINT N'            Expected Column                 : BRD_updated_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.Brand';
+            PRINT N'            Expected Column               : BRD_updated_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@BRD_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50112,
                 N'Default constraint DF_BRD_updated_at already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE catalog.Brand
             ADD CONSTRAINT DF_BRD_updated_at
             DEFAULT (SYSDATETIME()) FOR BRD_updated_at;
 
-        PRINT N'        [+] Default constraint added        : DF_BRD_updated_at';
-        PRINT N'            Column                          : BRD_updated_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+        PRINT N'        [+] Default constraint added      : DF_BRD_updated_at';
+        PRINT N'            Column                        : BRD_updated_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
     END
 
     ELSE
@@ -326,26 +376,34 @@
                 )
             );
 
+
         IF @BRD_default_actual_name = @BRD_default_expected_name
         AND @BRD_default_normalized_definition = N'sysdatetime'
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_BRD_updated_at';
-            PRINT N'            Column                          : BRD_updated_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+            PRINT N'        [•] Default constraint validated  : DF_BRD_updated_at';
+            PRINT N'            Column                        : BRD_updated_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
         END
 
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : BRD_updated_at';
-            PRINT N'            Expected Name                   : DF_BRD_updated_at';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : BRD_updated_at';
+            PRINT N'            Expected Name                 : DF_BRD_updated_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@BRD_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@BRD_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

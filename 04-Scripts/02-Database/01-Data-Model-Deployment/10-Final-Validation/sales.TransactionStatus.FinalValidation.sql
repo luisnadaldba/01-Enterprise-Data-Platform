@@ -1,5 +1,4 @@
-    PRINT N'    sales.TransactionStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● sales.TransactionStatus';
 
     /*==========================================================================
         FINAL VALIDATION STATE
@@ -15,7 +14,7 @@
     DECLARE @TRNST_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @TRNST_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @TRNST_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @TRNST_FV_foreign_keys_status        nvarchar(20) = N'NOT APPLICABLE';
+    DECLARE @TRNST_FV_foreign_keys_status        nvarchar(20) = N'NOT REQUIRED';
     DECLARE @TRNST_FV_indexes_status             nvarchar(20) = N'NOT REQUIRED';
     DECLARE @TRNST_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
 
@@ -231,7 +230,7 @@
     (
         N'TABLE',
         NULL,
-        N'Maintains the authoritative set of transaction statuses used by the sales transactional model.'
+        N'Maintains the controlled transaction statuses used by the Atlas Commerce sales transactional model.'
     ),
     (
         N'COLUMN',
@@ -256,12 +255,12 @@
     (
         N'COLUMN',
         N'TRNST_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'TRNST_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -361,7 +360,7 @@
 
 
     /*----------------------------------------------------------------------
-        EXPECT EXACTLY THE FOUR CONTRACTED STATUS CODES
+        EXPECT EXACTLY THE FIVE CONTRACTED STATUS CODES
     ----------------------------------------------------------------------*/
 
     IF
@@ -699,7 +698,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @TRNST_FV_table_status;
@@ -713,33 +711,32 @@
     PRINT N'        Foreign Key Constraints       : ' + @TRNST_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @TRNST_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @TRNST_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @TRNST_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @TRNST_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @TRNST_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50075,
             N'Final validation failed for sales.TransactionStatus.',
             1;
 
     END;
-
-
-    PRINT N'';

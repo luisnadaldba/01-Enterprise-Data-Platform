@@ -27,8 +27,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    sales.TransactionChannel';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● sales.TransactionChannel';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -38,8 +38,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -89,7 +92,6 @@
         PRINT N'            Primary Key                     : TRNCH_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -113,10 +115,15 @@
             WHERE c.object_id =
                     OBJECT_ID(N'sales.TransactionChannel')
 
-            AND c.name = N'TRNCH_id'
-            AND TYPE_NAME(c.user_type_id) = N'tinyint'
+            AND c.name =
+                    N'TRNCH_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'tinyint'
+
             AND c.is_nullable = 0
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
             AND CONVERT(bigint, ic.increment_value) = 1
         )
@@ -153,7 +160,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'sales.TransactionChannel')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @TRNCH_TABLE_ActualPrimaryKeyName IS NULL
@@ -185,7 +193,8 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'sales.TransactionChannel')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
             AND i.is_unique = 1
@@ -197,12 +206,12 @@
                 FROM sys.index_columns AS ic
 
                 WHERE ic.object_id =
-                            kc.parent_object_id
+                        kc.parent_object_id
 
-                    AND ic.index_id =
-                            kc.unique_index_id
+                AND ic.index_id =
+                        kc.unique_index_id
 
-                    AND ic.key_ordinal > 0
+                AND ic.key_ordinal > 0
             ) = 1
 
             AND EXISTS
@@ -216,13 +225,15 @@
                     AND c.column_id = ic.column_id
 
                 WHERE ic.object_id =
-                            kc.parent_object_id
+                        kc.parent_object_id
 
-                    AND ic.index_id =
-                            kc.unique_index_id
+                AND ic.index_id =
+                        kc.unique_index_id
 
-                    AND ic.key_ordinal = 1
-                    AND c.name = N'TRNCH_id'
+                AND ic.key_ordinal = 1
+
+                AND c.name =
+                        N'TRNCH_id'
             )
         )
         BEGIN
@@ -241,7 +252,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @TRNCH_TABLE_ActualPrimaryKeyName <> N'PK_TRNCH'
+        IF @TRNCH_TABLE_ActualPrimaryKeyName <>
+                N'PK_TRNCH'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -263,17 +275,21 @@
             COLUMN: TRNCH_code
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionChannel', N'TRNCH_code') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionChannel',
+            N'TRNCH_code'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionChannel
                 ADD TRNCH_code varchar(30) NULL;
 
+
             PRINT N'            [+] Column added                  : TRNCH_code';
             PRINT N'            [!] Pending action                : Backfill TRNCH_code before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
@@ -283,8 +299,12 @@
             WHERE c.object_id =
                     OBJECT_ID(N'sales.TransactionChannel')
 
-            AND c.name = N'TRNCH_code'
-            AND TYPE_NAME(c.user_type_id) = N'varchar'
+            AND c.name =
+                    N'TRNCH_code'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'varchar'
+
             AND c.max_length = 30
         )
         BEGIN
@@ -296,13 +316,18 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_code'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_code'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -324,24 +349,36 @@
             COLUMN: TRNCH_name
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionChannel', N'TRNCH_name') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionChannel',
+            N'TRNCH_name'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionChannel
                 ADD TRNCH_name varchar(100) NULL;
 
+
             PRINT N'            [+] Column added                  : TRNCH_name';
             PRINT N'            [!] Pending action                : Backfill TRNCH_name before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_name'
-            AND TYPE_NAME(c.user_type_id) = N'varchar'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_name'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'varchar'
+
             AND c.max_length = 100
         )
         BEGIN
@@ -353,13 +390,18 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_name'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_name'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -381,24 +423,35 @@
             COLUMN: TRNCH_is_active
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionChannel', N'TRNCH_is_active') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionChannel',
+            N'TRNCH_is_active'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionChannel
                 ADD TRNCH_is_active bit NULL;
 
+
             PRINT N'            [+] Column added                  : TRNCH_is_active';
             PRINT N'            [!] Pending action                : Backfill TRNCH_is_active before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_is_active'
-            AND TYPE_NAME(c.user_type_id) = N'bit'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_is_active'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bit'
         )
         BEGIN
 
@@ -409,13 +462,18 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_is_active'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_is_active'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -437,24 +495,36 @@
             COLUMN: TRNCH_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionChannel', N'TRNCH_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionChannel',
+            N'TRNCH_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionChannel
                 ADD TRNCH_created_at datetime2(0) NULL;
 
+
             PRINT N'            [+] Column added                  : TRNCH_created_at';
             PRINT N'            [!] Pending action                : Backfill TRNCH_created_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -466,13 +536,18 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_created_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -494,24 +569,36 @@
             COLUMN: TRNCH_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionChannel', N'TRNCH_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionChannel',
+            N'TRNCH_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionChannel
                 ADD TRNCH_updated_at datetime2(0) NULL;
 
+
             PRINT N'            [+] Column added                  : TRNCH_updated_at';
             PRINT N'            [!] Pending action                : Backfill TRNCH_updated_at before enforcing NOT NULL';
 
         END
-
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -523,13 +610,18 @@
                 1;
 
         END
-
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionChannel')
-            AND c.name = N'TRNCH_updated_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionChannel')
+
+            AND c.name =
+                    N'TRNCH_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -572,7 +664,9 @@
 
         AND i.type = 1
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -592,4 +686,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,4 @@
-    PRINT N'    inventory.InventoryMovement';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● inventory.InventoryMovement';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @INVMV_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INVMV_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INVMV_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @INVMV_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @INVMV_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @INVMV_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INVMV_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INVMV_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
@@ -211,14 +210,14 @@
     VALUES
     (N'TABLE', NULL, N'Maintains the historical inventory movements for each product variant in Atlas Commerce.'),
     (N'COLUMN', N'INVMV_id', N'Primary key of inventory.InventoryMovement.'),
-    (N'COLUMN', N'INVMV_PRDVA_id', N'Foreign key of catalog.ProductVariant.'),
-    (N'COLUMN', N'INVMV_INVMR_id', N'Foreign key of inventory.InventoryMovementReason.'),
-    (N'COLUMN', N'INVMV_TRNIT_id', N'Optional identifier component of the composite foreign key to sales.TransactionItem when the movement originates from a sales transaction item.'),
-    (N'COLUMN', N'INVMV_TRNIT_transaction_at', N'Optional transaction date component of the composite foreign key to sales.TransactionItem.'),
+    (N'COLUMN', N'INVMV_PRDVA_id', N'Foreign key referencing catalog.ProductVariant.'),
+    (N'COLUMN', N'INVMV_INVMR_id', N'Foreign key referencing inventory.InventoryMovementReason.'),
+    (N'COLUMN', N'INVMV_TRNIT_id', N'Optional identifier component of the composite foreign key referencing sales.TransactionItem when the inventory movement originates from a sales transaction item.'),
+    (N'COLUMN', N'INVMV_TRNIT_transaction_at', N'Optional transaction timestamp component of the composite foreign key referencing sales.TransactionItem when the inventory movement originates from a sales transaction item.'),
     (N'COLUMN', N'INVMV_quantity', N'Stores the signed inventory quantity moved. Positive values represent entries and negative values represent exits.'),
     (N'COLUMN', N'INVMV_movement_at', N'Records the date and time when the inventory movement actually occurred.'),
-    (N'COLUMN', N'INVMV_created_at', N'Records the date and time when the row was initially created.'),
-    (N'COLUMN', N'INVMV_updated_at', N'Records the date and time of the most recent meaningful modification to the row.');
+    (N'COLUMN', N'INVMV_created_at', N'Records the date and time when the row was created.'),
+    (N'COLUMN', N'INVMV_updated_at', N'Records the date and time when the row was last updated.');
 
     DECLARE @INVMV_FV_invalid_documentation int = 0;
 
@@ -255,27 +254,6 @@
     ELSE
     BEGIN
         SET @INVMV_FV_documentation_status = N'FAILED';
-        SET @INVMV_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'inventory'
-        AND PFX_table_name = N'InventoryMovement'
-        AND PFX_prefix = N'INVMV'
-        AND PFX_is_active = 1
-    )
-        SET @INVMV_FV_seed_data_status = N'VALID';
-    ELSE
-    BEGIN
-        SET @INVMV_FV_seed_data_status = N'FAILED';
         SET @INVMV_FV_validation_errors += 1;
     END;
 
@@ -403,8 +381,12 @@
         (
             SELECT 1
             FROM sys.foreign_key_columns AS fkc
-            INNER JOIN sys.columns AS pc ON pc.object_id = fkc.parent_object_id AND pc.column_id = fkc.parent_column_id
-            INNER JOIN sys.columns AS rc ON rc.object_id = fkc.referenced_object_id AND rc.column_id = fkc.referenced_column_id
+            INNER JOIN sys.columns AS pc
+                ON pc.object_id = fkc.parent_object_id
+                AND pc.column_id = fkc.parent_column_id
+            INNER JOIN sys.columns AS rc
+                ON rc.object_id = fkc.referenced_object_id
+                AND rc.column_id = fkc.referenced_column_id
             WHERE fkc.constraint_object_id = fk.object_id
             AND pc.name = N'INVMV_PRDVA_id'
             AND rc.name = N'PRDVA_id'
@@ -428,8 +410,12 @@
         (
             SELECT 1
             FROM sys.foreign_key_columns AS fkc
-            INNER JOIN sys.columns AS pc ON pc.object_id = fkc.parent_object_id AND pc.column_id = fkc.parent_column_id
-            INNER JOIN sys.columns AS rc ON rc.object_id = fkc.referenced_object_id AND rc.column_id = fkc.referenced_column_id
+            INNER JOIN sys.columns AS pc
+                ON pc.object_id = fkc.parent_object_id
+                AND pc.column_id = fkc.parent_column_id
+            INNER JOIN sys.columns AS rc
+                ON rc.object_id = fkc.referenced_object_id
+                AND rc.column_id = fkc.referenced_column_id
             WHERE fkc.constraint_object_id = fk.object_id
             AND pc.name = N'INVMV_INVMR_id'
             AND rc.name = N'INVMR_id'
@@ -537,10 +523,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @INVMV_FV_table_status;
@@ -554,27 +537,37 @@
     PRINT N'        Foreign Key Constraints       : ' + @INVMV_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @INVMV_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @INVMV_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
 
     IF @INVMV_FV_validation_errors = 0
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
+
     END
     ELSE
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : FAILED';
+
         PRINT N'        Validation Errors             : '
-            + CONVERT(nvarchar(10), @INVMV_FV_validation_errors);
-        PRINT N'';
+            + CONVERT
+            (
+                nvarchar(10),
+                @INVMV_FV_validation_errors
+            );
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @INVMV_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50990,
             N'Final validation failed for inventory.InventoryMovement.',
             1;
-    END;
 
-    PRINT N'';
+    END;

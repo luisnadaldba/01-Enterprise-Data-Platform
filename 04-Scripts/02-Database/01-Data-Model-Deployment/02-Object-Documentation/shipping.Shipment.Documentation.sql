@@ -1,5 +1,6 @@
-    PRINT N'    shipping.Shipment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● shipping.Shipment';
+    PRINT N'';
 
     DECLARE @SHP_expected_description nvarchar(4000);
     DECLARE @SHP_existing_description nvarchar(4000);
@@ -10,16 +11,23 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Records the delivery process associated with Atlas Commerce online sales transactions, including destination, shipment method, status, freight amount, delivery estimate, tracking information and relevant business-event timestamps.';
+        N'Records the delivery process associated with Atlas Commerce sales transactions that require shipment, including destination, shipment method, status, shipping amount, delivery estimate, tracking information, and relevant business-event timestamps.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,16 +47,26 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : shipping.Shipment';
@@ -62,10 +80,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -82,14 +102,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_id'
     )
     BEGIN
 
@@ -111,6 +140,7 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -118,15 +148,23 @@
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_id';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_id';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_id';
@@ -140,10 +178,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -155,19 +195,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Foreign key of sales.Transaction.';
+        N'Foreign key referencing sales.Transaction.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_TRN_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_TRN_id'
     )
     BEGIN
 
@@ -189,21 +238,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_TRN_id';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_TRN_id';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_TRN_id';
@@ -217,10 +276,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -232,19 +293,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Stores the originating sales transaction timestamp and participates with SHP_TRN_id in the composite foreign key to sales.Transaction.';
+        N'Records the date and time of the parent sales transaction and participates with SHP_TRN_id in the composite foreign key to sales.Transaction.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_transaction_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_transaction_at'
     )
     BEGIN
 
@@ -266,21 +336,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_transaction_at';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_transaction_at';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_transaction_at';
@@ -294,10 +374,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -309,19 +391,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Foreign key of customer.CustomerAddress identifying the customer address selected for this shipment.';
+        N'Foreign key referencing customer.CustomerAddress.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_CSTAD_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_CSTAD_id'
     )
     BEGIN
 
@@ -343,21 +434,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_CSTAD_id';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_CSTAD_id';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_CSTAD_id';
@@ -371,10 +472,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -386,19 +489,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Foreign key of shipping.ShipmentMethod identifying the shipment method selected for this delivery.';
+        N'Foreign key referencing shipping.ShipmentMethod.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_SHPMT_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_SHPMT_id'
     )
     BEGIN
 
@@ -420,21 +532,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_SHPMT_id';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_SHPMT_id';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_SHPMT_id';
@@ -448,10 +570,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -463,19 +587,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Foreign key of shipping.ShipmentStatus identifying the current operational state of this shipment.';
+        N'Foreign key referencing shipping.ShipmentStatus.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_SHPST_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_SHPST_id'
     )
     BEGIN
 
@@ -497,21 +630,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_SHPST_id';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_SHPST_id';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_SHPST_id';
@@ -525,10 +668,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -545,14 +690,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_shipping_amount'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_shipping_amount'
     )
     BEGIN
 
@@ -574,21 +728,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_shipping_amount';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_shipping_amount';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_shipping_amount';
@@ -602,10 +766,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -622,14 +788,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_estimated_delivery_date'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_estimated_delivery_date'
     )
     BEGIN
 
@@ -651,21 +826,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_estimated_delivery_date';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_estimated_delivery_date';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_estimated_delivery_date';
@@ -679,10 +864,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -694,19 +881,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Stores the postal tracking code assigned to the shipment when available.';
+        N'Stores the tracking code assigned to the shipment when available.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_tracking_code'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_tracking_code'
     )
     BEGIN
 
@@ -728,21 +924,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_tracking_code';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_tracking_code';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_tracking_code';
@@ -756,10 +962,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -771,19 +979,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Records the date and time when the shipment was handed over to the postal service for delivery.';
+        N'Records the date and time when the shipment was handed over to the delivery provider.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_posted_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_posted_at'
     )
     BEGIN
 
@@ -805,21 +1022,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_posted_at';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_posted_at';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_posted_at';
@@ -833,10 +1060,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -853,14 +1082,23 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_delivered_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_delivered_at'
     )
     BEGIN
 
@@ -882,21 +1120,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_delivered_at';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_delivered_at';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_delivered_at';
@@ -910,10 +1158,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -925,19 +1175,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_created_at'
     )
     BEGIN
 
@@ -959,21 +1218,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_created_at';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_created_at';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_created_at';
@@ -987,10 +1256,12 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
@@ -1002,19 +1273,28 @@
     ----------------------------------------------------------------------*/
 
     SET @SHP_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_updated_at'
     )
     BEGIN
 
@@ -1036,21 +1316,31 @@
 
         SET @SHP_existing_description = NULL;
 
+
         SELECT
             @SHP_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
 
         FROM sys.extended_properties AS ep
+
         INNER JOIN sys.columns AS c
-            ON c.object_id = ep.major_id
+            ON  c.object_id = ep.major_id
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'shipping.Shipment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'SHP_updated_at';
 
-        IF @SHP_existing_description = @SHP_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'shipping.Shipment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'SHP_updated_at';
+
+
+        IF @SHP_existing_description =
+            @SHP_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : SHP_updated_at';
@@ -1064,14 +1354,18 @@
                 + @SHP_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @SHP_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@SHP_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @SHP_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@SHP_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @SHP_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

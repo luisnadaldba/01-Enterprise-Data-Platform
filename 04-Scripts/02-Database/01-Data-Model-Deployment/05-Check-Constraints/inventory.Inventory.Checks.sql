@@ -1,5 +1,6 @@
-    PRINT N'    inventory.Inventory';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.Inventory';
+    PRINT N'';
 
 
     DECLARE @INV_check_expected_name          sysname;
@@ -318,4 +319,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

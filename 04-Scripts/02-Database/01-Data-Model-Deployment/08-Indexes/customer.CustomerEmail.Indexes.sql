@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerEmail';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerEmail';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -125,8 +126,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -141,14 +145,32 @@
 
     /*==============================================================================
         COLLECT STRUCTURALLY EQUIVALENT INDEXES
+
+        Structural equivalence means:
+            - Nonclustered
+            - Unique
+            - Not PK
+            - Not UNIQUE CONSTRAINT
+            - Not hypothetical
+            - Exactly one key column
+            - Key 1 = CSTEM_CST_id ASC
+            - No INCLUDE columns
+            - Filtered
+            - Filter =
+                CSTEM_is_primary = 1
+                AND CSTEM_is_active = 1
+
+        The order of the two AND predicates is considered functionally equivalent.
+
+        Physical placement on FG_CORE is validated separately.
     ==============================================================================*/
 
     DECLARE @CSTEM_PA_equivalent_indexes TABLE
     (
-        index_name         sysname          NOT NULL,
-        is_disabled        bit              NOT NULL,
-        data_space_name    sysname          NULL,
-        filter_definition  nvarchar(4000)   NULL
+        index_name         sysname         NOT NULL,
+        is_disabled        bit             NOT NULL,
+        data_space_name    sysname         NULL,
+        filter_definition  nvarchar(4000)  NULL
     );
 
 
@@ -178,10 +200,15 @@
 
     AND i.is_unique = 1
 
+    AND i.is_primary_key = 0
+
+    AND i.is_unique_constraint = 0
+
     AND i.is_hypothetical = 0
 
     AND i.has_filter = 1
 
+    /* Exactly one key column */
     AND
     (
         SELECT COUNT(*)
@@ -198,6 +225,7 @@
 
     ) = 1
 
+    /* Key 1 = CSTEM_CST_id ASC */
     AND EXISTS
     (
         SELECT 1
@@ -225,6 +253,7 @@
                 N'CSTEM_CST_id'
     )
 
+    /* No INCLUDE columns */
     AND NOT EXISTS
     (
         SELECT 1
@@ -240,6 +269,7 @@
         AND ic.is_included_column = 1
     )
 
+    /* Expected filter */
     AND
     (
         LOWER
@@ -352,7 +382,11 @@
 
                     index_name
                     + N' ['
-                    + COALESCE(data_space_name, N'<UNKNOWN>')
+                    + COALESCE
+                    (
+                        data_space_name,
+                        N'<UNKNOWN>'
+                    )
                     + N']'
 
                     + CASE
@@ -542,32 +576,62 @@
         PRINT N'        [X] Index definition mismatch        : UX_CSTEM_primary_active';
 
         PRINT N'            Expected Type                   : NONCLUSTERED';
+
         PRINT N'            Actual Type                     : '
-            + COALESCE(@CSTEM_PA_expected_type_desc, N'<UNKNOWN>');
+            + COALESCE
+            (
+                @CSTEM_PA_expected_type_desc,
+                N'<UNKNOWN>'
+            );
 
         PRINT N'            Expected Unique                 : 1';
+
         PRINT N'            Actual Unique                   : '
             + COALESCE
             (
-                CONVERT(nvarchar(1), @CSTEM_PA_expected_is_unique),
+                CONVERT
+                (
+                    nvarchar(1),
+                    @CSTEM_PA_expected_is_unique
+                ),
                 N'<UNKNOWN>'
             );
 
         PRINT N'            Expected Key Columns            : CSTEM_CST_id ASC';
+
         PRINT N'            Actual Key Columns              : '
-            + COALESCE(@CSTEM_PA_expected_actual_keys, N'<NONE>');
+            + COALESCE
+            (
+                @CSTEM_PA_expected_actual_keys,
+                N'<NONE>'
+            );
 
         PRINT N'            Expected Included Columns       : NONE';
+
         PRINT N'            Actual Included Columns         : '
-            + COALESCE(@CSTEM_PA_expected_actual_includes, N'NONE');
+            + COALESCE
+            (
+                @CSTEM_PA_expected_actual_includes,
+                N'NONE'
+            );
 
         PRINT N'            Expected Filter                 : CSTEM_is_primary = 1 AND CSTEM_is_active = 1';
+
         PRINT N'            Actual Filter                   : '
-            + COALESCE(@CSTEM_PA_expected_filter_definition, N'<NONE>');
+            + COALESCE
+            (
+                @CSTEM_PA_expected_filter_definition,
+                N'<NONE>'
+            );
 
         PRINT N'            Expected Filegroup              : FG_CORE';
+
         PRINT N'            Actual Data Space               : '
-            + COALESCE(@CSTEM_PA_expected_data_space_name, N'<UNKNOWN>');
+            + COALESCE
+            (
+                @CSTEM_PA_expected_data_space_name,
+                N'<UNKNOWN>'
+            );
 
         PRINT N'            Existing index was preserved for review.';
 
@@ -586,6 +650,43 @@
     IF @CSTEM_PA_expected_exists = 0
     AND @CSTEM_PA_equivalent_count = 0
     BEGIN
+
+        /*--------------------------------------------------------------------------
+            PRE-DEPLOYMENT BUSINESS RULE VALIDATION
+
+            Existing data must not already contain more than one active primary
+            email for the same Customer.
+        --------------------------------------------------------------------------*/
+
+        IF EXISTS
+        (
+            SELECT
+                CSTEM_CST_id
+
+            FROM customer.CustomerEmail
+
+            WHERE CSTEM_is_primary = 1
+            AND CSTEM_is_active = 1
+
+            GROUP BY
+                CSTEM_CST_id
+
+            HAVING COUNT(*) > 1
+        )
+        BEGIN
+
+            PRINT N'        [X] Existing data violates active primary email uniqueness';
+            PRINT N'            Rule                           : Maximum one active primary email per Customer';
+            PRINT N'            Filter                         : CSTEM_is_primary = 1 AND CSTEM_is_active = 1';
+            PRINT N'            Index was not created. Data correction is required.';
+
+
+            ;THROW 50747,
+                N'UX_CSTEM_primary_active cannot be created because existing data contains multiple active primary emails for the same Customer.',
+                1;
+
+        END;
+
 
         CREATE UNIQUE NONCLUSTERED INDEX UX_CSTEM_primary_active
             ON customer.CustomerEmail
@@ -634,8 +735,11 @@
                 + @CSTEM_PA_actual_name;
 
             PRINT N'            Expected Name                  : UX_CSTEM_primary_active';
+
             PRINT N'            Key Columns                    : CSTEM_CST_id';
+
             PRINT N'            Filter                         : CSTEM_is_primary = 1 AND CSTEM_is_active = 1';
+
             PRINT N'            Existing index was preserved for review.';
 
         END
@@ -645,9 +749,12 @@
         BEGIN
 
             PRINT N'        [!] Index naming divergence        :';
+
             PRINT N'            Expected                       : UX_CSTEM_primary_active';
+
             PRINT N'            Actual                         : '
                 + @CSTEM_PA_actual_name;
+
             PRINT N'            Action                         : Preserve existing index';
 
         END
@@ -657,13 +764,16 @@
         BEGIN
 
             PRINT N'        [X] Index filegroup mismatch        : UX_CSTEM_primary_active';
+
             PRINT N'            Expected Filegroup             : FG_CORE';
+
             PRINT N'            Actual Data Space              : '
                 + COALESCE
                 (
                     @CSTEM_PA_actual_data_space_name,
                     N'<UNKNOWN>'
                 );
+
 
             ;THROW 50746,
                 N'Index UX_CSTEM_primary_active is not stored on FG_CORE.',
@@ -694,11 +804,15 @@
     BEGIN
 
         PRINT N'        [!] Equivalent indexes detected     : '
-            + CONVERT(nvarchar(10), @CSTEM_PA_equivalent_count);
+            + CONVERT
+            (
+                nvarchar(10),
+                @CSTEM_PA_equivalent_count
+            );
 
         PRINT N'            Expected Index                  : UX_CSTEM_primary_active';
 
-        PRINT N'            Equivalent Indexes             : '
+        PRINT N'            Equivalent Indexes              : '
             + COALESCE
             (
                 @CSTEM_PA_equivalent_names,
@@ -713,9 +827,12 @@
             );
 
         PRINT N'            Action                          : Preserve all indexes for manual review';
+
         PRINT N'            Automatic removal               : NOT PERMITTED';
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

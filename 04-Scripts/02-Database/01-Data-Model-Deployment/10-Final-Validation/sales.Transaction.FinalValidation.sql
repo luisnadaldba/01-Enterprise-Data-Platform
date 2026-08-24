@@ -1,5 +1,4 @@
-    PRINT N'    sales.Transaction';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● sales.Transaction';
 
     /*==========================================================================
         FINAL VALIDATION STATE
@@ -214,7 +213,8 @@
         AND c.scale = 2
         AND c.is_nullable = 0
     )
-AND EXISTS
+
+    AND EXISTS
     (
         SELECT 1
         FROM sys.columns AS c
@@ -278,10 +278,6 @@ AND EXISTS
     DECLARE @TRN_FV_invalid_documentation   int = 0;
 
 
-    /*--------------------------------------------------------------------------
-        EXPECTED DOCUMENTATION DEFINITIONS
-    --------------------------------------------------------------------------*/
-
     INSERT INTO @TRN_FV_expected_documentation
     (
         TRN_doc_object_type,
@@ -292,7 +288,7 @@ AND EXISTS
     (
         N'TABLE',
         NULL,
-        N'Stores the core sales transaction record.'
+        N'Maintains the core sales transaction records processed by Atlas Commerce, including customer, status, channel, monetary amounts, and the transaction business timestamp.'
     ),
     (
         N'COLUMN',
@@ -307,37 +303,37 @@ AND EXISTS
     (
         N'COLUMN',
         N'TRN_CST_id',
-        N'Foreign key of customer.Customer.'
+        N'Foreign key referencing customer.Customer.'
     ),
     (
         N'COLUMN',
         N'TRN_TRNCH_id',
-        N'Foreign key of sales.TransactionChannel.'
+        N'Foreign key referencing sales.TransactionChannel.'
     ),
     (
         N'COLUMN',
         N'TRN_TRNST_id',
-        N'Foreign key of sales.TransactionStatus.'
+        N'Foreign key referencing sales.TransactionStatus.'
     ),
     (
         N'COLUMN',
         N'TRN_gross_amount',
-        N'Gross amount of the transaction before discounts.'
+        N'Stores the gross monetary amount of the transaction before discounts.'
     ),
     (
         N'COLUMN',
         N'TRN_discount_amount',
-        N'Total discount amount applied to the transaction.'
+        N'Stores the total monetary discount amount applied to the transaction.'
     ),
     (
         N'COLUMN',
         N'TRN_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'TRN_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -346,10 +342,6 @@ AND EXISTS
         @TRN_FV_doc_max_id     = MAX(TRN_doc_id)
     FROM @TRN_FV_expected_documentation;
 
-
-    /*--------------------------------------------------------------------------
-        VALIDATE DOCUMENTATION CONTENT
-    --------------------------------------------------------------------------*/
 
     WHILE @TRN_FV_doc_current_id <= @TRN_FV_doc_max_id
     BEGIN
@@ -374,10 +366,6 @@ AND EXISTS
         WHERE TRN_doc_id = @TRN_FV_doc_current_id;
 
 
-        /*----------------------------------------------------------------------
-            TABLE DESCRIPTION
-        ----------------------------------------------------------------------*/
-
         IF @TRN_FV_doc_object_type = N'TABLE'
         BEGIN
 
@@ -393,11 +381,6 @@ AND EXISTS
             AND ep.name = N'MS_Description';
 
         END
-
-
-        /*----------------------------------------------------------------------
-            COLUMN DESCRIPTION
-        ----------------------------------------------------------------------*/
 
         ELSE IF @TRN_FV_doc_object_type = N'COLUMN'
         BEGIN
@@ -438,10 +421,6 @@ AND EXISTS
 
     END;
 
-
-    /*--------------------------------------------------------------------------
-        FINAL DOCUMENTATION STATUS
-    --------------------------------------------------------------------------*/
 
     IF @TRN_FV_invalid_documentation = 0
     BEGIN
@@ -484,10 +463,6 @@ AND EXISTS
     DECLARE @TRN_FV_invalid_defaults            int = 0;
 
 
-    /*--------------------------------------------------------------------------
-        EXPECTED DEFAULT CONSTRAINT DEFINITIONS
-    --------------------------------------------------------------------------*/
-
     INSERT INTO @TRN_FV_expected_defaults
     (
         TRN_default_column_name,
@@ -517,10 +492,6 @@ AND EXISTS
         @TRN_FV_default_max_id     = MAX(TRN_default_id)
     FROM @TRN_FV_expected_defaults;
 
-
-    /*--------------------------------------------------------------------------
-        VALIDATE DEFAULT CONSTRAINTS
-    --------------------------------------------------------------------------*/
 
     WHILE @TRN_FV_default_current_id <= @TRN_FV_default_max_id
     BEGIN
@@ -585,10 +556,6 @@ AND EXISTS
     END;
 
 
-    /*--------------------------------------------------------------------------
-        FINAL DEFAULT CONSTRAINT STATUS
-    --------------------------------------------------------------------------*/
-
     IF @TRN_FV_invalid_defaults = 0
     BEGIN
 
@@ -631,10 +598,6 @@ AND EXISTS
     DECLARE @TRN_FV_invalid_checks            int = 0;
 
 
-    /*--------------------------------------------------------------------------
-        EXPECTED CHECK CONSTRAINT DEFINITIONS
-    --------------------------------------------------------------------------*/
-
     INSERT INTO @TRN_FV_expected_checks
     (
         TRN_check_constraint_name,
@@ -656,10 +619,6 @@ AND EXISTS
         @TRN_FV_check_max_id     = MAX(TRN_check_id)
     FROM @TRN_FV_expected_checks;
 
-
-    /*--------------------------------------------------------------------------
-        VALIDATE CHECK CONSTRAINTS
-    --------------------------------------------------------------------------*/
 
     WHILE @TRN_FV_check_current_id <= @TRN_FV_check_max_id
     BEGIN
@@ -706,10 +665,6 @@ AND EXISTS
         AND cc.name =
                 @TRN_FV_check_expected_name;
 
-
-        /*----------------------------------------------------------------------
-            NORMALIZE AND VALIDATE
-        ----------------------------------------------------------------------*/
 
         IF @TRN_FV_check_actual_name IS NULL
         OR @TRN_FV_check_actual_definition IS NULL
@@ -764,10 +719,6 @@ AND EXISTS
 
     END;
 
-
-    /*--------------------------------------------------------------------------
-        FINAL CHECK CONSTRAINT STATUS
-    --------------------------------------------------------------------------*/
 
     IF @TRN_FV_invalid_checks = 0
     BEGIN
@@ -826,10 +777,6 @@ AND EXISTS
     DECLARE @TRN_FV_invalid_foreign_keys      int = 0;
 
 
-    /*--------------------------------------------------------------------------
-        EXPECTED FOREIGN KEY DEFINITIONS
-    --------------------------------------------------------------------------*/
-
     INSERT INTO @TRN_FV_expected_foreign_keys
     (
         TRN_fk_name,
@@ -879,10 +826,6 @@ AND EXISTS
 
     FROM @TRN_FV_expected_foreign_keys;
 
-
-    /*--------------------------------------------------------------------------
-        VALIDATE FOREIGN KEYS
-    --------------------------------------------------------------------------*/
 
     WHILE @TRN_FV_fk_current_id <=
         @TRN_FV_fk_max_id
@@ -1034,10 +977,6 @@ AND EXISTS
             @TRN_FV_fk_expected_name;
 
 
-        /*----------------------------------------------------------------------
-            VALIDATE FOREIGN KEY CONTRACT
-        ----------------------------------------------------------------------*/
-
         IF @TRN_FV_fk_actual_name IS NULL
 
         OR @TRN_FV_fk_actual_name <>
@@ -1078,12 +1017,6 @@ AND EXISTS
     END;
 
 
-    /*--------------------------------------------------------------------------
-        ENSURE EXACT EXPECTED FOREIGN KEY COUNT
-
-        sales.Transaction must have exactly the three expected relationships.
-    --------------------------------------------------------------------------*/
-
     IF
     (
         SELECT COUNT(*)
@@ -1100,10 +1033,6 @@ AND EXISTS
 
     END;
 
-
-    /*--------------------------------------------------------------------------
-        FINAL FOREIGN KEY STATUS
-    --------------------------------------------------------------------------*/
 
     IF @TRN_FV_invalid_foreign_keys = 0
     BEGIN
@@ -1160,10 +1089,6 @@ AND EXISTS
     DECLARE @TRN_FV_invalid_indexes           int = 0;
 
 
-    /*--------------------------------------------------------------------------
-        EXPECTED INDEX DEFINITIONS
-    --------------------------------------------------------------------------*/
-
     INSERT INTO @TRN_FV_expected_indexes
     (
         TRN_index_name,
@@ -1201,10 +1126,6 @@ AND EXISTS
         @TRN_FV_index_max_id     = MAX(TRN_index_id)
     FROM @TRN_FV_expected_indexes;
 
-
-    /*--------------------------------------------------------------------------
-        VALIDATE INDEXES
-    --------------------------------------------------------------------------*/
 
     WHILE @TRN_FV_index_current_id <= @TRN_FV_index_max_id
     BEGIN
@@ -1249,10 +1170,6 @@ AND EXISTS
             @TRN_FV_index_current_id;
 
 
-        /*----------------------------------------------------------------------
-            INDEX METADATA
-        ----------------------------------------------------------------------*/
-
         SELECT
             @TRN_FV_index_actual_name =
                 i.name,
@@ -1283,10 +1200,6 @@ AND EXISTS
         AND i.name =
                 @TRN_FV_index_expected_name;
 
-
-        /*----------------------------------------------------------------------
-            ACTUAL KEY COLUMNS
-        ----------------------------------------------------------------------*/
 
         SELECT
             @TRN_FV_index_actual_keys =
@@ -1328,17 +1241,6 @@ AND EXISTS
                 @TRN_FV_index_expected_name;
 
 
-        /*----------------------------------------------------------------------
-            ACTUAL USER INCLUDE COLUMNS
-
-            The automatically added partition column of IX_TRN_updated_at is
-            not considered an INCLUDE because SQL Server exposes it with:
-
-                key_ordinal        = 0
-                is_included_column = 0
-                partition_ordinal  = 1
-        ----------------------------------------------------------------------*/
-
         SELECT
             @TRN_FV_index_actual_includes =
                 STRING_AGG
@@ -1377,10 +1279,6 @@ AND EXISTS
             );
 
 
-        /*----------------------------------------------------------------------
-            ACTUAL PARTITION COLUMN
-        ----------------------------------------------------------------------*/
-
         SELECT
             @TRN_FV_index_actual_part_col =
                 c.name
@@ -1402,10 +1300,6 @@ AND EXISTS
         AND i.name =
                 @TRN_FV_index_expected_name;
 
-
-        /*----------------------------------------------------------------------
-            VALIDATE INDEX CONTRACT
-        ----------------------------------------------------------------------*/
 
         IF @TRN_FV_index_actual_name IS NULL
 
@@ -1439,10 +1333,6 @@ AND EXISTS
     END;
 
 
-    /*--------------------------------------------------------------------------
-        FINAL INDEX STATUS
-    --------------------------------------------------------------------------*/
-
     IF @TRN_FV_invalid_indexes = 0
     BEGIN
 
@@ -1465,9 +1355,7 @@ AND EXISTS
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
-
 
     PRINT N'        Table                         : ' + @TRN_FV_table_status;
     PRINT N'        Primary Key                   : ' + @TRN_FV_primary_key_status;
@@ -1480,33 +1368,32 @@ AND EXISTS
     PRINT N'        Foreign Key Constraints       : ' + @TRN_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @TRN_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @TRN_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @TRN_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @TRN_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @TRN_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50059,
             N'Final validation failed for sales.Transaction.',
             1;
 
     END;
-
-
-    PRINT N'';

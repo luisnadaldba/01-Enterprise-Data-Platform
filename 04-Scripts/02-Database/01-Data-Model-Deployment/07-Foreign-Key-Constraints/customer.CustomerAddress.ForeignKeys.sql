@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerAddress';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerAddress';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -29,7 +30,6 @@
 
     DECLARE @CSTAD_CST_FK_conflict_parent              nvarchar(517);
 
-
     SET @CSTAD_CST_FK_expected_name = N'FK_CSTAD_CST';
 
 
@@ -39,49 +39,41 @@
 
     IF OBJECT_ID(N'customer.CustomerAddress', N'U') IS NULL
     BEGIN
-
         PRINT N'        [X] Foreign key dependency missing : customer.CustomerAddress';
 
         ;THROW 50470,
             N'Foreign key FK_CSTAD_CST cannot be deployed because customer.CustomerAddress does not exist.',
             1;
-
     END;
 
 
     IF OBJECT_ID(N'customer.Customer', N'U') IS NULL
     BEGIN
-
         PRINT N'        [X] Foreign key dependency missing : customer.Customer';
 
         ;THROW 50471,
             N'Foreign key FK_CSTAD_CST cannot be deployed because customer.Customer does not exist.',
             1;
-
     END;
 
 
     IF COL_LENGTH(N'customer.CustomerAddress', N'CSTAD_CST_id') IS NULL
     BEGIN
-
         PRINT N'        [X] Foreign key column missing     : CSTAD_CST_id';
 
         ;THROW 50472,
             N'Foreign key FK_CSTAD_CST cannot be deployed because CSTAD_CST_id does not exist.',
             1;
-
     END;
 
 
     IF COL_LENGTH(N'customer.Customer', N'CST_id') IS NULL
     BEGIN
-
         PRINT N'        [X] Referenced column missing      : CST_id';
 
         ;THROW 50473,
             N'Foreign key FK_CSTAD_CST cannot be deployed because referenced column customer.Customer.CST_id does not exist.',
             1;
-
     END;
 
 
@@ -90,7 +82,7 @@
 
         Expected:
             CSTAD_CST_id -> int NOT NULL
-            CST_id       -> int NOT NULL
+            CST_id -> int NOT NULL
     --------------------------------------------------------------------------*/
 
     IF NOT EXISTS
@@ -131,13 +123,11 @@
                 N'int'
     )
     BEGIN
-
         PRINT N'        [X] Foreign key column mismatch    : CSTAD_CST_id -> CST_id';
 
         ;THROW 50474,
             N'Foreign key FK_CSTAD_CST cannot be deployed because participating columns are incompatible.',
             1;
-
     END;
 
 
@@ -229,6 +219,10 @@
             @CSTAD_CST_FK_expected_name;
 
 
+    /*==============================================================================
+        EXPECTED FOREIGN KEY NAME EXISTS
+    ==============================================================================*/
+
     IF @CSTAD_CST_FK_actual_name IS NOT NULL
     BEGIN
 
@@ -268,47 +262,29 @@
         BEGIN
 
             PRINT N'        [!] Foreign key mismatch             : FK_CSTAD_CST';
-
             PRINT N'            Expected Table                  : customer.CustomerAddress';
             PRINT N'            Actual Table                    : '
                 + COALESCE(@CSTAD_CST_FK_actual_parent_table, N'<NULL>');
-
             PRINT N'            Expected Column                 : CSTAD_CST_id';
             PRINT N'            Actual Column                   : '
-                + COALESCE(@CSTAD_CST_FK_actual_parent_columns, N'<NULL>');
-
+                + COALESCE(REPLACE(@CSTAD_CST_FK_actual_parent_columns, N'|', N', '), N'<NULL>');
             PRINT N'            Expected Reference              : customer.Customer.CST_id';
-
             PRINT N'            Actual Reference Table         : '
                 + COALESCE(@CSTAD_CST_FK_actual_referenced_table, N'<NULL>');
-
             PRINT N'            Actual Reference Column        : '
-                + COALESCE(@CSTAD_CST_FK_actual_referenced_columns, N'<NULL>');
-
+                + COALESCE(REPLACE(@CSTAD_CST_FK_actual_referenced_columns, N'|', N', '), N'<NULL>');
             PRINT N'            Expected ON DELETE              : NO ACTION';
             PRINT N'            Actual ON DELETE                : '
                 + COALESCE(@CSTAD_CST_FK_actual_delete_action, N'<NULL>');
-
             PRINT N'            Expected ON UPDATE              : NO ACTION';
             PRINT N'            Actual ON UPDATE                : '
                 + COALESCE(@CSTAD_CST_FK_actual_update_action, N'<NULL>');
-
             PRINT N'            Expected Disabled               : 0';
             PRINT N'            Actual Disabled                 : '
-                + COALESCE
-                (
-                    CONVERT(nvarchar(1), @CSTAD_CST_FK_actual_is_disabled),
-                    N'<NULL>'
-                );
-
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_CST_FK_actual_is_disabled), N'<NULL>');
             PRINT N'            Expected Not Trusted            : 0';
             PRINT N'            Actual Not Trusted              : '
-                + COALESCE
-                (
-                    CONVERT(nvarchar(1), @CSTAD_CST_FK_actual_is_not_trusted),
-                    N'<NULL>'
-                );
-
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_CST_FK_actual_is_not_trusted), N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
 
         END;
@@ -317,8 +293,11 @@
     ELSE
     BEGIN
 
-        SELECT TOP (1)
+        /*==========================================================================
+            SEARCH FOR FUNCTIONALLY EQUIVALENT FOREIGN KEY WITH ANOTHER NAME
+        ==========================================================================*/
 
+        SELECT TOP (1)
             @CSTAD_CST_FK_equivalent_name =
                 fk.name,
 
@@ -346,15 +325,12 @@
                 @CSTAD_CST_FK_expected_name
 
         AND fk.delete_referential_action = 0
-
         AND fk.update_referential_action = 0
 
         AND
         (
             SELECT COUNT(*)
-
             FROM sys.foreign_key_columns AS fkc
-
             WHERE fkc.constraint_object_id =
                     fk.object_id
         ) = 1
@@ -397,11 +373,23 @@
                 + @CSTAD_CST_FK_equivalent_name;
             PRINT N'            Column                         : CSTAD_CST_id';
             PRINT N'            References                     : customer.Customer.CST_id';
+            PRINT N'            ON DELETE                      : '
+                + COALESCE(@CSTAD_CST_FK_equivalent_delete_action, N'<NULL>');
+            PRINT N'            ON UPDATE                      : '
+                + COALESCE(@CSTAD_CST_FK_equivalent_update_action, N'<NULL>');
+            PRINT N'            Disabled                       : '
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_CST_FK_equivalent_is_disabled), N'<NULL>');
+            PRINT N'            Not Trusted                    : '
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_CST_FK_equivalent_is_not_trusted), N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
 
         END
         ELSE
         BEGIN
+
+            /*==========================================================================
+                VALIDATE EXPECTED NAME IS NOT USED BY ANOTHER FK
+            ==========================================================================*/
 
             IF OBJECT_ID(N'customer.FK_CSTAD_CST', N'F') IS NOT NULL
             BEGIN
@@ -424,13 +412,16 @@
                     + COALESCE(@CSTAD_CST_FK_conflict_parent, N'<UNKNOWN>');
                 PRINT N'            Constraint was not created. Manual review is required.';
 
-
                 ;THROW 50475,
                     N'Foreign key name conflict prevents safe deployment.',
                     1;
 
             END;
 
+
+            /*==========================================================================
+                CREATE FOREIGN KEY
+            ==========================================================================*/
 
             ALTER TABLE customer.CustomerAddress
                 WITH CHECK
@@ -462,6 +453,9 @@
     END;
 
 
+    PRINT N'';
+
+
     /*==============================================================================
         FOREIGN KEY: FK_CSTAD_ADR
     ==============================================================================*/
@@ -489,7 +483,6 @@
 
     DECLARE @CSTAD_ADR_FK_conflict_parent              nvarchar(517);
 
-
     SET @CSTAD_ADR_FK_expected_name = N'FK_CSTAD_ADR';
 
 
@@ -497,44 +490,52 @@
         DEPENDENCY VALIDATION
     ==============================================================================*/
 
-    IF OBJECT_ID(N'reference.Address', N'U') IS NULL
+    IF OBJECT_ID(N'customer.CustomerAddress', N'U') IS NULL
     BEGIN
-
-        PRINT N'        [X] Foreign key dependency missing : reference.Address';
+        PRINT N'        [X] Foreign key dependency missing : customer.CustomerAddress';
 
         ;THROW 50476,
+            N'Foreign key FK_CSTAD_ADR cannot be deployed because customer.CustomerAddress does not exist.',
+            1;
+    END;
+
+
+    IF OBJECT_ID(N'reference.Address', N'U') IS NULL
+    BEGIN
+        PRINT N'        [X] Foreign key dependency missing : reference.Address';
+
+        ;THROW 50477,
             N'Foreign key FK_CSTAD_ADR cannot be deployed because reference.Address does not exist.',
             1;
-
     END;
 
 
     IF COL_LENGTH(N'customer.CustomerAddress', N'CSTAD_ADR_id') IS NULL
     BEGIN
-
         PRINT N'        [X] Foreign key column missing     : CSTAD_ADR_id';
 
-        ;THROW 50477,
+        ;THROW 50478,
             N'Foreign key FK_CSTAD_ADR cannot be deployed because CSTAD_ADR_id does not exist.',
             1;
-
     END;
 
 
     IF COL_LENGTH(N'reference.Address', N'ADR_id') IS NULL
     BEGIN
-
         PRINT N'        [X] Referenced column missing      : ADR_id';
 
-        ;THROW 50478,
+        ;THROW 50479,
             N'Foreign key FK_CSTAD_ADR cannot be deployed because referenced column reference.Address.ADR_id does not exist.',
             1;
-
     END;
 
 
     /*--------------------------------------------------------------------------
         VALIDATE COLUMN COMPATIBILITY
+
+        Expected:
+            CSTAD_ADR_id -> int NOT NULL
+            ADR_id -> int NOT NULL
     --------------------------------------------------------------------------*/
 
     IF NOT EXISTS
@@ -567,15 +568,19 @@
 
         AND parent_column.scale =
                 referenced_column.scale
+
+        AND TYPE_NAME(parent_column.user_type_id) =
+                N'int'
+
+        AND TYPE_NAME(referenced_column.user_type_id) =
+                N'int'
     )
     BEGIN
-
         PRINT N'        [X] Foreign key column mismatch    : CSTAD_ADR_id -> ADR_id';
 
-        ;THROW 50479,
+        ;THROW 50480,
             N'Foreign key FK_CSTAD_ADR cannot be deployed because participating columns are incompatible.',
             1;
-
     END;
 
 
@@ -614,24 +619,48 @@
 
         @CSTAD_ADR_FK_actual_parent_columns =
         (
-            SELECT STRING_AGG(CONVERT(nvarchar(max), pc.name), N'|')
-            WITHIN GROUP (ORDER BY fkc.constraint_column_id)
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), pc.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY fkc.constraint_column_id
+                )
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
-                ON pc.object_id = fkc.parent_object_id
+                ON  pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         ),
 
         @CSTAD_ADR_FK_actual_referenced_columns =
         (
-            SELECT STRING_AGG(CONVERT(nvarchar(max), rc.name), N'|')
-            WITHIN GROUP (ORDER BY fkc.constraint_column_id)
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), rc.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY fkc.constraint_column_id
+                )
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS rc
-                ON rc.object_id = fkc.referenced_object_id
+                ON  rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         )
 
     FROM sys.foreign_keys AS fk
@@ -642,6 +671,10 @@
     AND fk.name =
             @CSTAD_ADR_FK_expected_name;
 
+
+    /*==============================================================================
+        EXPECTED FOREIGN KEY NAME EXISTS
+    ==============================================================================*/
 
     IF @CSTAD_ADR_FK_actual_name IS NOT NULL
     BEGIN
@@ -682,6 +715,29 @@
         BEGIN
 
             PRINT N'        [!] Foreign key mismatch             : FK_CSTAD_ADR';
+            PRINT N'            Expected Table                  : customer.CustomerAddress';
+            PRINT N'            Actual Table                    : '
+                + COALESCE(@CSTAD_ADR_FK_actual_parent_table, N'<NULL>');
+            PRINT N'            Expected Column                 : CSTAD_ADR_id';
+            PRINT N'            Actual Column                   : '
+                + COALESCE(REPLACE(@CSTAD_ADR_FK_actual_parent_columns, N'|', N', '), N'<NULL>');
+            PRINT N'            Expected Reference              : reference.Address.ADR_id';
+            PRINT N'            Actual Reference Table         : '
+                + COALESCE(@CSTAD_ADR_FK_actual_referenced_table, N'<NULL>');
+            PRINT N'            Actual Reference Column        : '
+                + COALESCE(REPLACE(@CSTAD_ADR_FK_actual_referenced_columns, N'|', N', '), N'<NULL>');
+            PRINT N'            Expected ON DELETE              : NO ACTION';
+            PRINT N'            Actual ON DELETE                : '
+                + COALESCE(@CSTAD_ADR_FK_actual_delete_action, N'<NULL>');
+            PRINT N'            Expected ON UPDATE              : NO ACTION';
+            PRINT N'            Actual ON UPDATE                : '
+                + COALESCE(@CSTAD_ADR_FK_actual_update_action, N'<NULL>');
+            PRINT N'            Expected Disabled               : 0';
+            PRINT N'            Actual Disabled                 : '
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_ADR_FK_actual_is_disabled), N'<NULL>');
+            PRINT N'            Expected Not Trusted            : 0';
+            PRINT N'            Actual Not Trusted              : '
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_ADR_FK_actual_is_not_trusted), N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
 
         END;
@@ -690,8 +746,11 @@
     ELSE
     BEGIN
 
-        SELECT TOP (1)
+        /*==========================================================================
+            SEARCH FOR FUNCTIONALLY EQUIVALENT FOREIGN KEY WITH ANOTHER NAME
+        ==========================================================================*/
 
+        SELECT TOP (1)
             @CSTAD_ADR_FK_equivalent_name =
                 fk.name,
 
@@ -719,29 +778,40 @@
                 @CSTAD_ADR_FK_expected_name
 
         AND fk.delete_referential_action = 0
-
         AND fk.update_referential_action = 0
 
         AND
         (
             SELECT COUNT(*)
             FROM sys.foreign_key_columns AS fkc
-            WHERE fkc.constraint_object_id = fk.object_id
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         ) = 1
 
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
-                ON pc.object_id = fkc.parent_object_id
+                ON  pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
+
             INNER JOIN sys.columns AS rc
-                ON rc.object_id = fkc.referenced_object_id
+                ON  rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
-            AND pc.name = N'CSTAD_ADR_id'
-            AND rc.name = N'ADR_id'
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
+            AND fkc.constraint_column_id = 1
+
+            AND pc.name =
+                    N'CSTAD_ADR_id'
+
+            AND rc.name =
+                    N'ADR_id'
         )
 
         ORDER BY fk.name;
@@ -754,11 +824,25 @@
             PRINT N'            Expected Name                  : FK_CSTAD_ADR';
             PRINT N'            Actual Name                    : '
                 + @CSTAD_ADR_FK_equivalent_name;
+            PRINT N'            Column                         : CSTAD_ADR_id';
+            PRINT N'            References                     : reference.Address.ADR_id';
+            PRINT N'            ON DELETE                      : '
+                + COALESCE(@CSTAD_ADR_FK_equivalent_delete_action, N'<NULL>');
+            PRINT N'            ON UPDATE                      : '
+                + COALESCE(@CSTAD_ADR_FK_equivalent_update_action, N'<NULL>');
+            PRINT N'            Disabled                       : '
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_ADR_FK_equivalent_is_disabled), N'<NULL>');
+            PRINT N'            Not Trusted                    : '
+                + COALESCE(CONVERT(nvarchar(1), @CSTAD_ADR_FK_equivalent_is_not_trusted), N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
 
         END
         ELSE
         BEGIN
+
+            /*==========================================================================
+                VALIDATE EXPECTED NAME IS NOT USED BY ANOTHER FK
+            ==========================================================================*/
 
             IF OBJECT_ID(N'customer.FK_CSTAD_ADR', N'F') IS NOT NULL
             BEGIN
@@ -781,13 +865,16 @@
                     + COALESCE(@CSTAD_ADR_FK_conflict_parent, N'<UNKNOWN>');
                 PRINT N'            Constraint was not created. Manual review is required.';
 
-
-                ;THROW 50480,
+                ;THROW 50481,
                     N'Foreign key name conflict prevents safe deployment.',
                     1;
 
             END;
 
+
+            /*==========================================================================
+                CREATE FOREIGN KEY
+            ==========================================================================*/
 
             ALTER TABLE customer.CustomerAddress
                 WITH CHECK
@@ -819,4 +906,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

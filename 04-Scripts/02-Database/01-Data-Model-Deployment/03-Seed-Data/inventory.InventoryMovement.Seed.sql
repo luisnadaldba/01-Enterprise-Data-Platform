@@ -1,5 +1,6 @@
-    PRINT N'    inventory.InventoryMovement';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryMovement';
+    PRINT N'';
 
     DECLARE @INVMV_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -63,8 +64,8 @@
         ELSE
         BEGIN
 
-            DECLARE @INVMV_actual_prefix     nvarchar(5);
-            DECLARE @INVMV_actual_is_active  bit;
+            DECLARE @INVMV_actual_prefix    nvarchar(5);
+            DECLARE @INVMV_actual_is_active bit;
 
 
             SELECT
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

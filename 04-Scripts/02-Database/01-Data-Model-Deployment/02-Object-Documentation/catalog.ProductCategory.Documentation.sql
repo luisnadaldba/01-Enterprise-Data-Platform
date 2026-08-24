@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductCategory';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductCategory';
+    PRINT N'';
 
     DECLARE @PRDCT_expected_description nvarchar(4000);
     DECLARE @PRDCT_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'catalog.ProductCategory')
+
+        AND ep.major_id =
+                OBJECT_ID(N'catalog.ProductCategory')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,6 +47,7 @@
 
         SET @PRDCT_existing_description = NULL;
 
+
         SELECT
             @PRDCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -46,9 +55,14 @@
         FROM sys.extended_properties AS ep
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'catalog.ProductCategory')
+
+        AND ep.major_id =
+                OBJECT_ID(N'catalog.ProductCategory')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
+
+        AND ep.name =
+                N'MS_Description';
 
 
         IF @PRDCT_existing_description =
@@ -71,7 +85,7 @@
                     WHEN LEN(@PRDCT_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @PRDCT_existing_description
-                END;
+                  END;
 
         END;
 
@@ -83,7 +97,7 @@
     ----------------------------------------------------------------------*/
 
     SET @PRDCT_expected_description =
-        N'Foreign key of catalog.Product.';
+        N'Foreign key referencing catalog.Product.';
 
     IF NOT EXISTS
     (
@@ -96,10 +110,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductCategory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDCT_PRD_id'
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDCT_PRD_id'
     )
     BEGIN
 
@@ -121,6 +140,7 @@
 
         SET @PRDCT_existing_description = NULL;
 
+
         SELECT
             @PRDCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -132,10 +152,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductCategory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDCT_PRD_id';
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDCT_PRD_id';
 
 
         IF @PRDCT_existing_description =
@@ -158,7 +183,7 @@
                     WHEN LEN(@PRDCT_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @PRDCT_existing_description
-                END;
+                  END;
 
         END;
 
@@ -170,7 +195,7 @@
     ----------------------------------------------------------------------*/
 
     SET @PRDCT_expected_description =
-        N'Foreign key of catalog.Category.';
+        N'Foreign key referencing catalog.Category.';
 
     IF NOT EXISTS
     (
@@ -183,10 +208,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductCategory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDCT_CTG_id'
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDCT_CTG_id'
     )
     BEGIN
 
@@ -208,6 +238,7 @@
 
         SET @PRDCT_existing_description = NULL;
 
+
         SELECT
             @PRDCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -219,10 +250,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
+
         AND ep.major_id =
                 OBJECT_ID(N'catalog.ProductCategory')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PRDCT_CTG_id';
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PRDCT_CTG_id';
 
 
         IF @PRDCT_existing_description =
@@ -245,11 +281,13 @@
                     WHEN LEN(@PRDCT_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @PRDCT_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

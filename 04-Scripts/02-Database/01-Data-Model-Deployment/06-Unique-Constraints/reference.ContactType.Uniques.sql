@@ -1,5 +1,6 @@
-    PRINT N'    reference.ContactType';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● reference.ContactType';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -80,6 +81,10 @@
 
     WHILE @CTP_UQ_current_id <= @CTP_UQ_max_id
     BEGIN
+
+        /*----------------------------------------------------------------------
+            RESET CURRENT UNIQUE CONSTRAINT STATE
+        ----------------------------------------------------------------------*/
 
         SET @CTP_UQ_expected_name              = NULL;
         SET @CTP_UQ_expected_columns           = NULL;
@@ -613,4 +618,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,10 +1,11 @@
-    PRINT N'    customer.CustomerEmail';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerEmail';
+    PRINT N'';
 
 
-    /*==============================================================================
-        FOREIGN KEY: FK_CSTEM_CST
-    ==============================================================================*/
+    /*========================================================================== 
+        FOREIGN KEY VARIABLES
+    ==========================================================================*/
 
     DECLARE @CSTEM_CST_FK_expected_name                sysname;
     DECLARE @CSTEM_CST_FK_actual_name                  sysname;
@@ -33,9 +34,9 @@
     SET @CSTEM_CST_FK_expected_name = N'FK_CSTEM_CST';
 
 
-    /*==============================================================================
+    /*========================================================================== 
         DEPENDENCY VALIDATION
-    ==============================================================================*/
+    ==========================================================================*/
 
     IF OBJECT_ID(N'customer.CustomerEmail', N'U') IS NULL
     BEGIN
@@ -85,7 +86,7 @@
     END;
 
 
-    /*--------------------------------------------------------------------------
+    /*-------------------------------------------------------------------------- 
         VALIDATE COLUMN COMPATIBILITY
 
         Expected:
@@ -144,23 +145,35 @@
     PRINT N'        [✓] Foreign key dependencies validated : FK_CSTEM_CST';
 
 
-    /*==============================================================================
+    /*========================================================================== 
         LOOK FOR EXPECTED FOREIGN KEY NAME
-    ==============================================================================*/
+    ==========================================================================*/
 
     SELECT
         @CSTEM_CST_FK_actual_name =
             fk.name,
 
         @CSTEM_CST_FK_actual_parent_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.parent_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.parent_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.parent_object_id)
+            ),
 
         @CSTEM_CST_FK_actual_referenced_table =
-            QUOTENAME(OBJECT_SCHEMA_NAME(fk.referenced_object_id))
+            QUOTENAME
+            (
+                OBJECT_SCHEMA_NAME(fk.referenced_object_id)
+            )
             + N'.'
-            + QUOTENAME(OBJECT_NAME(fk.referenced_object_id)),
+            + QUOTENAME
+            (
+                OBJECT_NAME(fk.referenced_object_id)
+            ),
 
         @CSTEM_CST_FK_actual_delete_action =
             fk.delete_referential_action_desc,
@@ -229,9 +242,9 @@
             @CSTEM_CST_FK_expected_name;
 
 
-    /*==============================================================================
+    /*========================================================================== 
         EXPECTED FOREIGN KEY NAME EXISTS
-    ==============================================================================*/
+    ==========================================================================*/
 
     IF @CSTEM_CST_FK_actual_name IS NOT NULL
     BEGIN
@@ -275,33 +288,71 @@
 
             PRINT N'            Expected Table                  : customer.CustomerEmail';
             PRINT N'            Actual Table                    : '
-                + COALESCE(@CSTEM_CST_FK_actual_parent_table, N'<NULL>');
+                + COALESCE
+                (
+                    @CSTEM_CST_FK_actual_parent_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Column                 : CSTEM_CST_id';
             PRINT N'            Actual Column                   : '
-                + COALESCE(@CSTEM_CST_FK_actual_parent_columns, N'<NULL>');
+                + COALESCE
+                (
+                    REPLACE
+                    (
+                        @CSTEM_CST_FK_actual_parent_columns,
+                        N'|',
+                        N', '
+                    ),
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Reference              : customer.Customer.CST_id';
 
             PRINT N'            Actual Reference Table         : '
-                + COALESCE(@CSTEM_CST_FK_actual_referenced_table, N'<NULL>');
+                + COALESCE
+                (
+                    @CSTEM_CST_FK_actual_referenced_table,
+                    N'<NULL>'
+                );
 
             PRINT N'            Actual Reference Column        : '
-                + COALESCE(@CSTEM_CST_FK_actual_referenced_columns, N'<NULL>');
+                + COALESCE
+                (
+                    REPLACE
+                    (
+                        @CSTEM_CST_FK_actual_referenced_columns,
+                        N'|',
+                        N', '
+                    ),
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected ON DELETE              : NO ACTION';
             PRINT N'            Actual ON DELETE                : '
-                + COALESCE(@CSTEM_CST_FK_actual_delete_action, N'<NULL>');
+                + COALESCE
+                (
+                    @CSTEM_CST_FK_actual_delete_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected ON UPDATE              : NO ACTION';
             PRINT N'            Actual ON UPDATE                : '
-                + COALESCE(@CSTEM_CST_FK_actual_update_action, N'<NULL>');
+                + COALESCE
+                (
+                    @CSTEM_CST_FK_actual_update_action,
+                    N'<NULL>'
+                );
 
             PRINT N'            Expected Disabled               : 0';
             PRINT N'            Actual Disabled                 : '
                 + COALESCE
                 (
-                    CONVERT(nvarchar(1), @CSTEM_CST_FK_actual_is_disabled),
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @CSTEM_CST_FK_actual_is_disabled
+                    ),
                     N'<NULL>'
                 );
 
@@ -309,7 +360,11 @@
             PRINT N'            Actual Not Trusted              : '
                 + COALESCE
                 (
-                    CONVERT(nvarchar(1), @CSTEM_CST_FK_actual_is_not_trusted),
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @CSTEM_CST_FK_actual_is_not_trusted
+                    ),
                     N'<NULL>'
                 );
 
@@ -318,12 +373,13 @@
         END;
 
     END
+
     ELSE
     BEGIN
 
-        /*==========================================================================
+        /*======================================================================
             SEARCH FOR FUNCTIONALLY EQUIVALENT FOREIGN KEY WITH ANOTHER NAME
-        ==========================================================================*/
+        ======================================================================*/
 
         SELECT TOP (1)
 
@@ -365,6 +421,7 @@
 
             WHERE fkc.constraint_object_id =
                     fk.object_id
+
         ) = 1
 
         AND EXISTS
@@ -396,40 +453,111 @@
         ORDER BY fk.name;
 
 
+        /*---------------------------------------------------------------------- 
+            EQUIVALENT FK EXISTS WITH ANOTHER NAME
+        ----------------------------------------------------------------------*/
+
         IF @CSTEM_CST_FK_equivalent_name IS NOT NULL
         BEGIN
 
             PRINT N'        [!] Foreign key naming mismatch';
+
             PRINT N'            Expected Name                  : FK_CSTEM_CST';
+
             PRINT N'            Actual Name                    : '
                 + @CSTEM_CST_FK_equivalent_name;
+
             PRINT N'            Column                         : CSTEM_CST_id';
+
             PRINT N'            References                     : customer.Customer.CST_id';
+
+            PRINT N'            ON DELETE                      : '
+                + COALESCE
+                (
+                    @CSTEM_CST_FK_equivalent_delete_action,
+                    N'<NULL>'
+                );
+
+            PRINT N'            ON UPDATE                      : '
+                + COALESCE
+                (
+                    @CSTEM_CST_FK_equivalent_update_action,
+                    N'<NULL>'
+                );
+
+            PRINT N'            Disabled                       : '
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @CSTEM_CST_FK_equivalent_is_disabled
+                    ),
+                    N'<NULL>'
+                );
+
+            PRINT N'            Not Trusted                    : '
+                + COALESCE
+                (
+                    CONVERT
+                    (
+                        nvarchar(1),
+                        @CSTEM_CST_FK_equivalent_is_not_trusted
+                    ),
+                    N'<NULL>'
+                );
+
             PRINT N'            Existing constraint was preserved for review.';
 
         END
+
         ELSE
         BEGIN
+
+            /*==================================================================
+                VALIDATE EXPECTED NAME IS NOT USED BY ANOTHER FK
+            ==================================================================*/
 
             IF OBJECT_ID(N'customer.FK_CSTEM_CST', N'F') IS NOT NULL
             BEGIN
 
                 SELECT
                     @CSTEM_CST_FK_conflict_parent =
-                        QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id))
+                        QUOTENAME
+                        (
+                            OBJECT_SCHEMA_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
                         + N'.'
-                        + QUOTENAME(OBJECT_NAME(fk.parent_object_id))
+                        + QUOTENAME
+                        (
+                            OBJECT_NAME
+                            (
+                                fk.parent_object_id
+                            )
+                        )
 
                 FROM sys.foreign_keys AS fk
 
                 WHERE fk.object_id =
-                        OBJECT_ID(N'customer.FK_CSTEM_CST', N'F');
+                        OBJECT_ID
+                        (
+                            N'customer.FK_CSTEM_CST',
+                            N'F'
+                        );
 
 
                 PRINT N'        [!] Foreign key name conflict       : FK_CSTEM_CST';
                 PRINT N'            Expected Table                  : customer.CustomerEmail';
                 PRINT N'            Existing Parent                 : '
-                    + COALESCE(@CSTEM_CST_FK_conflict_parent, N'<UNKNOWN>');
+                    + COALESCE
+                    (
+                        @CSTEM_CST_FK_conflict_parent,
+                        N'<UNKNOWN>'
+                    );
+
                 PRINT N'            Constraint was not created. Manual review is required.';
 
 
@@ -439,6 +567,10 @@
 
             END;
 
+
+            /*==================================================================
+                CREATE FOREIGN KEY
+            ==================================================================*/
 
             ALTER TABLE customer.CustomerEmail
                 WITH CHECK
@@ -470,4 +602,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

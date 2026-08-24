@@ -1,5 +1,4 @@
-    PRINT N'    customer.CustomerType';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● customer.CustomerType';
 
 
     /*==========================================================================
@@ -285,22 +284,22 @@
     (
         N'COLUMN',
         N'CSTCT_code',
-        N'Stores the stable technical code used to identify the customer type.'
+        N'Stores the stable system code that uniquely identifies the customer type.'
     ),
     (
         N'COLUMN',
         N'CSTCT_name',
-        N'Stores the descriptive name of the customer type.'
+        N'Stores the human-readable name of the customer type for presentation purposes.'
     ),
     (
         N'COLUMN',
         N'CSTCT_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'CSTCT_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -413,19 +412,10 @@
         SEED DATA VALIDATION
     ==========================================================================*/
 
-    IF EXISTS
-    (
-        SELECT 1
+    DECLARE @CSTCT_FV_invalid_seed_data int = 0;
 
-        FROM metadata.TablePrefix
 
-        WHERE PFX_schema_name = N'customer'
-        AND PFX_table_name = N'CustomerType'
-        AND PFX_prefix = N'CSTCT'
-        AND PFX_is_active = 1
-    )
-
-    AND EXISTS
+    IF NOT EXISTS
     (
         SELECT 1
 
@@ -434,8 +424,14 @@
         WHERE CSTCT_code = N'INDIVIDUAL'
         AND CSTCT_name = N'Pessoa Física'
     )
+    BEGIN
 
-    AND EXISTS
+        SET @CSTCT_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    IF NOT EXISTS
     (
         SELECT 1
 
@@ -444,27 +440,42 @@
         WHERE CSTCT_code = N'COMPANY'
         AND CSTCT_name = N'Pessoa Jurídica'
     )
+    BEGIN
 
-    AND
+        SET @CSTCT_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        ENSURE EXACT EXPECTED DOMAIN ROW COUNT
+    --------------------------------------------------------------------------*/
+
+    IF
     (
         SELECT COUNT(*)
 
         FROM customer.CustomerType
-
-        WHERE CSTCT_code IN
-        (
-            N'INDIVIDUAL',
-            N'COMPANY'
-        )
-    ) = 2
-
+    ) <> 2
     BEGIN
+
+        SET @CSTCT_FV_invalid_seed_data += 1;
+
+    END;
+
+
+    IF @CSTCT_FV_invalid_seed_data = 0
+    BEGIN
+
         SET @CSTCT_FV_seed_data_status = N'VALID';
+
     END
     ELSE
     BEGIN
+
         SET @CSTCT_FV_seed_data_status = N'FAILED';
         SET @CSTCT_FV_validation_errors += 1;
+
     END;
 
 
@@ -737,11 +748,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @CSTCT_FV_table_status;
@@ -755,23 +762,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @CSTCT_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @CSTCT_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @CSTCT_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @CSTCT_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -781,14 +782,17 @@
                 @CSTCT_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @CSTCT_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50330,
             N'Final validation failed for customer.CustomerType.',
             1;
 
     END;
-
-
-    PRINT N'';

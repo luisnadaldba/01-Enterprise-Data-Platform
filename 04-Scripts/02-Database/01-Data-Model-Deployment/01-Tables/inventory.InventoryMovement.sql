@@ -20,7 +20,8 @@
           for exits.
         - Do not allow zero-quantity movements.
         - Classify each movement through InventoryMovementReason.
-        - Optionally relate sale-originated movements to the composite key of sales.TransactionItem.
+        - Optionally relate sale-originated movements to the composite key of
+          sales.TransactionItem.
         - Preserve the business event time separately from row creation time.
         - Prefer compensating movements instead of rewriting historical facts.
         - Keep free-text observations outside this table in InventoryMovementNote.
@@ -36,8 +37,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    inventory.InventoryMovement';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● inventory.InventoryMovement';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -47,8 +48,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -72,18 +76,19 @@
 
         CREATE TABLE inventory.InventoryMovement
         (
-            INVMV_id            bigint       IDENTITY(1,1) NOT NULL,
+            INVMV_id                    bigint       IDENTITY(1,1) NOT NULL,
 
-            INVMV_PRDVA_id      int          NOT NULL,
-            INVMV_INVMR_id      smallint     NOT NULL,
+            INVMV_PRDVA_id              int          NOT NULL,
+            INVMV_INVMR_id              smallint     NOT NULL,
+
             INVMV_TRNIT_id              bigint       NULL,
             INVMV_TRNIT_transaction_at  datetime2(0) NULL,
 
-            INVMV_quantity      int          NOT NULL,
-            INVMV_movement_at   datetime2(0) NOT NULL,
+            INVMV_quantity              int          NOT NULL,
+            INVMV_movement_at           datetime2(0) NOT NULL,
 
-            INVMV_created_at    datetime2(0) NOT NULL,
-            INVMV_updated_at    datetime2(0) NOT NULL,
+            INVMV_created_at            datetime2(0) NOT NULL,
+            INVMV_updated_at            datetime2(0) NOT NULL,
 
             CONSTRAINT PK_INVMV
                 PRIMARY KEY CLUSTERED
@@ -101,7 +106,6 @@
         PRINT N'            Primary Key                     : INVMV_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -115,18 +119,28 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -154,7 +168,8 @@
 
 
         SELECT
-            @INVMV_ActualPrimaryKeyName = kc.name
+            @INVMV_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -165,7 +180,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'inventory.InventoryMovement')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @INVMV_ActualPrimaryKeyName IS NULL
@@ -180,6 +196,10 @@
         END;
 
 
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY DEFINITION
+        --------------------------------------------------------------------------*/
+
         IF NOT EXISTS
         (
             SELECT 1
@@ -193,30 +213,48 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'inventory.InventoryMovement')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
+
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
             (
                 SELECT COUNT(*)
+
                 FROM sys.index_columns AS ic
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
             AND EXISTS
             (
                 SELECT 1
+
                 FROM sys.index_columns AS ic
+
                 INNER JOIN sys.columns AS c
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'INVMV_id'
+
+                AND c.name =
+                        N'INVMV_id'
             )
         )
         BEGIN
@@ -231,7 +269,12 @@
         END;
 
 
-        IF @INVMV_ActualPrimaryKeyName <> N'PK_INVMV'
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY NAME
+        --------------------------------------------------------------------------*/
+
+        IF @INVMV_ActualPrimaryKeyName <>
+                N'PK_INVMV'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -253,138 +296,245 @@
             COLUMN: INVMV_PRDVA_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_PRDVA_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_PRDVA_id'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_PRDVA_id int NULL;
 
             PRINT N'            [+] Column added                  : INVMV_PRDVA_id';
             PRINT N'            [!] Pending action                : Backfill INVMV_PRDVA_id before enforcing NOT NULL';
+
         END
         ELSE IF NOT EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_PRDVA_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_PRDVA_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_PRDVA_id';
-            ;THROW 50904, N'Column INVMV_PRDVA_id does not match the expected data type int.', 1;
+
+            ;THROW 50904,
+                N'Column INVMV_PRDVA_id does not match the expected data type int.',
+                1;
+
         END
         ELSE IF EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_PRDVA_id'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_PRDVA_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [!] Column nullable               : INVMV_PRDVA_id';
             PRINT N'            [!] Expected final definition     : int NOT NULL';
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+
         END
         ELSE
+        BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_PRDVA_id';
+
+        END;
 
 
         /*--------------------------------------------------------------------------
             COLUMN: INVMV_INVMR_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_INVMR_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_INVMR_id'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_INVMR_id smallint NULL;
 
             PRINT N'            [+] Column added                  : INVMV_INVMR_id';
             PRINT N'            [!] Pending action                : Backfill INVMV_INVMR_id before enforcing NOT NULL';
+
         END
         ELSE IF NOT EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_INVMR_id'
-            AND TYPE_NAME(c.user_type_id) = N'smallint'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_INVMR_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'smallint'
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_INVMR_id';
-            ;THROW 50905, N'Column INVMV_INVMR_id does not match the expected data type smallint.', 1;
+
+            ;THROW 50905,
+                N'Column INVMV_INVMR_id does not match the expected data type smallint.',
+                1;
+
         END
         ELSE IF EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_INVMR_id'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_INVMR_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [!] Column nullable               : INVMV_INVMR_id';
             PRINT N'            [!] Expected final definition     : smallint NOT NULL';
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+
         END
         ELSE
+        BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_INVMR_id';
+
+        END;
 
 
         /*--------------------------------------------------------------------------
             COLUMN: INVMV_TRNIT_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_TRNIT_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_TRNIT_id'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_TRNIT_id bigint NULL;
 
             PRINT N'            [+] Column added                  : INVMV_TRNIT_id';
+
         END
         ELSE IF NOT EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_TRNIT_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_TRNIT_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_TRNIT_id';
-            ;THROW 50906, N'Column INVMV_TRNIT_id does not match the expected definition bigint NULL.', 1;
+
+            ;THROW 50906,
+                N'Column INVMV_TRNIT_id does not match the expected definition bigint NULL.',
+                1;
+
         END
         ELSE
+        BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_TRNIT_id';
+
+        END;
 
 
         /*--------------------------------------------------------------------------
             COLUMN: INVMV_TRNIT_transaction_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_TRNIT_transaction_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_TRNIT_transaction_at'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_TRNIT_transaction_at datetime2(0) NULL;
 
             PRINT N'            [+] Column added                  : INVMV_TRNIT_transaction_at';
+
         END
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_TRNIT_transaction_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_TRNIT_transaction_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_TRNIT_transaction_at';
 
             ;THROW 50912,
                 N'Column INVMV_TRNIT_transaction_at does not match the expected definition datetime2(0) NULL.',
                 1;
+
         END
         ELSE
         BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_TRNIT_transaction_at';
+
         END;
 
 
@@ -392,159 +542,290 @@
             COLUMN: INVMV_quantity
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_quantity') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_quantity'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_quantity int NULL;
 
             PRINT N'            [+] Column added                  : INVMV_quantity';
             PRINT N'            [!] Pending action                : Backfill INVMV_quantity before enforcing NOT NULL';
+
         END
         ELSE IF NOT EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_quantity'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_quantity'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_quantity';
-            ;THROW 50907, N'Column INVMV_quantity does not match the expected data type int.', 1;
+
+            ;THROW 50907,
+                N'Column INVMV_quantity does not match the expected data type int.',
+                1;
+
         END
         ELSE IF EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_quantity'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_quantity'
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [!] Column nullable               : INVMV_quantity';
             PRINT N'            [!] Expected final definition     : int NOT NULL';
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+
         END
         ELSE
+        BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_quantity';
+
+        END;
 
 
         /*--------------------------------------------------------------------------
             COLUMN: INVMV_movement_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_movement_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_movement_at'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_movement_at datetime2(0) NULL;
 
             PRINT N'            [+] Column added                  : INVMV_movement_at';
             PRINT N'            [!] Pending action                : Backfill INVMV_movement_at before enforcing NOT NULL';
+
         END
         ELSE IF NOT EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_movement_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_movement_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_movement_at';
-            ;THROW 50908, N'Column INVMV_movement_at does not match the expected data type datetime2(0).', 1;
+
+            ;THROW 50908,
+                N'Column INVMV_movement_at does not match the expected data type datetime2(0).',
+                1;
+
         END
         ELSE IF EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_movement_at'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_movement_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [!] Column nullable               : INVMV_movement_at';
             PRINT N'            [!] Expected final definition     : datetime2(0) NOT NULL';
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+
         END
         ELSE
+        BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_movement_at';
+
+        END;
 
 
         /*--------------------------------------------------------------------------
             COLUMN: INVMV_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_created_at'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_created_at datetime2(0) NULL;
 
             PRINT N'            [+] Column added                  : INVMV_created_at';
             PRINT N'            [!] Pending action                : Backfill INVMV_created_at before enforcing NOT NULL';
+
         END
         ELSE IF NOT EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_created_at';
-            ;THROW 50909, N'Column INVMV_created_at does not match the expected data type datetime2(0).', 1;
+
+            ;THROW 50909,
+                N'Column INVMV_created_at does not match the expected data type datetime2(0).',
+                1;
+
         END
         ELSE IF EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_created_at'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [!] Column nullable               : INVMV_created_at';
             PRINT N'            [!] Expected final definition     : datetime2(0) NOT NULL';
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+
         END
         ELSE
+        BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_created_at';
+
+        END;
 
 
         /*--------------------------------------------------------------------------
             COLUMN: INVMV_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovement', N'INVMV_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovement',
+            N'INVMV_updated_at'
+        ) IS NULL
         BEGIN
+
             ALTER TABLE inventory.InventoryMovement
                 ADD INVMV_updated_at datetime2(0) NULL;
 
             PRINT N'            [+] Column added                  : INVMV_updated_at';
             PRINT N'            [!] Pending action                : Backfill INVMV_updated_at before enforcing NOT NULL';
+
         END
         ELSE IF NOT EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
+
             PRINT N'            [X] Column definition mismatch    : INVMV_updated_at';
-            ;THROW 50910, N'Column INVMV_updated_at does not match the expected data type datetime2(0).', 1;
+
+            ;THROW 50910,
+                N'Column INVMV_updated_at does not match the expected data type datetime2(0).',
+                1;
+
         END
         ELSE IF EXISTS
         (
-            SELECT 1 FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovement')
-            AND c.name = N'INVMV_updated_at'
+            SELECT 1
+
+            FROM sys.columns AS c
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovement')
+
+            AND c.name =
+                    N'INVMV_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
+
             PRINT N'            [!] Column nullable               : INVMV_updated_at';
             PRINT N'            [!] Expected final definition     : datetime2(0) NOT NULL';
             PRINT N'            [!] Pending action                : Backfill and enforce NOT NULL';
+
         END
         ELSE
+        BEGIN
+
             PRINT N'            [•] Column validated              : INVMV_updated_at';
+
+        END;
 
     END;
 
@@ -571,8 +852,11 @@
                 OBJECT_ID(N'inventory.InventoryMovement')
 
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -592,4 +876,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

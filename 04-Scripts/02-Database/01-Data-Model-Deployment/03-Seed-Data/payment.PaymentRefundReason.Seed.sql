@@ -1,5 +1,6 @@
-    PRINT N'    payment.PaymentRefundReason';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.PaymentRefundReason';
+    PRINT N'';
 
     DECLARE @PAYRR_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -127,13 +128,13 @@
             @PAYRR_seed_timestamp
         );
 
-        PRINT N'        [+] Payment refund reason added    : CUSTOMER_RETURN';
+        PRINT N'        [+] Payment refund reason added : CUSTOMER_RETURN';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'        [•] Payment refund reason validated: CUSTOMER_RETURN';
+        PRINT N'        [•] Payment refund reason validated : CUSTOMER_RETURN';
 
     END;
 
@@ -163,13 +164,13 @@
             @PAYRR_seed_timestamp
         );
 
-        PRINT N'        [+] Payment refund reason added    : DUPLICATE_CHARGE';
+        PRINT N'        [+] Payment refund reason added : DUPLICATE_CHARGE';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'        [•] Payment refund reason validated: DUPLICATE_CHARGE';
+        PRINT N'        [•] Payment refund reason validated : DUPLICATE_CHARGE';
 
     END;
 
@@ -199,13 +200,13 @@
             @PAYRR_seed_timestamp
         );
 
-        PRINT N'        [+] Payment refund reason added    : FRAUD';
+        PRINT N'        [+] Payment refund reason added : FRAUD';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'        [•] Payment refund reason validated: FRAUD';
+        PRINT N'        [•] Payment refund reason validated : FRAUD';
 
     END;
 
@@ -235,13 +236,13 @@
             @PAYRR_seed_timestamp
         );
 
-        PRINT N'        [+] Payment refund reason added    : OPERATIONAL_ERROR';
+        PRINT N'        [+] Payment refund reason added : OPERATIONAL_ERROR';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'        [•] Payment refund reason validated: OPERATIONAL_ERROR';
+        PRINT N'        [•] Payment refund reason validated : OPERATIONAL_ERROR';
 
     END;
 
@@ -271,15 +272,17 @@
             @PAYRR_seed_timestamp
         );
 
-        PRINT N'        [+] Payment refund reason added    : ORDER_CANCELLATION';
+        PRINT N'        [+] Payment refund reason added : ORDER_CANCELLATION';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'        [•] Payment refund reason validated: ORDER_CANCELLATION';
+        PRINT N'        [•] Payment refund reason validated : ORDER_CANCELLATION';
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerDocument';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerDocument';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -205,7 +206,7 @@
 
             IF @CSTCD_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @CSTCD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @CSTCD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @CSTCD_UQ_actual_is_disabled = 0
 
@@ -236,7 +237,11 @@
                     + @CSTCD_UQ_expected_name;
 
                 PRINT N'            Actual Name                     : '
-                    + COALESCE(@CSTCD_UQ_actual_name, N'<NULL>');
+                    + COALESCE
+                    (
+                        @CSTCD_UQ_actual_name,
+                        N'<NULL>'
+                    );
 
                 PRINT N'            Expected Columns                : '
                     + REPLACE
@@ -367,9 +372,10 @@
 
             WHERE uq.UQ_columns COLLATE Latin1_General_100_BIN2
                     =
-                @CSTCD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                  @CSTCD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-            ORDER BY uq.UQ_name;
+            ORDER BY
+                uq.UQ_name;
 
 
             /*------------------------------------------------------------------
@@ -504,9 +510,10 @@
 
                 WHERE idx.IndexColumns COLLATE Latin1_General_100_BIN2
                         =
-                    @CSTCD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                      @CSTCD_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
-                ORDER BY idx.IndexName;
+                ORDER BY
+                    idx.IndexName;
 
 
                 /*--------------------------------------------------------------
@@ -672,4 +679,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

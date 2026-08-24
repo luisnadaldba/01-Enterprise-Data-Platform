@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductImage';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductImage';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -141,7 +142,7 @@
     END;
 
 
-    PRINT N'        [✓] Foreign key dependencies validated';
+    PRINT N'        [✓] Foreign key dependencies validated : FK_PRDIM_PRD';
 
 
     /*==========================================================================
@@ -404,6 +405,7 @@
 
             WHERE fkc.constraint_object_id =
                     fk.object_id
+
         ) = 1
 
         AND EXISTS
@@ -584,4 +586,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

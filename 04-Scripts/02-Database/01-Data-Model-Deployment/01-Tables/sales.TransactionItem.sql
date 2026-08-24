@@ -35,8 +35,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    sales.TransactionItem';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● sales.TransactionItem';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -46,8 +46,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.partition_functions
-        WHERE name = N'PF_SALES_MONTHLY'
+
+        WHERE name =
+                N'PF_SALES_MONTHLY'
     )
     BEGIN
 
@@ -61,8 +64,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.partition_schemes
-        WHERE name = N'PS_SALES_MONTHLY'
+
+        WHERE name =
+                N'PS_SALES_MONTHLY'
     )
     BEGIN
 
@@ -122,6 +128,7 @@
 
         PRINT N'        [•] Table already exists            : sales.TransactionItem';
 
+
         /*--------------------------------------------------------------------------
             PRIMARY KEY COLUMN: TRNIT_id
         --------------------------------------------------------------------------*/
@@ -129,17 +136,25 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 0
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
             AND CONVERT(bigint, ic.increment_value) = 1
         )
@@ -167,9 +182,14 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_transaction_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_transaction_at'
         )
         BEGIN
 
@@ -183,10 +203,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_transaction_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_transaction_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
             AND c.is_nullable = 0
         )
@@ -206,20 +234,29 @@
 
         END;
 
+
         /*--------------------------------------------------------------------------
             PRIMARY KEY: PK_TRNIT
         --------------------------------------------------------------------------*/
 
         DECLARE @TRNIT_ActualPrimaryKeyName sysname;
 
+
         SELECT
-            @TRNIT_ActualPrimaryKeyName = kc.name
+            @TRNIT_ActualPrimaryKeyName =
+                kc.name
+
         FROM sys.key_constraints AS kc
+
         INNER JOIN sys.indexes AS i
             ON  i.object_id = kc.parent_object_id
             AND i.index_id = kc.unique_index_id
-        WHERE kc.parent_object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND kc.type = N'PK';
+
+        WHERE kc.parent_object_id =
+                OBJECT_ID(N'sales.TransactionItem')
+
+        AND kc.type =
+                N'PK';
 
 
         IF @TRNIT_ActualPrimaryKeyName IS NULL
@@ -241,14 +278,18 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.key_constraints AS kc
 
             INNER JOIN sys.indexes AS i
                 ON  i.object_id = kc.parent_object_id
                 AND i.index_id = kc.unique_index_id
 
-            WHERE kc.parent_object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND kc.type = N'PK'
+            WHERE kc.parent_object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND kc.type =
+                    N'PK'
 
             AND i.type = 1
             AND i.is_unique = 1
@@ -256,40 +297,60 @@
             AND
             (
                 SELECT COUNT(*)
+
                 FROM sys.index_columns AS ic
-                WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal > 0
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
+                AND ic.key_ordinal > 0
             ) = 2
 
             AND EXISTS
             (
                 SELECT 1
+
                 FROM sys.index_columns AS ic
 
                 INNER JOIN sys.columns AS c
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal = 1
-                    AND c.name = N'TRNIT_id'
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
+                AND ic.key_ordinal = 1
+
+                AND c.name =
+                        N'TRNIT_id'
             )
 
             AND EXISTS
             (
                 SELECT 1
+
                 FROM sys.index_columns AS ic
 
                 INNER JOIN sys.columns AS c
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                    AND ic.index_id = kc.unique_index_id
-                    AND ic.key_ordinal = 2
-                    AND c.name = N'TRNIT_transaction_at'
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
+                AND ic.key_ordinal = 2
+
+                AND c.name =
+                        N'TRNIT_transaction_at'
             )
         )
         BEGIN
@@ -308,7 +369,8 @@
             VALIDATE PRIMARY KEY NAME
         --------------------------------------------------------------------------*/
 
-        IF @TRNIT_ActualPrimaryKeyName <> N'PK_TRNIT'
+        IF @TRNIT_ActualPrimaryKeyName <>
+                N'PK_TRNIT'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -325,15 +387,21 @@
 
         END;
 
+
         /*--------------------------------------------------------------------------
             COLUMN: TRNIT_TRN_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionItem', N'TRNIT_TRN_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionItem',
+            N'TRNIT_TRN_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionItem
                 ADD TRNIT_TRN_id bigint NULL;
+
 
             PRINT N'            [+] Column added                  : TRNIT_TRN_id';
             PRINT N'            [!] Pending action                : Backfill TRNIT_TRN_id before enforcing NOT NULL';
@@ -342,10 +410,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_TRN_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_TRN_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
         )
         BEGIN
 
@@ -359,9 +434,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_TRN_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_TRN_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -378,15 +459,21 @@
 
         END;
 
+
         /*--------------------------------------------------------------------------
             COLUMN: TRNIT_PRDVA_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionItem', N'TRNIT_PRDVA_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionItem',
+            N'TRNIT_PRDVA_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionItem
                 ADD TRNIT_PRDVA_id int NULL;
+
 
             PRINT N'            [+] Column added                  : TRNIT_PRDVA_id';
             PRINT N'            [!] Pending action                : Backfill TRNIT_PRDVA_id before enforcing NOT NULL';
@@ -395,10 +482,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_PRDVA_id'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_PRDVA_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
 
@@ -412,9 +506,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_PRDVA_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_PRDVA_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -431,15 +531,21 @@
 
         END;
 
+
         /*--------------------------------------------------------------------------
             COLUMN: TRNIT_quantity
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionItem', N'TRNIT_quantity') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionItem',
+            N'TRNIT_quantity'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionItem
                 ADD TRNIT_quantity int NULL;
+
 
             PRINT N'            [+] Column added                  : TRNIT_quantity';
             PRINT N'            [!] Pending action                : Backfill TRNIT_quantity before enforcing NOT NULL';
@@ -448,10 +554,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_quantity'
-            AND TYPE_NAME(c.user_type_id) = N'int'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_quantity'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'int'
         )
         BEGIN
 
@@ -465,9 +578,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_quantity'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_quantity'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -484,15 +603,21 @@
 
         END;
 
+
         /*--------------------------------------------------------------------------
             COLUMN: TRNIT_unit_price
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionItem', N'TRNIT_unit_price') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionItem',
+            N'TRNIT_unit_price'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionItem
                 ADD TRNIT_unit_price decimal(19,2) NULL;
+
 
             PRINT N'            [+] Column added                  : TRNIT_unit_price';
             PRINT N'            [!] Pending action                : Backfill TRNIT_unit_price before enforcing NOT NULL';
@@ -501,10 +626,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_unit_price'
-            AND TYPE_NAME(c.user_type_id) = N'decimal'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_unit_price'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'decimal'
+
             AND c.precision = 19
             AND c.scale = 2
         )
@@ -520,9 +653,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_unit_price'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_unit_price'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -544,11 +683,16 @@
             COLUMN: TRNIT_unit_discount
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionItem', N'TRNIT_unit_discount') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionItem',
+            N'TRNIT_unit_discount'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionItem
                 ADD TRNIT_unit_discount decimal(19,2) NULL;
+
 
             PRINT N'            [+] Column added                  : TRNIT_unit_discount';
             PRINT N'            [!] Pending action                : Backfill TRNIT_unit_discount before enforcing NOT NULL';
@@ -557,10 +701,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_unit_discount'
-            AND TYPE_NAME(c.user_type_id) = N'decimal'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_unit_discount'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'decimal'
+
             AND c.precision = 19
             AND c.scale = 2
         )
@@ -576,9 +728,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_unit_discount'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_unit_discount'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -595,15 +753,21 @@
 
         END;
 
+
         /*--------------------------------------------------------------------------
             COLUMN: TRNIT_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionItem', N'TRNIT_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionItem',
+            N'TRNIT_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionItem
                 ADD TRNIT_created_at datetime2(0) NULL;
+
 
             PRINT N'            [+] Column added                  : TRNIT_created_at';
             PRINT N'            [!] Pending action                : Backfill TRNIT_created_at before enforcing NOT NULL';
@@ -612,10 +776,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -630,9 +802,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_created_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -654,11 +832,16 @@
             COLUMN: TRNIT_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'sales.TransactionItem', N'TRNIT_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'sales.TransactionItem',
+            N'TRNIT_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE sales.TransactionItem
                 ADD TRNIT_updated_at datetime2(0) NULL;
+
 
             PRINT N'            [+] Column added                  : TRNIT_updated_at';
             PRINT N'            [!] Pending action                : Backfill TRNIT_updated_at before enforcing NOT NULL';
@@ -667,10 +850,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -685,9 +876,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'sales.TransactionItem')
-            AND c.name = N'TRNIT_updated_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'sales.TransactionItem')
+
+            AND c.name =
+                    N'TRNIT_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -704,7 +901,8 @@
 
         END;
 
-END;
+    END;
+
 
     /*==============================================================================
         PARTITION STRUCTURE VALIDATION
@@ -713,6 +911,7 @@ END;
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.indexes AS i
 
         INNER JOIN sys.key_constraints AS kc
@@ -738,12 +937,20 @@ END;
             ON  c.object_id = ic.object_id
             AND c.column_id = ic.column_id
 
-        WHERE i.object_id = OBJECT_ID(N'sales.TransactionItem')
-          AND i.type = 1
-          AND i.is_unique = 1
-          AND ps.name = N'PS_SALES_MONTHLY'
-          AND pf.name = N'PF_SALES_MONTHLY'
-          AND c.name = N'TRNIT_transaction_at'
+        WHERE i.object_id =
+                OBJECT_ID(N'sales.TransactionItem')
+
+        AND i.type = 1
+        AND i.is_unique = 1
+
+        AND ps.name =
+                N'PS_SALES_MONTHLY'
+
+        AND pf.name =
+                N'PF_SALES_MONTHLY'
+
+        AND c.name =
+                N'TRNIT_transaction_at'
     )
     BEGIN
 
@@ -764,4 +971,7 @@ END;
 
     END;
 
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

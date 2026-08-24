@@ -23,7 +23,7 @@
         - Allow NULL valid_to to represent an open-ended price period.
         - Do not use is_active because temporal validity determines applicability.
         - Do not use updated_at because historical price records should not behave
-        like ordinary mutable master-data rows.
+          like ordinary mutable master-data rows.
         - Store catalog operational data in FG_CORE.
         - Do not partition catalog operational tables.
         - Deploy default constraints in the dedicated Defaults stage.
@@ -37,8 +37,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    catalog.ProductVariantPrice';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● catalog.ProductVariantPrice';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -699,4 +699,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

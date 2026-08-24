@@ -1,5 +1,6 @@
-    PRINT N'    sales.TransactionStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.TransactionStatus';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -59,12 +60,14 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'sales.DF_TRNST_is_active', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_TRNST_is_active';
-            PRINT N'            Expected Table                  : sales.TransactionStatus';
-            PRINT N'            Expected Column                 : TRNST_is_active';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : sales.TransactionStatus';
+            PRINT N'            Expected Column               : TRNST_is_active';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@TRNST_DEFAULT_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50071,
                 N'Default constraint DF_TRNST_is_active already exists on another object.',
@@ -72,13 +75,15 @@
 
         END;
 
+
         ALTER TABLE sales.TransactionStatus
             ADD CONSTRAINT DF_TRNST_is_active
             DEFAULT (1) FOR TRNST_is_active;
 
-        PRINT N'        [+] Default constraint added        : DF_TRNST_is_active';
-        PRINT N'            Column                          : TRNST_is_active';
-        PRINT N'            Definition                      : DEFAULT (1)';
+
+        PRINT N'        [+] Default constraint added      : DF_TRNST_is_active';
+        PRINT N'            Column                        : TRNST_is_active';
+        PRINT N'            Definition                    : DEFAULT (1)';
 
     END
 
@@ -111,24 +116,25 @@
                 )
             );
 
+
         IF @TRNST_DEFAULT_actual_name = @TRNST_DEFAULT_expected_name
         AND TRY_CONVERT(int, @TRNST_DEFAULT_normalized_definition) = 1
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_TRNST_is_active';
-            PRINT N'            Column                          : TRNST_is_active';
-            PRINT N'            Definition                      : DEFAULT (1)';
+            PRINT N'        [•] Default constraint validated  : DF_TRNST_is_active';
+            PRINT N'            Column                        : TRNST_is_active';
+            PRINT N'            Definition                    : DEFAULT (1)';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : TRNST_is_active';
-            PRINT N'            Expected Name                   : DF_TRNST_is_active';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : TRNST_is_active';
+            PRINT N'            Expected Name                 : DF_TRNST_is_active';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@TRNST_DEFAULT_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (1)';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (1)';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@TRNST_DEFAULT_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
 
@@ -183,12 +189,14 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'sales.DF_TRNST_created_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_TRNST_created_at';
-            PRINT N'            Expected Table                  : sales.TransactionStatus';
-            PRINT N'            Expected Column                 : TRNST_created_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : sales.TransactionStatus';
+            PRINT N'            Expected Column               : TRNST_created_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@TRNST_DEFAULT_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50072,
                 N'Default constraint DF_TRNST_created_at already exists on another object.',
@@ -196,13 +204,15 @@
 
         END;
 
+
         ALTER TABLE sales.TransactionStatus
             ADD CONSTRAINT DF_TRNST_created_at
             DEFAULT (SYSDATETIME()) FOR TRNST_created_at;
 
-        PRINT N'        [+] Default constraint added        : DF_TRNST_created_at';
-        PRINT N'            Column                          : TRNST_created_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+        PRINT N'        [+] Default constraint added      : DF_TRNST_created_at';
+        PRINT N'            Column                        : TRNST_created_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
     END
 
@@ -235,24 +245,25 @@
                 )
             );
 
+
         IF @TRNST_DEFAULT_actual_name = @TRNST_DEFAULT_expected_name
         AND @TRNST_DEFAULT_normalized_definition = N'sysdatetime'
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_TRNST_created_at';
-            PRINT N'            Column                          : TRNST_created_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+            PRINT N'        [•] Default constraint validated  : DF_TRNST_created_at';
+            PRINT N'            Column                        : TRNST_created_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : TRNST_created_at';
-            PRINT N'            Expected Name                   : DF_TRNST_created_at';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : TRNST_created_at';
+            PRINT N'            Expected Name                 : DF_TRNST_created_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@TRNST_DEFAULT_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@TRNST_DEFAULT_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
 
@@ -307,12 +318,14 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'sales.DF_TRNST_updated_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_TRNST_updated_at';
-            PRINT N'            Expected Table                  : sales.TransactionStatus';
-            PRINT N'            Expected Column                 : TRNST_updated_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : sales.TransactionStatus';
+            PRINT N'            Expected Column               : TRNST_updated_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@TRNST_DEFAULT_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50073,
                 N'Default constraint DF_TRNST_updated_at already exists on another object.',
@@ -320,13 +333,15 @@
 
         END;
 
+
         ALTER TABLE sales.TransactionStatus
             ADD CONSTRAINT DF_TRNST_updated_at
             DEFAULT (SYSDATETIME()) FOR TRNST_updated_at;
 
-        PRINT N'        [+] Default constraint added        : DF_TRNST_updated_at';
-        PRINT N'            Column                          : TRNST_updated_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+        PRINT N'        [+] Default constraint added      : DF_TRNST_updated_at';
+        PRINT N'            Column                        : TRNST_updated_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
     END
 
@@ -359,24 +374,25 @@
                 )
             );
 
+
         IF @TRNST_DEFAULT_actual_name = @TRNST_DEFAULT_expected_name
         AND @TRNST_DEFAULT_normalized_definition = N'sysdatetime'
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_TRNST_updated_at';
-            PRINT N'            Column                          : TRNST_updated_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+            PRINT N'        [•] Default constraint validated  : DF_TRNST_updated_at';
+            PRINT N'            Column                        : TRNST_updated_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : TRNST_updated_at';
-            PRINT N'            Expected Name                   : DF_TRNST_updated_at';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : TRNST_updated_at';
+            PRINT N'            Expected Name                 : DF_TRNST_updated_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@TRNST_DEFAULT_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@TRNST_DEFAULT_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
 
@@ -385,4 +401,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

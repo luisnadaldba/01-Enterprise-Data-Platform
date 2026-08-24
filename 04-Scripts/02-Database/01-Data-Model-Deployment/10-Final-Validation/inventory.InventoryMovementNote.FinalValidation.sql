@@ -1,5 +1,4 @@
-    PRINT N'    inventory.InventoryMovementNote';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● inventory.InventoryMovementNote';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @INVMN_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INVMN_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INVMN_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @INVMN_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @INVMN_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @INVMN_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @INVMN_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @INVMN_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
@@ -279,7 +278,7 @@
     (
         N'COLUMN',
         N'INVMN_INVMV_id',
-        N'Foreign key of inventory.InventoryMovement.'
+        N'Foreign key referencing inventory.InventoryMovement.'
     ),
     (
         N'COLUMN',
@@ -289,12 +288,12 @@
     (
         N'COLUMN',
         N'INVMN_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'INVMN_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -399,31 +398,6 @@
     ELSE
     BEGIN
         SET @INVMN_FV_documentation_status = N'FAILED';
-        SET @INVMN_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'inventory'
-        AND PFX_table_name = N'InventoryMovementNote'
-        AND PFX_prefix = N'INVMN'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @INVMN_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @INVMN_FV_seed_data_status = N'FAILED';
         SET @INVMN_FV_validation_errors += 1;
     END;
 
@@ -790,11 +764,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @INVMN_FV_table_status;
@@ -808,23 +778,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @INVMN_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @INVMN_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @INVMN_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @INVMN_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -834,14 +798,17 @@
                 @INVMN_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @INVMN_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 51090,
             N'Final validation failed for inventory.InventoryMovementNote.',
             1;
 
     END;
-
-
-    PRINT N'';

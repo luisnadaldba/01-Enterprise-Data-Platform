@@ -1,5 +1,6 @@
-    PRINT N'    metadata.TablePrefix';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● metadata.TablePrefix';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -362,14 +363,17 @@
                AND @PFX_ck_actual_is_disabled = 0
                AND @PFX_ck_actual_is_not_trusted = 0
             BEGIN
-                PRINT N'        [•] Check constraint validated      : '
+
+                PRINT N'        [•] Check constraint validated     : '
                     + @PFX_ck_expected_name;
 
-                PRINT N'            Column                          : '
+                PRINT N'            Column                         : '
                     + @PFX_ck_column_name;
 
-                PRINT N'            Definition                      : '
-                    + @PFX_ck_expected_definition;
+                PRINT N'            Definition                     : CHECK ('
+                    + @PFX_ck_expected_definition
+                    + N')';
+
             END
 
             ELSE
@@ -379,32 +383,33 @@
                     EXPECTED NAME EXISTS BUT DEFINITION OR STATE DIFFERS
                 --------------------------------------------------------------*/
 
-                PRINT N'        [!] Check constraint mismatch       : '
+                PRINT N'        [!] Check constraint mismatch      : '
                     + @PFX_ck_expected_name;
 
-                PRINT N'            Expected Name                   : '
+                PRINT N'            Expected Name                  : '
                     + @PFX_ck_expected_name;
 
-                PRINT N'            Actual Name                     : '
+                PRINT N'            Actual Name                    : '
                     + COALESCE
                       (
                           @PFX_ck_actual_name,
                           N'<NULL>'
                       );
 
-                PRINT N'            Expected Definition             : '
-                    + @PFX_ck_expected_definition;
+                PRINT N'            Expected Definition            : CHECK ('
+                    + @PFX_ck_expected_definition
+                    + N')';
 
-                PRINT N'            Actual Definition               : '
+                PRINT N'            Actual Definition              : '
                     + COALESCE
                       (
                           @PFX_ck_actual_definition,
                           N'<NULL>'
                       );
 
-                PRINT N'            Expected Disabled               : 0';
+                PRINT N'            Expected Disabled              : 0';
 
-                PRINT N'            Actual Disabled                 : '
+                PRINT N'            Actual Disabled                : '
                     + COALESCE
                       (
                           CONVERT
@@ -415,9 +420,9 @@
                           N'<NULL>'
                       );
 
-                PRINT N'            Expected Not Trusted            : 0';
+                PRINT N'            Expected Not Trusted           : 0';
 
-                PRINT N'            Actual Not Trusted              : '
+                PRINT N'            Actual Not Trusted             : '
                     + COALESCE
                       (
                           CONVERT
@@ -429,7 +434,9 @@
                       );
 
                 PRINT N'            Existing constraint was preserved for review.';
+
             END;
+
         END
 
         /*======================================================================
@@ -546,28 +553,30 @@
 
             IF @PFX_ck_equivalent_name IS NOT NULL
             BEGIN
+
                 PRINT N'        [!] Check constraint naming mismatch: '
                     + @PFX_ck_column_name;
 
-                PRINT N'            Expected Name                   : '
+                PRINT N'            Expected Name                  : '
                     + @PFX_ck_expected_name;
 
-                PRINT N'            Actual Name                     : '
+                PRINT N'            Actual Name                    : '
                     + @PFX_ck_equivalent_name;
 
-                PRINT N'            Expected Definition             : '
-                    + @PFX_ck_expected_definition;
+                PRINT N'            Expected Definition            : CHECK ('
+                    + @PFX_ck_expected_definition
+                    + N')';
 
-                PRINT N'            Actual Definition               : '
+                PRINT N'            Actual Definition              : '
                     + COALESCE
                       (
                           @PFX_ck_equivalent_definition,
                           N'<NULL>'
                       );
 
-                PRINT N'            Expected Disabled               : 0';
+                PRINT N'            Expected Disabled              : 0';
 
-                PRINT N'            Actual Disabled                 : '
+                PRINT N'            Actual Disabled                : '
                     + COALESCE
                       (
                           CONVERT
@@ -578,9 +587,9 @@
                           N'<NULL>'
                       );
 
-                PRINT N'            Expected Not Trusted            : 0';
+                PRINT N'            Expected Not Trusted           : 0';
 
-                PRINT N'            Actual Not Trusted              : '
+                PRINT N'            Actual Not Trusted             : '
                     + COALESCE
                       (
                           CONVERT
@@ -592,6 +601,7 @@
                       );
 
                 PRINT N'            Existing constraint was preserved for review.';
+
             END
 
             ELSE
@@ -612,6 +622,7 @@
                        N'C'
                    ) IS NOT NULL
                 BEGIN
+
                     SELECT
                         @PFX_ck_parent_object =
                             QUOTENAME
@@ -643,12 +654,12 @@
                     PRINT N'        [!] Check constraint name conflict : '
                         + @PFX_ck_expected_name;
 
-                    PRINT N'            Expected Table                  : metadata.TablePrefix';
+                    PRINT N'            Expected Table                 : metadata.TablePrefix';
 
-                    PRINT N'            Expected Column                 : '
+                    PRINT N'            Expected Column                : '
                         + @PFX_ck_column_name;
 
-                    PRINT N'            Existing Parent                 : '
+                    PRINT N'            Existing Parent                : '
                         + COALESCE
                           (
                               @PFX_ck_parent_object,
@@ -661,6 +672,7 @@
                     ;THROW 50003,
                         N'Check constraint name conflict prevents safe deployment.',
                         1;
+
                 END;
 
 
@@ -691,15 +703,18 @@
                     @PFX_ck_sql;
 
 
-                PRINT N'        [+] Check constraint added          : '
+                PRINT N'        [+] Check constraint added         : '
                     + @PFX_ck_expected_name;
 
-                PRINT N'            Column                          : '
+                PRINT N'            Column                         : '
                     + @PFX_ck_column_name;
 
-                PRINT N'            Definition                      : '
-                    + @PFX_ck_expected_definition;
+                PRINT N'            Definition                     : CHECK ('
+                    + @PFX_ck_expected_definition
+                    + N')';
+
             END;
+
         END;
 
 
@@ -709,4 +724,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

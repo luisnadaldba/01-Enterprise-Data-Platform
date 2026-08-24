@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductAttributeValue';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductAttributeValue';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -77,9 +78,9 @@
 
 
             PRINT N'        [!] Default constraint name conflict : DF_PATVL_is_active';
-            PRINT N'            Expected Table                  : catalog.ProductAttributeValue';
-            PRINT N'            Expected Column                 : PATVL_is_active';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.ProductAttributeValue';
+            PRINT N'            Expected Column               : PATVL_is_active';
+            PRINT N'            Existing Parent               : '
                 + COALESCE
                 (
                     @PATVL_default_parent_object,
@@ -101,9 +102,9 @@
             DEFAULT (1) FOR PATVL_is_active;
 
 
-        PRINT N'        [+] Default constraint added        : DF_PATVL_is_active';
-        PRINT N'            Column                          : PATVL_is_active';
-        PRINT N'            Definition                      : DEFAULT (1)';
+        PRINT N'        [+] Default constraint added      : DF_PATVL_is_active';
+        PRINT N'            Column                        : PATVL_is_active';
+        PRINT N'            Definition                    : DEFAULT (1)';
 
     END
 
@@ -147,25 +148,25 @@
             ) = 1
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_PATVL_is_active';
-            PRINT N'            Column                          : PATVL_is_active';
-            PRINT N'            Definition                      : DEFAULT (1)';
+            PRINT N'        [•] Default constraint validated  : DF_PATVL_is_active';
+            PRINT N'            Column                        : PATVL_is_active';
+            PRINT N'            Definition                    : DEFAULT (1)';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : PATVL_is_active';
-            PRINT N'            Expected Name                   : DF_PATVL_is_active';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : PATVL_is_active';
+            PRINT N'            Expected Name                 : DF_PATVL_is_active';
+            PRINT N'            Actual Name                   : '
                 + COALESCE
                 (
                     @PATVL_default_actual_name,
                     N'<NULL>'
                 );
 
-            PRINT N'            Expected Definition             : DEFAULT (1)';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (1)';
+            PRINT N'            Actual Definition             : '
                 + COALESCE
                 (
                     @PATVL_default_actual_definition,
@@ -243,9 +244,9 @@
 
 
             PRINT N'        [!] Default constraint name conflict : DF_PATVL_created_at';
-            PRINT N'            Expected Table                  : catalog.ProductAttributeValue';
-            PRINT N'            Expected Column                 : PATVL_created_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.ProductAttributeValue';
+            PRINT N'            Expected Column               : PATVL_created_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE
                 (
                     @PATVL_default_parent_object,
@@ -267,9 +268,9 @@
             DEFAULT (SYSDATETIME()) FOR PATVL_created_at;
 
 
-        PRINT N'        [+] Default constraint added        : DF_PATVL_created_at';
-        PRINT N'            Column                          : PATVL_created_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+        PRINT N'        [+] Default constraint added      : DF_PATVL_created_at';
+        PRINT N'            Column                        : PATVL_created_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
     END
 
@@ -310,25 +311,25 @@
                 N'sysdatetime'
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_PATVL_created_at';
-            PRINT N'            Column                          : PATVL_created_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+            PRINT N'        [•] Default constraint validated  : DF_PATVL_created_at';
+            PRINT N'            Column                        : PATVL_created_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : PATVL_created_at';
-            PRINT N'            Expected Name                   : DF_PATVL_created_at';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : PATVL_created_at';
+            PRINT N'            Expected Name                 : DF_PATVL_created_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE
                 (
                     @PATVL_default_actual_name,
                     N'<NULL>'
                 );
 
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE
                 (
                     @PATVL_default_actual_definition,
@@ -406,9 +407,9 @@
 
 
             PRINT N'        [!] Default constraint name conflict : DF_PATVL_updated_at';
-            PRINT N'            Expected Table                  : catalog.ProductAttributeValue';
-            PRINT N'            Expected Column                 : PATVL_updated_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.ProductAttributeValue';
+            PRINT N'            Expected Column               : PATVL_updated_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE
                 (
                     @PATVL_default_parent_object,
@@ -430,9 +431,9 @@
             DEFAULT (SYSDATETIME()) FOR PATVL_updated_at;
 
 
-        PRINT N'        [+] Default constraint added        : DF_PATVL_updated_at';
-        PRINT N'            Column                          : PATVL_updated_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+        PRINT N'        [+] Default constraint added      : DF_PATVL_updated_at';
+        PRINT N'            Column                        : PATVL_updated_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
     END
 
@@ -473,25 +474,25 @@
                 N'sysdatetime'
         BEGIN
 
-            PRINT N'        [•] Default constraint validated    : DF_PATVL_updated_at';
-            PRINT N'            Column                          : PATVL_updated_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+            PRINT N'        [•] Default constraint validated  : DF_PATVL_updated_at';
+            PRINT N'            Column                        : PATVL_updated_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
 
         END
         ELSE
         BEGIN
 
-            PRINT N'        [!] Default constraint mismatch     : PATVL_updated_at';
-            PRINT N'            Expected Name                   : DF_PATVL_updated_at';
-            PRINT N'            Actual Name                     : '
+            PRINT N'        [!] Default constraint mismatch   : PATVL_updated_at';
+            PRINT N'            Expected Name                 : DF_PATVL_updated_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE
                 (
                     @PATVL_default_actual_name,
                     N'<NULL>'
                 );
 
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE
                 (
                     @PATVL_default_actual_definition,
@@ -505,4 +506,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    catalog.Brand';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.Brand';
+    PRINT N'';
 
     DECLARE @BRD_expected_description nvarchar(4000);
     DECLARE @BRD_existing_description nvarchar(4000);
@@ -144,8 +145,10 @@
                 + @BRD_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @BRD_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@BRD_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @BRD_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@BRD_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @BRD_existing_description
                 END;
 
@@ -224,8 +227,10 @@
                 + @BRD_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @BRD_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@BRD_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @BRD_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@BRD_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @BRD_existing_description
                 END;
 
@@ -304,8 +309,10 @@
                 + @BRD_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @BRD_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@BRD_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @BRD_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@BRD_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @BRD_existing_description
                 END;
 
@@ -319,7 +326,7 @@
     ----------------------------------------------------------------------*/
 
     SET @BRD_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
@@ -384,8 +391,10 @@
                 + @BRD_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @BRD_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@BRD_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @BRD_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@BRD_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @BRD_existing_description
                 END;
 
@@ -399,7 +408,7 @@
     ----------------------------------------------------------------------*/
 
     SET @BRD_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
@@ -464,8 +473,10 @@
                 + @BRD_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @BRD_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@BRD_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @BRD_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@BRD_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @BRD_existing_description
                 END;
 
@@ -474,4 +485,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,4 @@
-    PRINT N'    customer.CustomerAddress';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● customer.CustomerAddress';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @CSTAD_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTAD_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTAD_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @CSTAD_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @CSTAD_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTAD_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTAD_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
@@ -411,12 +410,12 @@
     (
         N'COLUMN',
         N'CSTAD_CST_id',
-        N'Foreign key referencing customer.Customer.CST_id.'
+        N'Foreign key referencing customer.Customer.'
     ),
     (
         N'COLUMN',
         N'CSTAD_ADR_id',
-        N'Foreign key referencing reference.Address.ADR_id.'
+        N'Foreign key referencing reference.Address.'
     ),
     (
         N'COLUMN',
@@ -441,12 +440,12 @@
     (
         N'COLUMN',
         N'CSTAD_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'CSTAD_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -562,41 +561,6 @@
     BEGIN
 
         SET @CSTAD_FV_documentation_status = N'FAILED';
-        SET @CSTAD_FV_validation_errors += 1;
-
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name =
-                N'customer'
-
-        AND PFX_table_name =
-                N'CustomerAddress'
-
-        AND PFX_prefix =
-                N'CSTAD'
-
-        AND PFX_is_active = 1
-    )
-    BEGIN
-
-        SET @CSTAD_FV_seed_data_status = N'VALID';
-
-    END
-    ELSE
-    BEGIN
-
-        SET @CSTAD_FV_seed_data_status = N'FAILED';
         SET @CSTAD_FV_validation_errors += 1;
 
     END;
@@ -1282,13 +1246,8 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
-
 
     PRINT N'        Table                         : ' + @CSTAD_FV_table_status;
     PRINT N'        Primary Key                   : ' + @CSTAD_FV_primary_key_status;
@@ -1301,23 +1260,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @CSTAD_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @CSTAD_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @CSTAD_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @CSTAD_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -1327,14 +1280,17 @@
                 @CSTAD_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @CSTAD_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50500,
             N'Final validation failed for customer.CustomerAddress.',
             1;
 
     END;
-
-
-    PRINT N'';

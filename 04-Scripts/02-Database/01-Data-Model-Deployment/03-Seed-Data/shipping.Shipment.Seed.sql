@@ -1,5 +1,6 @@
-    PRINT N'    shipping.Shipment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● shipping.Shipment';
+    PRINT N'';
 
     DECLARE @SHP_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -63,8 +64,8 @@
         ELSE
         BEGIN
 
-            DECLARE @SHP_actual_prefix     nvarchar(5);
-            DECLARE @SHP_actual_is_active  bit;
+            DECLARE @SHP_actual_prefix    nvarchar(5);
+            DECLARE @SHP_actual_is_active bit;
 
 
             SELECT
@@ -98,4 +99,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

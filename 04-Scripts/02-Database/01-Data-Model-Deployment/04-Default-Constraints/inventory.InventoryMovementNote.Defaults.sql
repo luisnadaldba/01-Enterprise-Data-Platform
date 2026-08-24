@@ -1,5 +1,7 @@
-    PRINT N'    inventory.InventoryMovementNote';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● inventory.InventoryMovementNote';
+    PRINT N'';
+
 
     /*==============================================================================
         DEFAULT CONSTRAINT: DF_INVMN_created_at
@@ -151,4 +153,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

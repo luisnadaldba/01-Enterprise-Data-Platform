@@ -1,5 +1,4 @@
-    PRINT N'    catalog.ProductImage';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● catalog.ProductImage';
 
 
     /*==============================================================================
@@ -12,13 +11,14 @@
     DECLARE @PRDIM_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDIM_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDIM_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PRDIM_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PRDIM_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PRDIM_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDIM_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDIM_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
     DECLARE @PRDIM_FV_foreign_keys_status        nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDIM_FV_indexes_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PRDIM_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
+
 
     /*==============================================================================
         TABLE VALIDATION
@@ -222,7 +222,7 @@
     (N'COLUMN', N'PRDIM_id',
     N'Primary key of catalog.ProductImage.'),
     (N'COLUMN', N'PRDIM_PRD_id',
-    N'Foreign key of catalog.Product identifying the product associated with the image.'),
+    N'Foreign key referencing catalog.Product.'),
     (N'COLUMN', N'PRDIM_path',
     N'Stores the external path or object reference used to locate the product image while keeping binary image content outside the relational database.'),
     (N'COLUMN', N'PRDIM_display_order',
@@ -232,9 +232,9 @@
     (N'COLUMN', N'PRDIM_is_active',
     N'Indicates whether the image is currently available for use in catalog presentation while preserving inactive image records for historical integrity.'),
     (N'COLUMN', N'PRDIM_created_at',
-    N'Records the date and time when the row was initially created.'),
+    N'Records the date and time when the row was created.'),
     (N'COLUMN', N'PRDIM_updated_at',
-    N'Records the date and time of the most recent meaningful modification to the row.');
+    N'Records the date and time when the row was last updated.');
 
     SELECT
         @PRDIM_FV_doc_current_id = MIN(PRDIM_doc_id),
@@ -288,27 +288,6 @@
     ELSE
     BEGIN
         SET @PRDIM_FV_documentation_status = N'FAILED';
-        SET @PRDIM_FV_validation_errors += 1;
-    END;
-
-
-    /*==============================================================================
-        SEED DATA VALIDATION
-    ==============================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'catalog'
-        AND PFX_table_name = N'ProductImage'
-        AND PFX_prefix = N'PRDIM'
-        AND PFX_is_active = 1
-    )
-        SET @PRDIM_FV_seed_data_status = N'VALID';
-    ELSE
-    BEGIN
-        SET @PRDIM_FV_seed_data_status = N'FAILED';
         SET @PRDIM_FV_validation_errors += 1;
     END;
 
@@ -749,7 +728,6 @@
 
     PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PRDIM_FV_table_status;
@@ -763,27 +741,33 @@
     PRINT N'        Foreign Key Constraints       : ' + @PRDIM_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PRDIM_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PRDIM_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
 
     IF @PRDIM_FV_validation_errors = 0
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
+
     END
     ELSE
     BEGIN
-        PRINT N'';
+
         PRINT N'        Result                        : FAILED';
+
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @PRDIM_FV_validation_errors);
-        PRINT N'';
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PRDIM_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50460,
             N'Final validation failed for catalog.ProductImage.',
             1;
-    END;
 
-    PRINT N'';
+    END;

@@ -34,8 +34,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    customer.CustomerDocument';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● customer.CustomerDocument';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -45,8 +45,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -110,6 +113,7 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
@@ -264,7 +268,7 @@
         --------------------------------------------------------------------------*/
 
         IF @CSTCD_ActualPrimaryKeyName <>
-            N'PK_CSTCD'
+                N'PK_CSTCD'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -701,4 +705,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

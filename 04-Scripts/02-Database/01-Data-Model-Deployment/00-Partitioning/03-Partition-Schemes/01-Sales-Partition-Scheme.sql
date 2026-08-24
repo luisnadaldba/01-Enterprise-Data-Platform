@@ -15,8 +15,8 @@
     DECLARE @SalesSchemeFilegroup sysname;
 
 
-    PRINT N'    Sales partition scheme';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● Sales partition scheme';
     PRINT N'';
 
 
@@ -133,4 +133,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

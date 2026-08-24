@@ -1,5 +1,4 @@
-    PRINT N'    customer.CustomerContact';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● customer.CustomerContact';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @CSTCN_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTCN_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTCN_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @CSTCN_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTCN_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @CSTCN_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTCN_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTCN_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
@@ -316,12 +315,12 @@
     (
         N'COLUMN',
         N'CSTCN_CST_id',
-        N'Foreign key referencing customer.Customer.CST_id.'
+        N'Foreign key referencing customer.Customer.'
     ),
     (
         N'COLUMN',
         N'CSTCN_CTP_id',
-        N'Foreign key referencing reference.ContactType.CTP_id.'
+        N'Foreign key referencing reference.ContactType.'
     ),
     (
         N'COLUMN',
@@ -341,12 +340,12 @@
     (
         N'COLUMN',
         N'CSTCN_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'CSTCN_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -360,7 +359,8 @@
     FROM @CSTCN_FV_expected_documentation;
 
 
-    WHILE @CSTCN_FV_doc_current_id <= @CSTCN_FV_doc_max_id
+    WHILE @CSTCN_FV_doc_current_id <=
+        @CSTCN_FV_doc_max_id
     BEGIN
 
         SET @CSTCN_FV_doc_object_type = NULL;
@@ -462,38 +462,6 @@
 
 
     /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'customer'
-
-        AND PFX_table_name = N'CustomerContact'
-
-        AND PFX_prefix = N'CSTCN'
-
-        AND PFX_is_active = 1
-    )
-    BEGIN
-
-        SET @CSTCN_FV_seed_data_status = N'VALID';
-
-    END
-    ELSE
-    BEGIN
-
-        SET @CSTCN_FV_seed_data_status = N'FAILED';
-        SET @CSTCN_FV_validation_errors += 1;
-
-    END;
-
-
-    /*==========================================================================
         DEFAULT CONSTRAINTS VALIDATION
     ==========================================================================*/
 
@@ -557,7 +525,8 @@
     FROM @CSTCN_FV_expected_defaults;
 
 
-    WHILE @CSTCN_FV_default_current_id <= @CSTCN_FV_default_max_id
+    WHILE @CSTCN_FV_default_current_id <=
+        @CSTCN_FV_default_max_id
     BEGIN
 
         SET @CSTCN_FV_default_column_name = NULL;
@@ -1130,11 +1099,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @CSTCN_FV_table_status;
@@ -1148,23 +1113,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @CSTCN_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @CSTCN_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @CSTCN_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @CSTCN_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -1174,14 +1133,17 @@
                 @CSTCN_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @CSTCN_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50690,
             N'Final validation failed for customer.CustomerContact.',
             1;
 
     END;
-
-
-    PRINT N'';

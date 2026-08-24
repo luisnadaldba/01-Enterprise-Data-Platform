@@ -1,5 +1,4 @@
-    PRINT N'    payment.PaymentStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● payment.PaymentStatus';
 
 
     /*==========================================================================
@@ -272,12 +271,12 @@
     (
         N'COLUMN',
         N'PAYST_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PAYST_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -390,49 +389,109 @@
         SEED DATA VALIDATION
     ==========================================================================*/
 
-    IF EXISTS
+    DECLARE @PAYST_FV_invalid_seed_data int = 0;
+
+
+    IF NOT EXISTS
     (
         SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'payment'
-        AND PFX_table_name = N'PaymentStatus'
-        AND PFX_prefix = N'PAYST'
-        AND PFX_is_active = 1
+
+        FROM payment.PaymentStatus
+
+        WHERE PAYST_name =
+                N'PENDING'
     )
-    AND
+    BEGIN
+        SET @PAYST_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentStatus
+
+        WHERE PAYST_name =
+                N'APPROVED'
+    )
+    BEGIN
+        SET @PAYST_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentStatus
+
+        WHERE PAYST_name =
+                N'DECLINED'
+    )
+    BEGIN
+        SET @PAYST_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentStatus
+
+        WHERE PAYST_name =
+                N'CANCELLED'
+    )
+    BEGIN
+        SET @PAYST_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentStatus
+
+        WHERE PAYST_name =
+                N'PARTIALLY_REFUNDED'
+    )
+    BEGIN
+        SET @PAYST_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM payment.PaymentStatus
+
+        WHERE PAYST_name =
+                N'REFUNDED'
+    )
+    BEGIN
+        SET @PAYST_FV_invalid_seed_data += 1;
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        ENSURE EXACT EXPECTED DOMAIN ROW COUNT
+    --------------------------------------------------------------------------*/
+
+    IF
     (
         SELECT COUNT(*)
+
         FROM payment.PaymentStatus
-        WHERE PAYST_name IN
-        (
-            N'PENDING',
-            N'APPROVED',
-            N'DECLINED',
-            N'CANCELLED',
-            N'PARTIALLY_REFUNDED',
-            N'REFUNDED'
-        )
-    ) = 6
-    AND NOT EXISTS
-    (
-        SELECT V.PAYST_name
-        FROM
-        (
-            VALUES
-                (N'PENDING'),
-                (N'APPROVED'),
-                (N'DECLINED'),
-                (N'CANCELLED'),
-                (N'PARTIALLY_REFUNDED'),
-                (N'REFUNDED')
-        ) AS V(PAYST_name)
-        WHERE NOT EXISTS
-        (
-            SELECT 1
-            FROM payment.PaymentStatus AS PS
-            WHERE PS.PAYST_name = V.PAYST_name
-        )
-    )
+    ) <> 6
+    BEGIN
+        SET @PAYST_FV_invalid_seed_data += 1;
+    END;
+
+
+    IF @PAYST_FV_invalid_seed_data = 0
     BEGIN
         SET @PAYST_FV_seed_data_status = N'VALID';
     END
@@ -712,11 +771,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PAYST_FV_table_status;
@@ -730,23 +785,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @PAYST_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PAYST_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @PAYST_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PAYST_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -756,14 +805,17 @@
                 @PAYST_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PAYST_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50330,
             N'Final validation failed for payment.PaymentStatus.',
             1;
 
     END;
-
-
-    PRINT N'';

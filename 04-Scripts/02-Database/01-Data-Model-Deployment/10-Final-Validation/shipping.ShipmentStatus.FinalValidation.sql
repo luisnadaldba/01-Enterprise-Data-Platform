@@ -1,5 +1,4 @@
-    PRINT N'    shipping.ShipmentStatus';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● shipping.ShipmentStatus';
 
 
     /*==========================================================================
@@ -240,12 +239,12 @@
     (
         N'COLUMN',
         N'SHPST_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'SHPST_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -674,11 +673,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @SHPST_FV_table_status;
@@ -692,35 +687,33 @@
     PRINT N'        Foreign Key Constraints       : ' + @SHPST_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @SHPST_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @SHPST_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @SHPST_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
             + CONVERT(nvarchar(10), @SHPST_FV_validation_errors);
 
-        PRINT N'';
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @SHPST_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 51130,
             N'Final validation failed for shipping.ShipmentStatus.',
             1;
 
     END;
-
-
-    PRINT N'';

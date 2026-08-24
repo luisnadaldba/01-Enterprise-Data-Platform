@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerAddress';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerAddress';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -123,8 +124,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -143,6 +147,8 @@
         Structural equivalence means:
             - Nonclustered
             - Unique
+            - Not PK
+            - Not UNIQUE CONSTRAINT
             - Not hypothetical
             - Exactly one key column
             - Key 1 = CSTAD_CST_id ASC
@@ -152,15 +158,17 @@
                 CSTAD_is_primary = 1
                 CSTAD_is_active  = 1
 
+        The order of the two AND predicates is considered functionally equivalent.
+
         Physical placement on FG_CORE is validated separately.
     ==============================================================================*/
 
     DECLARE @CSTAD_PA_equivalent_indexes TABLE
     (
-        index_name         sysname          NOT NULL,
-        is_disabled        bit              NOT NULL,
-        data_space_name    sysname          NULL,
-        filter_definition  nvarchar(4000)   NULL
+        index_name         sysname         NOT NULL,
+        is_disabled        bit             NOT NULL,
+        data_space_name    sysname         NULL,
+        filter_definition  nvarchar(4000)  NULL
     );
 
 
@@ -189,6 +197,10 @@
     AND i.type = 2
 
     AND i.is_unique = 1
+
+    AND i.is_primary_key = 0
+
+    AND i.is_unique_constraint = 0
 
     AND i.is_hypothetical = 0
 
@@ -563,6 +575,7 @@
         PRINT N'        [X] Index definition mismatch        : UX_CSTAD_primary_active';
 
         PRINT N'            Expected Type                   : NONCLUSTERED';
+
         PRINT N'            Actual Type                     : '
             + COALESCE
             (
@@ -571,6 +584,7 @@
             );
 
         PRINT N'            Expected Unique                 : 1';
+
         PRINT N'            Actual Unique                   : '
             + COALESCE
             (
@@ -583,6 +597,7 @@
             );
 
         PRINT N'            Expected Key Columns            : CSTAD_CST_id ASC';
+
         PRINT N'            Actual Key Columns              : '
             + COALESCE
             (
@@ -591,6 +606,7 @@
             );
 
         PRINT N'            Expected Included Columns       : NONE';
+
         PRINT N'            Actual Included Columns         : '
             + COALESCE
             (
@@ -599,6 +615,7 @@
             );
 
         PRINT N'            Expected Filter                 : CSTAD_is_primary = 1 AND CSTAD_is_active = 1';
+
         PRINT N'            Actual Filter                   : '
             + COALESCE
             (
@@ -607,6 +624,7 @@
             );
 
         PRINT N'            Expected Filegroup              : FG_CORE';
+
         PRINT N'            Actual Data Space               : '
             + COALESCE
             (
@@ -631,6 +649,43 @@
     IF @CSTAD_PA_expected_exists = 0
     AND @CSTAD_PA_equivalent_count = 0
     BEGIN
+
+        /*--------------------------------------------------------------------------
+            PRE-DEPLOYMENT BUSINESS RULE VALIDATION
+
+            Existing data must not already contain more than one active primary
+            address for the same Customer.
+        --------------------------------------------------------------------------*/
+
+        IF EXISTS
+        (
+            SELECT
+                CSTAD_CST_id
+
+            FROM customer.CustomerAddress
+
+            WHERE CSTAD_is_primary = 1
+            AND CSTAD_is_active = 1
+
+            GROUP BY
+                CSTAD_CST_id
+
+            HAVING COUNT(*) > 1
+        )
+        BEGIN
+
+            PRINT N'        [X] Existing data violates active primary address uniqueness';
+            PRINT N'            Rule                           : Maximum one active primary address per Customer';
+            PRINT N'            Filter                         : CSTAD_is_primary = 1 AND CSTAD_is_active = 1';
+            PRINT N'            Index was not created. Data correction is required.';
+
+
+            ;THROW 50497,
+                N'UX_CSTAD_primary_active cannot be created because existing data contains multiple active primary addresses for the same Customer.',
+                1;
+
+        END;
+
 
         CREATE UNIQUE NONCLUSTERED INDEX UX_CSTAD_primary_active
             ON customer.CustomerAddress
@@ -683,8 +738,11 @@
                 + @CSTAD_PA_actual_name;
 
             PRINT N'            Expected Name                  : UX_CSTAD_primary_active';
+
             PRINT N'            Key Columns                    : CSTAD_CST_id';
+
             PRINT N'            Filter                         : CSTAD_is_primary = 1 AND CSTAD_is_active = 1';
+
             PRINT N'            Existing index was preserved for review.';
 
         END
@@ -699,9 +757,12 @@
         BEGIN
 
             PRINT N'        [!] Index naming divergence        :';
+
             PRINT N'            Expected                       : UX_CSTAD_primary_active';
+
             PRINT N'            Actual                         : '
                 + @CSTAD_PA_actual_name;
+
             PRINT N'            Action                         : Preserve existing index';
 
         END
@@ -716,13 +777,16 @@
         BEGIN
 
             PRINT N'        [X] Index filegroup mismatch        : UX_CSTAD_primary_active';
+
             PRINT N'            Expected Filegroup             : FG_CORE';
+
             PRINT N'            Actual Data Space              : '
                 + COALESCE
                 (
                     @CSTAD_PA_actual_data_space_name,
                     N'<UNKNOWN>'
                 );
+
 
             ;THROW 50496,
                 N'Index UX_CSTAD_primary_active is not stored on FG_CORE.',
@@ -766,7 +830,7 @@
 
         PRINT N'            Expected Index                  : UX_CSTAD_primary_active';
 
-        PRINT N'            Equivalent Indexes             : '
+        PRINT N'            Equivalent Indexes              : '
             + COALESCE
             (
                 @CSTAD_PA_equivalent_names,
@@ -781,9 +845,12 @@
             );
 
         PRINT N'            Action                          : Preserve all indexes for manual review';
+
         PRINT N'            Automatic removal               : NOT PERMITTED';
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

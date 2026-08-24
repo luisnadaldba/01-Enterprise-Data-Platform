@@ -1,5 +1,6 @@
-    PRINT N'    payment.PaymentRefund';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.PaymentRefund';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -106,7 +107,6 @@
         AND ic.is_descending_key = 0
         AND c.name = N'PAYRF_refunded_at'
     )
-
 
     AND
     (
@@ -259,7 +259,9 @@
             WHERE index_name = @PAYRF_PAY_IX_expected_name
         )
         BEGIN
+
             SET @PAYRF_PAY_IX_expected_is_equivalent = 1;
+
         END;
 
     END;
@@ -322,6 +324,7 @@
         PRINT N'            Filegroup                      : FG_CORE';
 
     END
+
     ELSE IF @PAYRF_PAY_IX_equivalent_count = 1
     BEGIN
 
@@ -334,37 +337,52 @@
 
         IF @PAYRF_PAY_IX_actual_is_disabled = 1
         BEGIN
-            PRINT N'        [!] Nonclustered index disabled    : ' + @PAYRF_PAY_IX_actual_name;
+
+            PRINT N'        [!] Nonclustered index disabled    : '
+                + @PAYRF_PAY_IX_actual_name;
             PRINT N'            Expected Name                 : IX_PAYRF_PAY';
             PRINT N'            Existing index was preserved for review.';
+
         END
+
         ELSE IF @PAYRF_PAY_IX_actual_data_space <> N'FG_CORE'
         BEGIN
+
             PRINT N'        [!] Nonclustered index storage divergence';
-            PRINT N'            Index                         : ' + @PAYRF_PAY_IX_actual_name;
+            PRINT N'            Index                         : '
+                + @PAYRF_PAY_IX_actual_name;
             PRINT N'            Expected Filegroup            : FG_CORE';
             PRINT N'            Actual Filegroup              : '
                 + COALESCE(@PAYRF_PAY_IX_actual_data_space, N'<UNKNOWN>');
             PRINT N'            Existing index was preserved for review.';
+
         END
+
         ELSE IF @PAYRF_PAY_IX_actual_name <> @PAYRF_PAY_IX_expected_name
         BEGIN
+
             PRINT N'        [!] Nonclustered index naming divergence';
             PRINT N'            Expected                     : IX_PAYRF_PAY';
-            PRINT N'            Actual                       : ' + @PAYRF_PAY_IX_actual_name;
+            PRINT N'            Actual                       : '
+                + @PAYRF_PAY_IX_actual_name;
             PRINT N'            Action                        : Preserve existing index';
+
         END
+
         ELSE
         BEGIN
+
             PRINT N'        [•] Nonclustered index validated   : IX_PAYRF_PAY';
             PRINT N'            Key Columns                    : PAYRF_PAY_id, PAYRF_refunded_at';
             PRINT N'            Included Columns               : PAYRF_amount';
             PRINT N'            Unique                         : NO';
             PRINT N'            Filter                         : NONE';
             PRINT N'            Filegroup                      : FG_CORE';
+
         END;
 
     END
+
     ELSE IF @PAYRF_PAY_IX_equivalent_count > 1
     BEGIN
 
@@ -471,7 +489,6 @@
         AND ic.is_descending_key = 0
         AND c.name = N'PAYRF_updated_at'
     )
-
 
     AND NOT EXISTS
     (
@@ -611,7 +628,9 @@
             WHERE index_name = @PAYRF_UPD_IX_expected_name
         )
         BEGIN
+
             SET @PAYRF_UPD_IX_expected_is_equivalent = 1;
+
         END;
 
     END;
@@ -669,6 +688,7 @@
         PRINT N'            Filegroup                      : FG_CORE';
 
     END
+
     ELSE IF @PAYRF_UPD_IX_equivalent_count = 1
     BEGIN
 
@@ -681,37 +701,52 @@
 
         IF @PAYRF_UPD_IX_actual_is_disabled = 1
         BEGIN
-            PRINT N'        [!] Nonclustered index disabled    : ' + @PAYRF_UPD_IX_actual_name;
+
+            PRINT N'        [!] Nonclustered index disabled    : '
+                + @PAYRF_UPD_IX_actual_name;
             PRINT N'            Expected Name                 : IX_PAYRF_updated_at';
             PRINT N'            Existing index was preserved for review.';
+
         END
+
         ELSE IF @PAYRF_UPD_IX_actual_data_space <> N'FG_CORE'
         BEGIN
+
             PRINT N'        [!] Nonclustered index storage divergence';
-            PRINT N'            Index                         : ' + @PAYRF_UPD_IX_actual_name;
+            PRINT N'            Index                         : '
+                + @PAYRF_UPD_IX_actual_name;
             PRINT N'            Expected Filegroup            : FG_CORE';
             PRINT N'            Actual Filegroup              : '
                 + COALESCE(@PAYRF_UPD_IX_actual_data_space, N'<UNKNOWN>');
             PRINT N'            Existing index was preserved for review.';
+
         END
+
         ELSE IF @PAYRF_UPD_IX_actual_name <> @PAYRF_UPD_IX_expected_name
         BEGIN
+
             PRINT N'        [!] Nonclustered index naming divergence';
             PRINT N'            Expected                     : IX_PAYRF_updated_at';
-            PRINT N'            Actual                       : ' + @PAYRF_UPD_IX_actual_name;
+            PRINT N'            Actual                       : '
+                + @PAYRF_UPD_IX_actual_name;
             PRINT N'            Action                        : Preserve existing index';
+
         END
+
         ELSE
         BEGIN
+
             PRINT N'        [•] Nonclustered index validated   : IX_PAYRF_updated_at';
             PRINT N'            Key Columns                    : PAYRF_updated_at';
             PRINT N'            Included Columns               : NONE';
             PRINT N'            Unique                         : NO';
             PRINT N'            Filter                         : NONE';
             PRINT N'            Filegroup                      : FG_CORE';
+
         END;
 
     END
+
     ELSE IF @PAYRF_UPD_IX_equivalent_count > 1
     BEGIN
 
@@ -728,4 +763,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

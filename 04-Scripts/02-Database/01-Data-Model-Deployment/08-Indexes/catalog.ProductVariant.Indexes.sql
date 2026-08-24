@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductVariant';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductVariant';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -139,9 +140,9 @@
 
     DECLARE @PRDVA_BC_equivalent_indexes TABLE
     (
-        index_name       sysname          NOT NULL,
-        is_disabled      bit              NOT NULL,
-        data_space_name  sysname          NULL,
+        index_name        sysname         NOT NULL,
+        is_disabled       bit             NOT NULL,
+        data_space_name   sysname         NULL,
         filter_definition nvarchar(4000)  NULL
     );
 
@@ -734,4 +735,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

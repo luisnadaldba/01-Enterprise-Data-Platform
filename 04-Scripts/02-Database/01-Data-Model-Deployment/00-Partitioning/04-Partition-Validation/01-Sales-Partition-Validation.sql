@@ -14,8 +14,8 @@
     DECLARE @SalesValidationNextUsedStatus         nvarchar(20) = N'NOT VALIDATED';
 
 
-    PRINT N'    Sales partition validation';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● Sales partition validation';
     PRINT N'';
 
 
@@ -628,7 +628,6 @@
 
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
 
 
     IF @SalesValidationErrors = 0
@@ -645,6 +644,8 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
 

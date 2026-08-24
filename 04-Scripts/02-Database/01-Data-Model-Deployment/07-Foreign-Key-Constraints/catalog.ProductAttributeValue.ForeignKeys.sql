@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductAttributeValue';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductAttributeValue';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -141,7 +142,7 @@
     END;
 
 
-    PRINT N'        [✓] Foreign key dependencies validated';
+    PRINT N'        [✓] Foreign key dependencies validated : FK_PATVL_PAT';
 
 
     /*==========================================================================
@@ -601,4 +602,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

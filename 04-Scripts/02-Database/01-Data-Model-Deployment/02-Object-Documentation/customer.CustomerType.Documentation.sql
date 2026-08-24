@@ -1,5 +1,6 @@
-    PRINT N'    customer.CustomerType';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● customer.CustomerType';
+    PRINT N'';
 
     DECLARE @CSTCT_expected_description nvarchar(4000);
     DECLARE @CSTCT_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,16 +47,26 @@
 
         SET @CSTCT_existing_description = NULL;
 
+
         SELECT
             @CSTCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @CSTCT_existing_description = @CSTCT_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @CSTCT_existing_description =
+            @CSTCT_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : customer.CustomerType';
@@ -67,7 +85,7 @@
                     WHEN LEN(@CSTCT_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @CSTCT_existing_description
-                END;
+                  END;
 
         END;
 
@@ -84,6 +102,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -91,9 +110,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_id'
     )
     BEGIN
 
@@ -115,6 +140,7 @@
 
         SET @CSTCT_existing_description = NULL;
 
+
         SELECT
             @CSTCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -126,11 +152,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_id';
 
-        IF @CSTCT_existing_description = @CSTCT_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_id';
+
+
+        IF @CSTCT_existing_description =
+            @CSTCT_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CSTCT_id';
@@ -144,10 +178,12 @@
                 + @CSTCT_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CSTCT_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CSTCT_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CSTCT_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CSTCT_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CSTCT_existing_description
-                END;
+                  END;
 
         END;
 
@@ -159,11 +195,12 @@
     ----------------------------------------------------------------------*/
 
     SET @CSTCT_expected_description =
-        N'Stores the stable technical code used to identify the customer type.';
+        N'Stores the stable system code that uniquely identifies the customer type.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -171,9 +208,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_code'
+
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_code'
     )
     BEGIN
 
@@ -195,6 +238,7 @@
 
         SET @CSTCT_existing_description = NULL;
 
+
         SELECT
             @CSTCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -206,11 +250,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_code';
 
-        IF @CSTCT_existing_description = @CSTCT_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_code';
+
+
+        IF @CSTCT_existing_description =
+            @CSTCT_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CSTCT_code';
@@ -224,10 +276,12 @@
                 + @CSTCT_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CSTCT_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CSTCT_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CSTCT_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CSTCT_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CSTCT_existing_description
-                END;
+                  END;
 
         END;
 
@@ -239,11 +293,12 @@
     ----------------------------------------------------------------------*/
 
     SET @CSTCT_expected_description =
-        N'Stores the descriptive name of the customer type.';
+        N'Stores the human-readable name of the customer type for presentation purposes.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -251,9 +306,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_name'
+
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_name'
     )
     BEGIN
 
@@ -275,6 +336,7 @@
 
         SET @CSTCT_existing_description = NULL;
 
+
         SELECT
             @CSTCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -286,11 +348,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_name';
 
-        IF @CSTCT_existing_description = @CSTCT_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_name';
+
+
+        IF @CSTCT_existing_description =
+            @CSTCT_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CSTCT_name';
@@ -304,10 +374,12 @@
                 + @CSTCT_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CSTCT_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CSTCT_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CSTCT_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CSTCT_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CSTCT_existing_description
-                END;
+                  END;
 
         END;
 
@@ -319,11 +391,12 @@
     ----------------------------------------------------------------------*/
 
     SET @CSTCT_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -331,9 +404,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_created_at'
     )
     BEGIN
 
@@ -355,6 +434,7 @@
 
         SET @CSTCT_existing_description = NULL;
 
+
         SELECT
             @CSTCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -366,11 +446,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_created_at';
 
-        IF @CSTCT_existing_description = @CSTCT_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_created_at';
+
+
+        IF @CSTCT_existing_description =
+            @CSTCT_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CSTCT_created_at';
@@ -384,10 +472,12 @@
                 + @CSTCT_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CSTCT_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CSTCT_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CSTCT_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CSTCT_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CSTCT_existing_description
-                END;
+                  END;
 
         END;
 
@@ -399,11 +489,12 @@
     ----------------------------------------------------------------------*/
 
     SET @CSTCT_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -411,9 +502,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_updated_at'
     )
     BEGIN
 
@@ -435,6 +532,7 @@
 
         SET @CSTCT_existing_description = NULL;
 
+
         SELECT
             @CSTCT_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -446,11 +544,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'customer.CustomerType')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CSTCT_updated_at';
 
-        IF @CSTCT_existing_description = @CSTCT_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'customer.CustomerType')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CSTCT_updated_at';
+
+
+        IF @CSTCT_existing_description =
+            @CSTCT_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CSTCT_updated_at';
@@ -464,14 +570,18 @@
                 + @CSTCT_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CSTCT_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CSTCT_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CSTCT_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CSTCT_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CSTCT_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

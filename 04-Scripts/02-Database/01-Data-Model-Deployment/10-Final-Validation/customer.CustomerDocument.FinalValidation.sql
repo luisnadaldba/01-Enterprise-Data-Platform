@@ -1,5 +1,4 @@
-    PRINT N'    customer.CustomerDocument';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● customer.CustomerDocument';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @CSTCD_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTCD_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTCD_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @CSTCD_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTCD_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @CSTCD_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @CSTCD_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @CSTCD_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
@@ -331,12 +330,12 @@
     (
         N'COLUMN',
         N'CSTCD_CST_id',
-        N'Foreign key referencing customer.Customer.CST_id.'
+        N'Foreign key referencing customer.Customer.'
     ),
     (
         N'COLUMN',
         N'CSTCD_DTP_id',
-        N'Foreign key referencing customer.CustomerDocumentType.DTP_id.'
+        N'Foreign key referencing customer.CustomerDocumentType.'
     ),
     (
         N'COLUMN',
@@ -346,12 +345,12 @@
     (
         N'COLUMN',
         N'CSTCD_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'CSTCD_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -467,41 +466,6 @@
     BEGIN
 
         SET @CSTCD_FV_documentation_status = N'FAILED';
-        SET @CSTCD_FV_validation_errors += 1;
-
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name =
-                N'customer'
-
-        AND PFX_table_name =
-                N'CustomerDocument'
-
-        AND PFX_prefix =
-                N'CSTCD'
-
-        AND PFX_is_active = 1
-    )
-    BEGIN
-
-        SET @CSTCD_FV_seed_data_status = N'VALID';
-
-    END
-    ELSE
-    BEGIN
-
-        SET @CSTCD_FV_seed_data_status = N'FAILED';
         SET @CSTCD_FV_validation_errors += 1;
 
     END;
@@ -966,11 +930,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @CSTCD_FV_table_status;
@@ -984,23 +944,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @CSTCD_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @CSTCD_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @CSTCD_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @CSTCD_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -1010,14 +964,17 @@
                 @CSTCD_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @CSTCD_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50590,
             N'Final validation failed for customer.CustomerDocument.',
             1;
 
     END;
-
-
-    PRINT N'';

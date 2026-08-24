@@ -1,5 +1,4 @@
-    PRINT N'    reference.ContactType';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● reference.ContactType';
 
 
     /*==========================================================================
@@ -301,12 +300,12 @@
     (
         N'COLUMN',
         N'CTP_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'CTP_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -435,42 +434,17 @@
 
 
     /*--------------------------------------------------------------------------
-        PREFIX REGISTRATION
-    --------------------------------------------------------------------------*/
-
-    IF NOT EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name =
-                N'reference'
-
-        AND PFX_table_name =
-                N'ContactType'
-
-        AND PFX_prefix =
-                N'CTP'
-
-        AND PFX_is_active = 1
-    )
-    BEGIN
-
-        SET @CTP_FV_invalid_seed_data += 1;
-
-    END;
-
-
-    /*--------------------------------------------------------------------------
         CONTACT TYPES
     --------------------------------------------------------------------------*/
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM reference.ContactType
-        WHERE CTP_name = N'PHONE'
+
+        WHERE CTP_name =
+                N'PHONE'
     )
     BEGIN
 
@@ -482,8 +456,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM reference.ContactType
-        WHERE CTP_name = N'MOBILE'
+
+        WHERE CTP_name =
+                N'MOBILE'
     )
     BEGIN
 
@@ -499,6 +476,7 @@
     IF
     (
         SELECT COUNT(*)
+
         FROM reference.ContactType
     ) <> 2
     BEGIN
@@ -800,11 +778,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @CTP_FV_table_status;
@@ -818,23 +792,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @CTP_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @CTP_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @CTP_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @CTP_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -844,14 +812,17 @@
                 @CTP_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @CTP_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50620,
             N'Final validation failed for reference.ContactType.',
             1;
 
     END;
-
-
-    PRINT N'';

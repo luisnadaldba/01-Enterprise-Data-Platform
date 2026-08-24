@@ -1,5 +1,4 @@
-    PRINT N'    reference.AdministrativeDivision';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● reference.AdministrativeDivision';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @ADV_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
     DECLARE @ADV_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @ADV_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @ADV_FV_seed_data_status           nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @ADV_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @ADV_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @ADV_FV_checks_status              nvarchar(20) = N'NOT REQUIRED';
     DECLARE @ADV_FV_uniques_status             nvarchar(20) = N'NOT VALIDATED';
@@ -320,7 +319,7 @@
     (
         N'COLUMN',
         N'ADV_CTR_id',
-        N'Foreign key of reference.Country.'
+        N'Foreign key referencing reference.Country.'
     ),
     (
         N'COLUMN',
@@ -335,12 +334,12 @@
     (
         N'COLUMN',
         N'ADV_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'ADV_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -448,35 +447,6 @@
     BEGIN
 
         SET @ADV_FV_documentation_status = N'FAILED';
-        SET @ADV_FV_validation_errors += 1;
-
-    END;
-
-
-    /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-
-        FROM metadata.TablePrefix
-
-        WHERE PFX_schema_name = N'reference'
-        AND PFX_table_name = N'AdministrativeDivision'
-        AND PFX_prefix = N'ADV'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-
-        SET @ADV_FV_seed_data_status = N'VALID';
-
-    END
-    ELSE
-    BEGIN
-
-        SET @ADV_FV_seed_data_status = N'FAILED';
         SET @ADV_FV_validation_errors += 1;
 
     END;
@@ -749,6 +719,7 @@
 
     END;
 
+
     /*==========================================================================
         FOREIGN KEY CONSTRAINT VALIDATION
     ==========================================================================*/
@@ -877,6 +848,16 @@
     AND @ADV_FV_fk_is_disabled = 0
 
     AND @ADV_FV_fk_is_not_trusted = 0
+
+    AND
+    (
+        SELECT COUNT(*)
+
+        FROM sys.foreign_keys AS fk
+
+        WHERE fk.parent_object_id =
+                OBJECT_ID(N'reference.AdministrativeDivision')
+    ) = 1
     BEGIN
 
         SET @ADV_FV_foreign_keys_status = N'VALID';
@@ -890,16 +871,13 @@
 
     END;
 
+
     /*==========================================================================
         FINAL STATE
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @ADV_FV_table_status;
@@ -913,23 +891,17 @@
     PRINT N'        Foreign Key Constraints       : ' + @ADV_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @ADV_FV_indexes_status;
     PRINT N'        Temporal Integrity            : ' + @ADV_FV_temporal_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @ADV_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
@@ -939,14 +911,17 @@
                 @ADV_FV_validation_errors
             );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @ADV_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 50200,
             N'Final validation failed for reference.AdministrativeDivision.',
             1;
 
     END;
-
-
-    PRINT N'';

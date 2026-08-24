@@ -1,5 +1,6 @@
-    PRINT N'    payment.Payment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● payment.Payment';
+    PRINT N'';
 
     DECLARE @PAY_expected_description nvarchar(4000);
     DECLARE @PAY_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,16 +47,26 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
-        FROM sys.extended_properties AS ep
-        WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        FROM sys.extended_properties AS ep
+
+        WHERE ep.class = 1
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.minor_id = 0
+
+        AND ep.name =
+                N'MS_Description';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : payment.Payment';
@@ -67,11 +85,12 @@
                     WHEN LEN(@PAY_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
     END;
+
 
     /*----------------------------------------------------------------------
         COLUMN DESCRIPTION: PAY_id
@@ -83,6 +102,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -90,9 +110,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_id'
     )
     BEGIN
 
@@ -114,6 +140,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -125,11 +152,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_id';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_id';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_id';
@@ -143,10 +178,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -158,11 +195,12 @@
     ----------------------------------------------------------------------*/
 
     SET @PAY_expected_description =
-        N'Foreign key of sales.Transaction.';
+        N'Foreign key referencing sales.Transaction.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -170,9 +208,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_TRN_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_TRN_id'
     )
     BEGIN
 
@@ -194,6 +238,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -205,11 +250,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_TRN_id';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_TRN_id';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_TRN_id';
@@ -223,10 +276,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -243,6 +298,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -250,9 +306,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_transaction_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_transaction_at'
     )
     BEGIN
 
@@ -274,6 +336,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -285,11 +348,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_transaction_at';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_transaction_at';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_transaction_at';
@@ -303,10 +374,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -318,11 +391,12 @@
     ----------------------------------------------------------------------*/
 
     SET @PAY_expected_description =
-        N'Foreign key of payment.PaymentMethod.';
+        N'Foreign key referencing payment.PaymentMethod.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -330,9 +404,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_PAYME_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_PAYME_id'
     )
     BEGIN
 
@@ -354,6 +434,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -365,11 +446,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_PAYME_id';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_PAYME_id';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_PAYME_id';
@@ -383,10 +472,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -398,11 +489,12 @@
     ----------------------------------------------------------------------*/
 
     SET @PAY_expected_description =
-        N'Foreign key of payment.PaymentStatus.';
+        N'Foreign key referencing payment.PaymentStatus.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -410,9 +502,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_PAYST_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_PAYST_id'
     )
     BEGIN
 
@@ -434,6 +532,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -445,11 +544,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_PAYST_id';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_PAYST_id';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_PAYST_id';
@@ -463,10 +570,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -483,6 +592,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -490,9 +600,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_amount'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_amount'
     )
     BEGIN
 
@@ -514,6 +630,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -525,11 +642,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_amount';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_amount';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_amount';
@@ -543,10 +668,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -563,6 +690,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -570,9 +698,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_installment_count'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_installment_count'
     )
     BEGIN
 
@@ -594,6 +728,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -605,11 +740,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_installment_count';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_installment_count';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_installment_count';
@@ -623,10 +766,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -643,6 +788,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -650,9 +796,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_attempted_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_attempted_at'
     )
     BEGIN
 
@@ -674,6 +826,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -685,11 +838,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_attempted_at';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_attempted_at';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_attempted_at';
@@ -703,10 +864,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -723,6 +886,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -730,9 +894,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_approved_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_approved_at'
     )
     BEGIN
 
@@ -754,6 +924,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -765,11 +936,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_approved_at';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_approved_at';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_approved_at';
@@ -783,10 +962,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -803,6 +984,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -810,9 +992,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_cancelled_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_cancelled_at'
     )
     BEGIN
 
@@ -834,6 +1022,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -845,11 +1034,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_cancelled_at';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_cancelled_at';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_cancelled_at';
@@ -863,10 +1060,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -878,11 +1077,12 @@
     ----------------------------------------------------------------------*/
 
     SET @PAY_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -890,9 +1090,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_created_at'
     )
     BEGIN
 
@@ -914,6 +1120,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -925,11 +1132,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_created_at';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_created_at';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_created_at';
@@ -943,10 +1158,12 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
@@ -958,11 +1175,12 @@
     ----------------------------------------------------------------------*/
 
     SET @PAY_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -970,9 +1188,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_updated_at'
     )
     BEGIN
 
@@ -994,6 +1218,7 @@
 
         SET @PAY_existing_description = NULL;
 
+
         SELECT
             @PAY_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -1005,11 +1230,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'payment.Payment')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'PAY_updated_at';
 
-        IF @PAY_existing_description = @PAY_expected_description
+        AND ep.major_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'PAY_updated_at';
+
+
+        IF @PAY_existing_description =
+            @PAY_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : PAY_updated_at';
@@ -1023,14 +1256,18 @@
                 + @PAY_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @PAY_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@PAY_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @PAY_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@PAY_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @PAY_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

@@ -1,5 +1,6 @@
-    PRINT N'    shipping.Shipment';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● shipping.Shipment';
+    PRINT N'';
 
 
     DECLARE @SHP_check_expected_name          sysname;
@@ -570,4 +571,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

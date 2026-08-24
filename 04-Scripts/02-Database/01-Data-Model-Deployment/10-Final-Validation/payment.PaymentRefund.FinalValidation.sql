@@ -1,5 +1,4 @@
-    PRINT N'    payment.PaymentRefund';
-    PRINT N'    --------------------------------------------------------------------------';
+﻿    PRINT N'    ● payment.PaymentRefund';
 
 
     /*==========================================================================
@@ -12,7 +11,7 @@
     DECLARE @PAYRF_FV_primary_key_status        nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAYRF_FV_columns_status            nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAYRF_FV_documentation_status      nvarchar(20) = N'NOT VALIDATED';
-    DECLARE @PAYRF_FV_seed_data_status          nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @PAYRF_FV_seed_data_status          nvarchar(20) = N'NOT APPLICABLE';
     DECLARE @PAYRF_FV_defaults_status           nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAYRF_FV_checks_status             nvarchar(20) = N'NOT VALIDATED';
     DECLARE @PAYRF_FV_uniques_status            nvarchar(20) = N'NOT REQUIRED';
@@ -256,12 +255,12 @@
     (
         N'COLUMN',
         N'PAYRF_PAY_id',
-        N'Foreign key of payment.Payment.'
+        N'Foreign key referencing payment.Payment.'
     ),
     (
         N'COLUMN',
         N'PAYRF_PAYRR_id',
-        N'Foreign key of payment.PaymentRefundReason.'
+        N'Foreign key referencing payment.PaymentRefundReason.'
     ),
     (
         N'COLUMN',
@@ -276,12 +275,12 @@
     (
         N'COLUMN',
         N'PAYRF_created_at',
-        N'Records the date and time when the row was initially created.'
+        N'Records the date and time when the row was created.'
     ),
     (
         N'COLUMN',
         N'PAYRF_updated_at',
-        N'Records the date and time of the most recent meaningful modification to the row.'
+        N'Records the date and time when the row was last updated.'
     );
 
 
@@ -373,29 +372,6 @@
 
 
     /*==========================================================================
-        SEED DATA VALIDATION
-    ==========================================================================*/
-
-    IF EXISTS
-    (
-        SELECT 1
-        FROM metadata.TablePrefix
-        WHERE PFX_schema_name = N'payment'
-        AND PFX_table_name = N'PaymentRefund'
-        AND PFX_prefix = N'PAYRF'
-        AND PFX_is_active = 1
-    )
-    BEGIN
-        SET @PAYRF_FV_seed_data_status = N'VALID';
-    END
-    ELSE
-    BEGIN
-        SET @PAYRF_FV_seed_data_status = N'FAILED';
-        SET @PAYRF_FV_validation_errors += 1;
-    END;
-
-
-    /*==========================================================================
         DEFAULT CONSTRAINTS VALIDATION
     ==========================================================================*/
 
@@ -477,19 +453,24 @@
         CHECK CONSTRAINT VALIDATION
     ==========================================================================*/
 
-    DECLARE @PAYRF_FV_check_definition nvarchar(4000);
-    DECLARE @PAYRF_FV_check_normalized nvarchar(4000);
-    DECLARE @PAYRF_FV_check_disabled bit;
-    DECLARE @PAYRF_FV_check_not_trusted bit;
+    DECLARE @PAYRF_FV_check_definition   nvarchar(4000);
+    DECLARE @PAYRF_FV_check_normalized   nvarchar(4000);
+    DECLARE @PAYRF_FV_check_disabled     bit;
+    DECLARE @PAYRF_FV_check_not_trusted  bit;
 
 
     SELECT
         @PAYRF_FV_check_definition = cc.definition,
         @PAYRF_FV_check_disabled = cc.is_disabled,
         @PAYRF_FV_check_not_trusted = cc.is_not_trusted
+
     FROM sys.check_constraints AS cc
-    WHERE cc.parent_object_id = OBJECT_ID(N'payment.PaymentRefund')
-    AND cc.name = N'CK_PAYRF_amount';
+
+    WHERE cc.parent_object_id =
+            OBJECT_ID(N'payment.PaymentRefund')
+
+    AND cc.name =
+            N'CK_PAYRF_amount';
 
 
     SET @PAYRF_FV_check_normalized =
@@ -540,36 +521,64 @@
     DECLARE @PAYRF_FV_invalid_foreign_keys int = 0;
 
 
+    /*--------------------------------------------------------------------------
+        FK_PAYRF_PAY
+    --------------------------------------------------------------------------*/
+
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.foreign_keys AS fk
-        WHERE fk.parent_object_id = OBJECT_ID(N'payment.PaymentRefund')
-        AND fk.referenced_object_id = OBJECT_ID(N'payment.Payment')
-        AND fk.name = N'FK_PAYRF_PAY'
+
+        WHERE fk.parent_object_id =
+                OBJECT_ID(N'payment.PaymentRefund')
+
+        AND fk.referenced_object_id =
+                OBJECT_ID(N'payment.Payment')
+
+        AND fk.name =
+                N'FK_PAYRF_PAY'
+
         AND fk.delete_referential_action = 0
         AND fk.update_referential_action = 0
         AND fk.is_disabled = 0
         AND fk.is_not_trusted = 0
+
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.foreign_key_columns AS fkc
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         ) = 1
+
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
                 ON pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
+
             INNER JOIN sys.columns AS rc
                 ON rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
-            AND pc.name = N'PAYRF_PAY_id'
-            AND rc.name = N'PAY_id'
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
+            AND fkc.constraint_column_id = 1
+
+            AND pc.name =
+                    N'PAYRF_PAY_id'
+
+            AND rc.name =
+                    N'PAY_id'
         )
     )
     BEGIN
@@ -577,38 +586,84 @@
     END;
 
 
+    /*--------------------------------------------------------------------------
+        FK_PAYRF_PAYRR
+    --------------------------------------------------------------------------*/
+
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.foreign_keys AS fk
-        WHERE fk.parent_object_id = OBJECT_ID(N'payment.PaymentRefund')
-        AND fk.referenced_object_id = OBJECT_ID(N'payment.PaymentRefundReason')
-        AND fk.name = N'FK_PAYRF_PAYRR'
+
+        WHERE fk.parent_object_id =
+                OBJECT_ID(N'payment.PaymentRefund')
+
+        AND fk.referenced_object_id =
+                OBJECT_ID(N'payment.PaymentRefundReason')
+
+        AND fk.name =
+                N'FK_PAYRF_PAYRR'
+
         AND fk.delete_referential_action = 0
         AND fk.update_referential_action = 0
         AND fk.is_disabled = 0
         AND fk.is_not_trusted = 0
+
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.foreign_key_columns AS fkc
-            WHERE fkc.constraint_object_id = fk.object_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
         ) = 1
+
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.foreign_key_columns AS fkc
+
             INNER JOIN sys.columns AS pc
                 ON pc.object_id = fkc.parent_object_id
                 AND pc.column_id = fkc.parent_column_id
+
             INNER JOIN sys.columns AS rc
                 ON rc.object_id = fkc.referenced_object_id
                 AND rc.column_id = fkc.referenced_column_id
-            WHERE fkc.constraint_object_id = fk.object_id
-            AND pc.name = N'PAYRF_PAYRR_id'
-            AND rc.name = N'PAYRR_id'
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
+            AND fkc.constraint_column_id = 1
+
+            AND pc.name =
+                    N'PAYRF_PAYRR_id'
+
+            AND rc.name =
+                    N'PAYRR_id'
         )
     )
+    BEGIN
+        SET @PAYRF_FV_invalid_foreign_keys += 1;
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        ENSURE EXACT EXPECTED FOREIGN KEY COUNT
+    --------------------------------------------------------------------------*/
+
+    IF
+    (
+        SELECT COUNT(*)
+
+        FROM sys.foreign_keys AS fk
+
+        WHERE fk.parent_object_id =
+                OBJECT_ID(N'payment.PaymentRefund')
+    ) <> 2
     BEGIN
         SET @PAYRF_FV_invalid_foreign_keys += 1;
     END;
@@ -645,8 +700,12 @@
         INNER JOIN sys.data_spaces AS ds
             ON ds.data_space_id = i.data_space_id
 
-        WHERE i.object_id = OBJECT_ID(N'payment.PaymentRefund')
-        AND i.name = N'IX_PAYRF_PAY'
+        WHERE i.object_id =
+                OBJECT_ID(N'payment.PaymentRefund')
+
+        AND i.name =
+                N'IX_PAYRF_PAY'
+
         AND i.type = 2
         AND i.is_unique = 0
         AND i.is_disabled = 0
@@ -657,7 +716,9 @@
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.index_columns AS ic
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.key_ordinal > 0
@@ -666,7 +727,9 @@
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.index_columns AS ic
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.is_included_column = 1
@@ -675,10 +738,13 @@
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.index_columns AS ic
+
             INNER JOIN sys.columns AS c
                 ON c.object_id = ic.object_id
                 AND c.column_id = ic.column_id
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.key_ordinal = 1
@@ -689,10 +755,13 @@
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.index_columns AS ic
+
             INNER JOIN sys.columns AS c
                 ON c.object_id = ic.object_id
                 AND c.column_id = ic.column_id
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.key_ordinal = 2
@@ -703,10 +772,13 @@
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.index_columns AS ic
+
             INNER JOIN sys.columns AS c
                 ON c.object_id = ic.object_id
                 AND c.column_id = ic.column_id
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.is_included_column = 1
@@ -731,8 +803,12 @@
         INNER JOIN sys.data_spaces AS ds
             ON ds.data_space_id = i.data_space_id
 
-        WHERE i.object_id = OBJECT_ID(N'payment.PaymentRefund')
-        AND i.name = N'IX_PAYRF_updated_at'
+        WHERE i.object_id =
+                OBJECT_ID(N'payment.PaymentRefund')
+
+        AND i.name =
+                N'IX_PAYRF_updated_at'
+
         AND i.type = 2
         AND i.is_unique = 0
         AND i.is_disabled = 0
@@ -743,7 +819,9 @@
         AND
         (
             SELECT COUNT(*)
+
             FROM sys.index_columns AS ic
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.key_ordinal > 0
@@ -752,7 +830,9 @@
         AND NOT EXISTS
         (
             SELECT 1
+
             FROM sys.index_columns AS ic
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.is_included_column = 1
@@ -761,10 +841,13 @@
         AND EXISTS
         (
             SELECT 1
+
             FROM sys.index_columns AS ic
+
             INNER JOIN sys.columns AS c
                 ON c.object_id = ic.object_id
                 AND c.column_id = ic.column_id
+
             WHERE ic.object_id = i.object_id
             AND ic.index_id = i.index_id
             AND ic.key_ordinal = 1
@@ -849,22 +932,22 @@
     AND @PAYRF_FV_trigger_is_instead_of = 0
 
     AND @PAYRF_FV_trigger_normalized LIKE
-        N'%afterinsert,update%'
+            N'%afterinsert,update%'
 
     AND @PAYRF_FV_trigger_normalized LIKE
-        N'%payrf_refunded_at<p.pay_attempted_at%'
+            N'%payrf_refunded_at<p.pay_attempted_at%'
 
     AND @PAYRF_FV_trigger_normalized LIKE
-        N'%refundedamount>convert(decimal(38,2),p.pay_amount)%'
+            N'%refundedamount>convert(decimal(38,2),p.pay_amount)%'
 
     AND @PAYRF_FV_trigger_normalized LIKE
-        N'%updlock%'
+            N'%updlock%'
 
     AND @PAYRF_FV_trigger_normalized LIKE
-        N'%holdlock%'
+            N'%holdlock%'
 
     AND @PAYRF_FV_trigger_normalized LIKE
-        N'%ix_payrf_pay%'
+            N'%ix_payrf_pay%'
     BEGIN
         SET @PAYRF_FV_refund_integrity_status = N'VALID';
     END
@@ -880,11 +963,7 @@
     ==========================================================================*/
 
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
-    PRINT N'';
     PRINT N'    FINAL STATE';
-    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
 
     PRINT N'        Table                         : ' + @PAYRF_FV_table_status;
@@ -898,36 +977,37 @@
     PRINT N'        Foreign Key Constraints       : ' + @PAYRF_FV_foreign_keys_status;
     PRINT N'        Additional Indexes            : ' + @PAYRF_FV_indexes_status;
     PRINT N'        Refund Integrity              : ' + @PAYRF_FV_refund_integrity_status;
-
     PRINT N'';
-    PRINT N'    --------------------------------------------------------------------------';
-
 
     IF @PAYRF_FV_validation_errors = 0
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : PASSED';
-        PRINT N'';
 
     END
     ELSE
     BEGIN
 
-        PRINT N'';
         PRINT N'        Result                        : FAILED';
 
         PRINT N'        Validation Errors             : '
-            + CONVERT(nvarchar(10), @PAYRF_FV_validation_errors);
+            + CONVERT
+            (
+                nvarchar(10),
+                @PAYRF_FV_validation_errors
+            );
 
-        PRINT N'';
+    END;
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @PAYRF_FV_validation_errors > 0
+    BEGIN
 
         ;THROW 51040,
             N'Final validation failed for payment.PaymentRefund.',
             1;
 
     END;
-
-
-    PRINT N'';

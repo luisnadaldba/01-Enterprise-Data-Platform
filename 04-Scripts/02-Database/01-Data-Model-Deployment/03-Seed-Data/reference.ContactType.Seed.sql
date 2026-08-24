@@ -1,5 +1,6 @@
-    PRINT N'    reference.ContactType';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● reference.ContactType';
+    PRINT N'';
 
     DECLARE @CTP_seed_timestamp datetime2(0) = SYSDATETIME();
 
@@ -174,4 +175,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

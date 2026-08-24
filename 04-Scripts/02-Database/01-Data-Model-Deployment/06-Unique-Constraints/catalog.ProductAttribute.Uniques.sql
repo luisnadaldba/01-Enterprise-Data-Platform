@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductAttribute';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductAttribute';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -199,7 +200,7 @@
 
             IF @PAT_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @PAT_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @PAT_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @PAT_UQ_actual_is_disabled = 0
 
@@ -658,4 +659,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

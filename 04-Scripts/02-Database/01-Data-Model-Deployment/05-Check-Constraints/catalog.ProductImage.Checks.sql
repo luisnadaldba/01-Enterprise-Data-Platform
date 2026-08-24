@@ -1,5 +1,6 @@
-    PRINT N'    catalog.ProductImage';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.ProductImage';
+    PRINT N'';
 
 
     DECLARE @PRDIM_check_expected_name          sysname;
@@ -691,4 +692,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

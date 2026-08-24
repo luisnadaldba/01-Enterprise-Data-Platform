@@ -1,5 +1,6 @@
-    PRINT N'    sales.TransactionChannel';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● sales.TransactionChannel';
+    PRINT N'';
 
 
     /*==========================================================================
@@ -19,7 +20,7 @@
         UQ_TRNCH_code
 
         Rule:
-            The transaction status code is the stable canonical identifier
+            The transaction channel code is the stable canonical identifier
             used by the application and must be unique.
     --------------------------------------------------------------------------*/
 
@@ -107,7 +108,6 @@
 
         SET @TRNCH_UQ_parent_object              = NULL;
         SET @TRNCH_UQ_qualified_name             = NULL;
-
         SET @TRNCH_UQ_sql                        = NULL;
 
 
@@ -126,7 +126,9 @@
                 TRNCH_create_columns
 
         FROM @TRNCH_UQ_expected_uniques
-        WHERE TRNCH_uq_id = @TRNCH_UQ_current_id;
+
+        WHERE TRNCH_uq_id =
+                @TRNCH_UQ_current_id;
 
 
         /*----------------------------------------------------------------------
@@ -165,8 +167,12 @@
                     ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
 
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             )
 
@@ -182,7 +188,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'sales.TransactionChannel')
 
-        AND kc.type = N'UQ'
+        AND kc.type =
+                N'UQ'
 
         AND kc.name =
                 @TRNCH_UQ_expected_name;
@@ -197,7 +204,7 @@
 
             IF @TRNCH_UQ_actual_columns COLLATE Latin1_General_100_BIN2
                     =
-            @TRNCH_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+               @TRNCH_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             AND @TRNCH_UQ_actual_is_disabled = 0
 
@@ -218,7 +225,6 @@
                 PRINT N'            Filegroup                       : FG_CORE';
 
             END
-
             ELSE
             BEGIN
 
@@ -358,7 +364,8 @@
                 WHERE kc.parent_object_id =
                         OBJECT_ID(N'sales.TransactionChannel')
 
-                AND kc.type = N'UQ'
+                AND kc.type =
+                        N'UQ'
 
                 AND kc.name <>
                         @TRNCH_UQ_expected_name
@@ -367,7 +374,7 @@
 
             WHERE uq.UQ_columns COLLATE Latin1_General_100_BIN2
                     =
-                @TRNCH_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                  @TRNCH_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
             ORDER BY
                 uq.UQ_name;
@@ -478,8 +485,12 @@
                                 ON  c.object_id = ic.object_id
                                 AND c.column_id = ic.column_id
 
-                            WHERE ic.object_id = i.object_id
-                            AND ic.index_id = i.index_id
+                            WHERE ic.object_id =
+                                    i.object_id
+
+                            AND ic.index_id =
+                                    i.index_id
+
                             AND ic.key_ordinal > 0
 
                         ) AS IndexColumns
@@ -504,7 +515,7 @@
 
                 WHERE idx.IndexColumns COLLATE Latin1_General_100_BIN2
                         =
-                    @TRNCH_UQ_expected_columns COLLATE Latin1_General_100_BIN2
+                      @TRNCH_UQ_expected_columns COLLATE Latin1_General_100_BIN2
 
                 ORDER BY
                     idx.IndexName;
@@ -521,7 +532,6 @@
                         + @TRNCH_UQ_expected_name;
 
                     PRINT N'            Expected Object Type            : UNIQUE CONSTRAINT';
-
                     PRINT N'            Actual Object Type              : UNIQUE INDEX';
 
                     PRINT N'            Actual Index                    : '
@@ -553,7 +563,6 @@
                         );
 
                     PRINT N'            Existing unique index was preserved for review.';
-
                     PRINT N'            Unique constraint was not created to avoid duplicate structures.';
 
                 END
@@ -675,4 +684,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

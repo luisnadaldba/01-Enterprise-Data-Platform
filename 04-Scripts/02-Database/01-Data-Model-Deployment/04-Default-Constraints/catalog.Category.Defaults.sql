@@ -1,5 +1,6 @@
-    PRINT N'    catalog.Category';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● catalog.Category';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -49,6 +50,7 @@
 
         IF OBJECT_ID(N'catalog.DF_CTG_is_active', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @CTG_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -58,25 +60,31 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'catalog.DF_CTG_is_active', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_CTG_is_active';
-            PRINT N'            Expected Table                  : catalog.Category';
-            PRINT N'            Expected Column                 : CTG_is_active';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.Category';
+            PRINT N'            Expected Column               : CTG_is_active';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@CTG_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50140,
                 N'Default constraint DF_CTG_is_active already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE catalog.Category
             ADD CONSTRAINT DF_CTG_is_active
             DEFAULT (1) FOR CTG_is_active;
 
-        PRINT N'        [+] Default constraint added        : DF_CTG_is_active';
-        PRINT N'            Column                          : CTG_is_active';
-        PRINT N'            Definition                      : DEFAULT (1)';
+
+        PRINT N'        [+] Default constraint added      : DF_CTG_is_active';
+        PRINT N'            Column                        : CTG_is_active';
+        PRINT N'            Definition                    : DEFAULT (1)';
+
     END
 
     ELSE
@@ -108,25 +116,31 @@
                 )
             );
 
+
         IF @CTG_default_actual_name = @CTG_default_expected_name
         AND TRY_CONVERT(int, @CTG_default_normalized_definition) = 1
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_CTG_is_active';
-            PRINT N'            Column                          : CTG_is_active';
-            PRINT N'            Definition                      : DEFAULT (1)';
+
+            PRINT N'        [•] Default constraint validated  : DF_CTG_is_active';
+            PRINT N'            Column                        : CTG_is_active';
+            PRINT N'            Definition                    : DEFAULT (1)';
+
         END
 
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : CTG_is_active';
-            PRINT N'            Expected Name                   : DF_CTG_is_active';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : CTG_is_active';
+            PRINT N'            Expected Name                 : DF_CTG_is_active';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@CTG_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (1)';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (1)';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@CTG_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
@@ -142,6 +156,10 @@
     SET @CTG_default_parent_object = NULL;
 
 
+    /*----------------------------------------------------------------------
+        VALIDATE DEFAULT CURRENTLY ASSOCIATED WITH CTG_created_at
+    ----------------------------------------------------------------------*/
+
     SELECT
         @CTG_default_actual_name = dc.name,
         @CTG_default_actual_definition = dc.definition
@@ -153,11 +171,16 @@
     AND c.name = N'CTG_created_at';
 
 
+    /*----------------------------------------------------------------------
+        NO DEFAULT CURRENTLY EXISTS ON CTG_created_at
+    ----------------------------------------------------------------------*/
+
     IF @CTG_default_actual_name IS NULL
     BEGIN
 
         IF OBJECT_ID(N'catalog.DF_CTG_created_at', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @CTG_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -167,25 +190,31 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'catalog.DF_CTG_created_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_CTG_created_at';
-            PRINT N'            Expected Table                  : catalog.Category';
-            PRINT N'            Expected Column                 : CTG_created_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.Category';
+            PRINT N'            Expected Column               : CTG_created_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@CTG_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50141,
                 N'Default constraint DF_CTG_created_at already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE catalog.Category
             ADD CONSTRAINT DF_CTG_created_at
             DEFAULT (SYSDATETIME()) FOR CTG_created_at;
 
-        PRINT N'        [+] Default constraint added        : DF_CTG_created_at';
-        PRINT N'            Column                          : CTG_created_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+        PRINT N'        [+] Default constraint added      : DF_CTG_created_at';
+        PRINT N'            Column                        : CTG_created_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
     END
 
     ELSE
@@ -217,25 +246,31 @@
                 )
             );
 
+
         IF @CTG_default_actual_name = @CTG_default_expected_name
         AND @CTG_default_normalized_definition = N'sysdatetime'
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_CTG_created_at';
-            PRINT N'            Column                          : CTG_created_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+            PRINT N'        [•] Default constraint validated  : DF_CTG_created_at';
+            PRINT N'            Column                        : CTG_created_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
         END
 
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : CTG_created_at';
-            PRINT N'            Expected Name                   : DF_CTG_created_at';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : CTG_created_at';
+            PRINT N'            Expected Name                 : DF_CTG_created_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@CTG_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@CTG_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
@@ -251,6 +286,10 @@
     SET @CTG_default_parent_object = NULL;
 
 
+    /*----------------------------------------------------------------------
+        VALIDATE DEFAULT CURRENTLY ASSOCIATED WITH CTG_updated_at
+    ----------------------------------------------------------------------*/
+
     SELECT
         @CTG_default_actual_name = dc.name,
         @CTG_default_actual_definition = dc.definition
@@ -262,11 +301,16 @@
     AND c.name = N'CTG_updated_at';
 
 
+    /*----------------------------------------------------------------------
+        NO DEFAULT CURRENTLY EXISTS ON CTG_updated_at
+    ----------------------------------------------------------------------*/
+
     IF @CTG_default_actual_name IS NULL
     BEGIN
 
         IF OBJECT_ID(N'catalog.DF_CTG_updated_at', N'D') IS NOT NULL
         BEGIN
+
             SELECT
                 @CTG_default_parent_object =
                     QUOTENAME(OBJECT_SCHEMA_NAME(dc.parent_object_id))
@@ -276,25 +320,31 @@
             WHERE dc.object_id =
                 OBJECT_ID(N'catalog.DF_CTG_updated_at', N'D');
 
+
             PRINT N'        [!] Default constraint name conflict : DF_CTG_updated_at';
-            PRINT N'            Expected Table                  : catalog.Category';
-            PRINT N'            Expected Column                 : CTG_updated_at';
-            PRINT N'            Existing Parent                 : '
+            PRINT N'            Expected Table                : catalog.Category';
+            PRINT N'            Expected Column               : CTG_updated_at';
+            PRINT N'            Existing Parent               : '
                 + COALESCE(@CTG_default_parent_object, N'<UNKNOWN>');
             PRINT N'            Constraint was not created. Manual review is required.';
+
 
             ;THROW 50142,
                 N'Default constraint DF_CTG_updated_at already exists on another object.',
                 1;
+
         END;
+
 
         ALTER TABLE catalog.Category
             ADD CONSTRAINT DF_CTG_updated_at
             DEFAULT (SYSDATETIME()) FOR CTG_updated_at;
 
-        PRINT N'        [+] Default constraint added        : DF_CTG_updated_at';
-        PRINT N'            Column                          : CTG_updated_at';
-        PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+        PRINT N'        [+] Default constraint added      : DF_CTG_updated_at';
+        PRINT N'            Column                        : CTG_updated_at';
+        PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
     END
 
     ELSE
@@ -326,26 +376,34 @@
                 )
             );
 
+
         IF @CTG_default_actual_name = @CTG_default_expected_name
         AND @CTG_default_normalized_definition = N'sysdatetime'
         BEGIN
-            PRINT N'        [•] Default constraint validated    : DF_CTG_updated_at';
-            PRINT N'            Column                          : CTG_updated_at';
-            PRINT N'            Definition                      : DEFAULT (SYSDATETIME())';
+
+            PRINT N'        [•] Default constraint validated  : DF_CTG_updated_at';
+            PRINT N'            Column                        : CTG_updated_at';
+            PRINT N'            Definition                    : DEFAULT (SYSDATETIME())';
+
         END
 
         ELSE
         BEGIN
-            PRINT N'        [!] Default constraint mismatch     : CTG_updated_at';
-            PRINT N'            Expected Name                   : DF_CTG_updated_at';
-            PRINT N'            Actual Name                     : '
+
+            PRINT N'        [!] Default constraint mismatch   : CTG_updated_at';
+            PRINT N'            Expected Name                 : DF_CTG_updated_at';
+            PRINT N'            Actual Name                   : '
                 + COALESCE(@CTG_default_actual_name, N'<NULL>');
-            PRINT N'            Expected Definition             : DEFAULT (SYSDATETIME())';
-            PRINT N'            Actual Definition               : '
+            PRINT N'            Expected Definition           : DEFAULT (SYSDATETIME())';
+            PRINT N'            Actual Definition             : '
                 + COALESCE(@CTG_default_actual_definition, N'<NULL>');
             PRINT N'            Existing constraint was preserved for review.';
+
         END;
+
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

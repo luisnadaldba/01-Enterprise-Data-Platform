@@ -31,8 +31,8 @@
     SET XACT_ABORT ON;
 
     PRINT N'';
-    PRINT N'    inventory.InventoryMovementNote';
-    PRINT N'    ------------------------------------------------------------';
+    PRINT N'    ● inventory.InventoryMovementNote';
+    PRINT N'';
 
 
     /*==============================================================================
@@ -42,8 +42,11 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.filegroups
-        WHERE name = N'FG_CORE'
+
+        WHERE name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -92,7 +95,6 @@
         PRINT N'            Primary Key                     : INVMN_id';
 
     END
-
     ELSE
     BEGIN
 
@@ -106,18 +108,28 @@
         IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
 
             INNER JOIN sys.identity_columns AS ic
                 ON  ic.object_id = c.object_id
                 AND ic.column_id = c.column_id
 
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
+
             AND c.is_nullable = 0
+
             AND c.is_identity = 1
+
             AND CONVERT(bigint, ic.seed_value) = 1
+
             AND CONVERT(bigint, ic.increment_value) = 1
         )
         BEGIN
@@ -145,7 +157,8 @@
 
 
         SELECT
-            @INVMN_ActualPrimaryKeyName = kc.name
+            @INVMN_ActualPrimaryKeyName =
+                kc.name
 
         FROM sys.key_constraints AS kc
 
@@ -156,7 +169,8 @@
         WHERE kc.parent_object_id =
                 OBJECT_ID(N'inventory.InventoryMovementNote')
 
-        AND kc.type = N'PK';
+        AND kc.type =
+                N'PK';
 
 
         IF @INVMN_ActualPrimaryKeyName IS NULL
@@ -171,6 +185,10 @@
         END;
 
 
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY DEFINITION
+        --------------------------------------------------------------------------*/
+
         IF NOT EXISTS
         (
             SELECT 1
@@ -184,30 +202,48 @@
             WHERE kc.parent_object_id =
                     OBJECT_ID(N'inventory.InventoryMovementNote')
 
-            AND kc.type = N'PK'
+            AND kc.type =
+                    N'PK'
+
             AND i.type = 1
+
             AND i.is_unique = 1
 
             AND
             (
                 SELECT COUNT(*)
+
                 FROM sys.index_columns AS ic
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal > 0
             ) = 1
 
             AND EXISTS
             (
                 SELECT 1
+
                 FROM sys.index_columns AS ic
+
                 INNER JOIN sys.columns AS c
-                    ON c.object_id = ic.object_id
+                    ON  c.object_id = ic.object_id
                     AND c.column_id = ic.column_id
-                WHERE ic.object_id = kc.parent_object_id
-                AND ic.index_id = kc.unique_index_id
+
+                WHERE ic.object_id =
+                        kc.parent_object_id
+
+                AND ic.index_id =
+                        kc.unique_index_id
+
                 AND ic.key_ordinal = 1
-                AND c.name = N'INVMN_id'
+
+                AND c.name =
+                        N'INVMN_id'
             )
         )
         BEGIN
@@ -222,7 +258,12 @@
         END;
 
 
-        IF @INVMN_ActualPrimaryKeyName <> N'PK_INVMN'
+        /*--------------------------------------------------------------------------
+            VALIDATE PRIMARY KEY NAME
+        --------------------------------------------------------------------------*/
+
+        IF @INVMN_ActualPrimaryKeyName <>
+                N'PK_INVMN'
         BEGIN
 
             PRINT N'            [!] Primary key naming divergence :';
@@ -244,7 +285,11 @@
             COLUMN: INVMN_INVMV_id
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovementNote', N'INVMN_INVMV_id') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovementNote',
+            N'INVMN_INVMV_id'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryMovementNote
@@ -257,10 +302,17 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_INVMV_id'
-            AND TYPE_NAME(c.user_type_id) = N'bigint'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_INVMV_id'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'bigint'
         )
         BEGIN
 
@@ -274,9 +326,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_INVMV_id'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_INVMV_id'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -298,7 +356,11 @@
             COLUMN: INVMN_note
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovementNote', N'INVMN_note') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovementNote',
+            N'INVMN_note'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryMovementNote
@@ -311,10 +373,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_note'
-            AND TYPE_NAME(c.user_type_id) = N'nvarchar'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_note'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'nvarchar'
+
             AND c.max_length = 2000
         )
         BEGIN
@@ -329,9 +399,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_note'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_note'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -353,7 +429,11 @@
             COLUMN: INVMN_created_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovementNote', N'INVMN_created_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovementNote',
+            N'INVMN_created_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryMovementNote
@@ -366,10 +446,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_created_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_created_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -384,9 +472,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_created_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_created_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -408,7 +502,11 @@
             COLUMN: INVMN_updated_at
         --------------------------------------------------------------------------*/
 
-        IF COL_LENGTH(N'inventory.InventoryMovementNote', N'INVMN_updated_at') IS NULL
+        IF COL_LENGTH
+        (
+            N'inventory.InventoryMovementNote',
+            N'INVMN_updated_at'
+        ) IS NULL
         BEGIN
 
             ALTER TABLE inventory.InventoryMovementNote
@@ -421,10 +519,18 @@
         ELSE IF NOT EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_updated_at'
-            AND TYPE_NAME(c.user_type_id) = N'datetime2'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_updated_at'
+
+            AND TYPE_NAME(c.user_type_id) =
+                    N'datetime2'
+
             AND c.scale = 0
         )
         BEGIN
@@ -439,9 +545,15 @@
         ELSE IF EXISTS
         (
             SELECT 1
+
             FROM sys.columns AS c
-            WHERE c.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
-            AND c.name = N'INVMN_updated_at'
+
+            WHERE c.object_id =
+                    OBJECT_ID(N'inventory.InventoryMovementNote')
+
+            AND c.name =
+                    N'INVMN_updated_at'
+
             AND c.is_nullable = 1
         )
         BEGIN
@@ -468,17 +580,26 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.indexes AS i
+
         INNER JOIN sys.key_constraints AS kc
-            ON kc.parent_object_id = i.object_id
+            ON  kc.parent_object_id = i.object_id
             AND kc.unique_index_id = i.index_id
             AND kc.type = N'PK'
+
         INNER JOIN sys.data_spaces AS ds
             ON ds.data_space_id = i.data_space_id
-        WHERE i.object_id = OBJECT_ID(N'inventory.InventoryMovementNote')
+
+        WHERE i.object_id =
+                OBJECT_ID(N'inventory.InventoryMovementNote')
+
         AND i.type = 1
+
         AND i.is_unique = 1
-        AND ds.name = N'FG_CORE'
+
+        AND ds.name =
+                N'FG_CORE'
     )
     BEGIN
 
@@ -498,4 +619,6 @@
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';

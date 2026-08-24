@@ -1,5 +1,6 @@
-    PRINT N'    reference.Country';
-    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+    PRINT N'    ● reference.Country';
+    PRINT N'';
 
     DECLARE @CTR_expected_description nvarchar(4000);
     DECLARE @CTR_existing_description nvarchar(4000);
@@ -15,11 +16,18 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
+
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description'
+
+        AND ep.name =
+                N'MS_Description'
     )
     BEGIN
 
@@ -39,6 +47,7 @@
 
         SET @CTR_existing_description = NULL;
 
+
         SELECT
             @CTR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -46,12 +55,18 @@
         FROM sys.extended_properties AS ep
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
         AND ep.minor_id = 0
-        AND ep.name = N'MS_Description';
+
+        AND ep.name =
+                N'MS_Description';
 
 
-        IF @CTR_existing_description = @CTR_expected_description
+        IF @CTR_existing_description =
+            @CTR_expected_description
         BEGIN
 
             PRINT N'        [•] Table description validated   : reference.Country';
@@ -70,7 +85,7 @@
                     WHEN LEN(@CTR_existing_description) = 0
                         THEN N'<EMPTY>'
                     ELSE @CTR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -87,6 +102,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -94,9 +110,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_id'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_id'
     )
     BEGIN
 
@@ -118,6 +140,7 @@
 
         SET @CTR_existing_description = NULL;
 
+
         SELECT
             @CTR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -129,12 +152,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_id';
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_id';
 
 
-        IF @CTR_existing_description = @CTR_expected_description
+        IF @CTR_existing_description =
+            @CTR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CTR_id';
@@ -148,10 +178,12 @@
                 + @CTR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -168,6 +200,7 @@
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -175,9 +208,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_name'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_name'
     )
     BEGIN
 
@@ -199,6 +238,7 @@
 
         SET @CTR_existing_description = NULL;
 
+
         SELECT
             @CTR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -210,12 +250,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_name';
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_name';
 
 
-        IF @CTR_existing_description = @CTR_expected_description
+        IF @CTR_existing_description =
+            @CTR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CTR_name';
@@ -229,10 +276,12 @@
                 + @CTR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -244,11 +293,12 @@
     ----------------------------------------------------------------------*/
 
     SET @CTR_expected_description =
-        N'Records the date and time when the row was initially created.';
+        N'Records the date and time when the row was created.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -256,9 +306,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_created_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_created_at'
     )
     BEGIN
 
@@ -280,6 +336,7 @@
 
         SET @CTR_existing_description = NULL;
 
+
         SELECT
             @CTR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -291,12 +348,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_created_at';
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_created_at';
 
 
-        IF @CTR_existing_description = @CTR_expected_description
+        IF @CTR_existing_description =
+            @CTR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CTR_created_at';
@@ -310,10 +374,12 @@
                 + @CTR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTR_existing_description
-                END;
+                  END;
 
         END;
 
@@ -325,11 +391,12 @@
     ----------------------------------------------------------------------*/
 
     SET @CTR_expected_description =
-        N'Records the date and time of the most recent meaningful modification to the row.';
+        N'Records the date and time when the row was last updated.';
 
     IF NOT EXISTS
     (
         SELECT 1
+
         FROM sys.extended_properties AS ep
 
         INNER JOIN sys.columns AS c
@@ -337,9 +404,15 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_updated_at'
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_updated_at'
     )
     BEGIN
 
@@ -361,6 +434,7 @@
 
         SET @CTR_existing_description = NULL;
 
+
         SELECT
             @CTR_existing_description =
                 CONVERT(nvarchar(4000), ep.value)
@@ -372,12 +446,19 @@
             AND c.column_id = ep.minor_id
 
         WHERE ep.class = 1
-        AND ep.major_id = OBJECT_ID(N'reference.Country')
-        AND ep.name = N'MS_Description'
-        AND c.name = N'CTR_updated_at';
+
+        AND ep.major_id =
+                OBJECT_ID(N'reference.Country')
+
+        AND ep.name =
+                N'MS_Description'
+
+        AND c.name =
+                N'CTR_updated_at';
 
 
-        IF @CTR_existing_description = @CTR_expected_description
+        IF @CTR_existing_description =
+            @CTR_expected_description
         BEGIN
 
             PRINT N'        [•] Column description validated  : CTR_updated_at';
@@ -391,14 +472,18 @@
                 + @CTR_expected_description;
             PRINT N'            Actual                       : '
                 + CASE
-                    WHEN @CTR_existing_description IS NULL THEN N'<NULL>'
-                    WHEN LEN(@CTR_existing_description) = 0 THEN N'<EMPTY>'
+                    WHEN @CTR_existing_description IS NULL
+                        THEN N'<NULL>'
+                    WHEN LEN(@CTR_existing_description) = 0
+                        THEN N'<EMPTY>'
                     ELSE @CTR_existing_description
-                END;
+                  END;
 
         END;
 
     END;
 
 
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
     PRINT N'';
