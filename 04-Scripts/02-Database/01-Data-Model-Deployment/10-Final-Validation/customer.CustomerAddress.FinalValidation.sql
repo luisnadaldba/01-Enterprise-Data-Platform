@@ -1,0 +1,1296 @@
+﻿    PRINT N'    ● customer.CustomerAddress';
+
+
+    /*==========================================================================
+        FINAL VALIDATION STATE
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_validation_errors int = 0;
+
+    DECLARE @CSTAD_FV_table_status               nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_primary_key_status         nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_columns_status             nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_documentation_status       nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_seed_data_status           nvarchar(20) = N'NOT APPLICABLE';
+    DECLARE @CSTAD_FV_defaults_status            nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_checks_status              nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_uniques_status             nvarchar(20) = N'NOT REQUIRED';
+    DECLARE @CSTAD_FV_foreign_keys_status        nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_indexes_status             nvarchar(20) = N'NOT VALIDATED';
+    DECLARE @CSTAD_FV_temporal_integrity_status  nvarchar(20) = N'NOT REQUIRED';
+
+
+    /*==========================================================================
+        TABLE VALIDATION
+    ==========================================================================*/
+
+    IF OBJECT_ID(N'customer.CustomerAddress', N'U') IS NOT NULL
+    BEGIN
+
+        SET @CSTAD_FV_table_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_table_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        PRIMARY KEY VALIDATION
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_pk_actual_name     sysname;
+    DECLARE @CSTAD_FV_pk_actual_columns  nvarchar(4000);
+    DECLARE @CSTAD_FV_pk_data_space      sysname;
+
+
+    SELECT
+        @CSTAD_FV_pk_actual_name =
+            kc.name,
+
+        @CSTAD_FV_pk_data_space =
+            ds.name,
+
+        @CSTAD_FV_pk_actual_columns =
+        (
+            SELECT
+                STRING_AGG
+                (
+                    CONVERT(nvarchar(max), c.name),
+                    N'|'
+                )
+                WITHIN GROUP
+                (
+                    ORDER BY ic.key_ordinal
+                )
+
+            FROM sys.index_columns AS ic
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id = ic.object_id
+                AND c.column_id = ic.column_id
+
+            WHERE ic.object_id =
+                    kc.parent_object_id
+
+            AND ic.index_id =
+                    kc.unique_index_id
+
+            AND ic.key_ordinal > 0
+        )
+
+    FROM sys.key_constraints AS kc
+
+    INNER JOIN sys.indexes AS i
+        ON  i.object_id = kc.parent_object_id
+        AND i.index_id = kc.unique_index_id
+
+    INNER JOIN sys.data_spaces AS ds
+        ON ds.data_space_id = i.data_space_id
+
+    WHERE kc.parent_object_id =
+            OBJECT_ID(N'customer.CustomerAddress')
+
+    AND kc.type = N'PK';
+
+
+    IF @CSTAD_FV_pk_actual_name =
+            N'PK_CSTAD'
+
+    AND @CSTAD_FV_pk_actual_columns =
+            N'CSTAD_id'
+
+    AND @CSTAD_FV_pk_data_space =
+            N'FG_CORE'
+    BEGIN
+
+        SET @CSTAD_FV_primary_key_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_primary_key_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        COLUMNS VALIDATION
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_expected_column_count int = 9;
+    DECLARE @CSTAD_FV_actual_column_count   int;
+
+
+    SELECT
+        @CSTAD_FV_actual_column_count =
+            COUNT(*)
+
+    FROM sys.columns
+
+    WHERE object_id =
+            OBJECT_ID(N'customer.CustomerAddress');
+
+
+    IF @CSTAD_FV_actual_column_count =
+            @CSTAD_FV_expected_column_count
+
+
+    /* CSTAD_id */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_id'
+        AND t.name = N'int'
+        AND c.max_length = 4
+        AND c.is_nullable = 0
+        AND c.is_identity = 1
+    )
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.identity_columns AS ic
+
+        WHERE ic.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND ic.name = N'CSTAD_id'
+        AND CONVERT(bigint, ic.seed_value) = 1
+        AND CONVERT(bigint, ic.increment_value) = 1
+    )
+
+
+    /* CSTAD_CST_id */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_CST_id'
+        AND t.name = N'int'
+        AND c.max_length = 4
+        AND c.is_nullable = 0
+        AND c.is_identity = 0
+    )
+
+
+    /* CSTAD_ADR_id */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_ADR_id'
+        AND t.name = N'int'
+        AND c.max_length = 4
+        AND c.is_nullable = 0
+        AND c.is_identity = 0
+    )
+
+
+    /* CSTAD_number */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_number'
+        AND t.name = N'nvarchar'
+        AND c.max_length = 40
+        AND c.is_nullable = 0
+    )
+
+
+    /* CSTAD_complement */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_complement'
+        AND t.name = N'nvarchar'
+        AND c.max_length = 200
+        AND c.is_nullable = 1
+    )
+
+
+    /* CSTAD_is_primary */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_is_primary'
+        AND t.name = N'bit'
+        AND c.max_length = 1
+        AND c.is_nullable = 0
+    )
+
+
+    /* CSTAD_is_active */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_is_active'
+        AND t.name = N'bit'
+        AND c.max_length = 1
+        AND c.is_nullable = 0
+    )
+
+
+    /* CSTAD_created_at */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_created_at'
+        AND t.name = N'datetime2'
+        AND c.scale = 0
+        AND c.is_nullable = 0
+    )
+
+
+    /* CSTAD_updated_at */
+
+    AND EXISTS
+    (
+        SELECT 1
+
+        FROM sys.columns AS c
+
+        INNER JOIN sys.types AS t
+            ON c.user_type_id = t.user_type_id
+
+        WHERE c.object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name = N'CSTAD_updated_at'
+        AND t.name = N'datetime2'
+        AND c.scale = 0
+        AND c.is_nullable = 0
+    )
+    BEGIN
+
+        SET @CSTAD_FV_columns_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_columns_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        OBJECT DOCUMENTATION VALIDATION
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_expected_documentation TABLE
+    (
+        CSTAD_doc_id                    tinyint IDENTITY(1,1) NOT NULL,
+        CSTAD_doc_object_type           nvarchar(10) NOT NULL,
+        CSTAD_doc_column_name           sysname NULL,
+        CSTAD_doc_expected_description  nvarchar(4000) NOT NULL
+    );
+
+
+    DECLARE @CSTAD_FV_doc_current_id        tinyint;
+    DECLARE @CSTAD_FV_doc_max_id            tinyint;
+    DECLARE @CSTAD_FV_doc_object_type       nvarchar(10);
+    DECLARE @CSTAD_FV_doc_column_name       sysname;
+    DECLARE @CSTAD_FV_doc_expected_value    nvarchar(4000);
+    DECLARE @CSTAD_FV_doc_actual_value      nvarchar(4000);
+    DECLARE @CSTAD_FV_invalid_documentation int = 0;
+
+
+    /*--------------------------------------------------------------------------
+        EXPECTED DOCUMENTATION
+
+        IMPORTANT:
+            These descriptions intentionally match
+            customer.CustomerAddress.Documentation.sql.
+    --------------------------------------------------------------------------*/
+
+    INSERT INTO @CSTAD_FV_expected_documentation
+    (
+        CSTAD_doc_object_type,
+        CSTAD_doc_column_name,
+        CSTAD_doc_expected_description
+    )
+    VALUES
+    (
+        N'TABLE',
+        NULL,
+        N'Maintains the association between customers and their current or historical addresses while storing customer-specific address information.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_id',
+        N'Primary key of customer.CustomerAddress.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_CST_id',
+        N'Foreign key referencing customer.Customer.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_ADR_id',
+        N'Foreign key referencing reference.Address.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_number',
+        N'Stores the street number associated with the customer at the referenced address.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_complement',
+        N'Stores optional address information that identifies a unit, apartment, block, suite, or similar location detail.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_is_primary',
+        N'Indicates whether the address is the primary address currently designated for the customer.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_is_active',
+        N'Indicates whether the customer currently maintains an active association with the address while preserving inactive associations for historical integrity.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_created_at',
+        N'Records the date and time when the row was created.'
+    ),
+    (
+        N'COLUMN',
+        N'CSTAD_updated_at',
+        N'Records the date and time when the row was last updated.'
+    );
+
+
+    SELECT
+        @CSTAD_FV_doc_current_id =
+            MIN(CSTAD_doc_id),
+
+        @CSTAD_FV_doc_max_id =
+            MAX(CSTAD_doc_id)
+
+    FROM @CSTAD_FV_expected_documentation;
+
+
+    WHILE @CSTAD_FV_doc_current_id <=
+        @CSTAD_FV_doc_max_id
+    BEGIN
+
+        SET @CSTAD_FV_doc_object_type = NULL;
+        SET @CSTAD_FV_doc_column_name = NULL;
+        SET @CSTAD_FV_doc_expected_value = NULL;
+        SET @CSTAD_FV_doc_actual_value = NULL;
+
+
+        SELECT
+            @CSTAD_FV_doc_object_type =
+                CSTAD_doc_object_type,
+
+            @CSTAD_FV_doc_column_name =
+                CSTAD_doc_column_name,
+
+            @CSTAD_FV_doc_expected_value =
+                CSTAD_doc_expected_description
+
+        FROM @CSTAD_FV_expected_documentation
+
+        WHERE CSTAD_doc_id =
+                @CSTAD_FV_doc_current_id;
+
+
+        IF @CSTAD_FV_doc_object_type = N'TABLE'
+        BEGIN
+
+            SELECT
+                @CSTAD_FV_doc_actual_value =
+                    CONVERT(nvarchar(4000), ep.value)
+
+            FROM sys.extended_properties AS ep
+
+            WHERE ep.class = 1
+
+            AND ep.major_id =
+                    OBJECT_ID(N'customer.CustomerAddress')
+
+            AND ep.minor_id = 0
+
+            AND ep.name =
+                    N'MS_Description';
+
+        END
+        ELSE
+        BEGIN
+
+            SELECT
+                @CSTAD_FV_doc_actual_value =
+                    CONVERT(nvarchar(4000), ep.value)
+
+            FROM sys.extended_properties AS ep
+
+            INNER JOIN sys.columns AS c
+                ON  c.object_id = ep.major_id
+                AND c.column_id = ep.minor_id
+
+            WHERE ep.class = 1
+
+            AND ep.major_id =
+                    OBJECT_ID(N'customer.CustomerAddress')
+
+            AND ep.name =
+                    N'MS_Description'
+
+            AND c.name =
+                    @CSTAD_FV_doc_column_name;
+
+        END;
+
+
+        IF ISNULL
+        (
+            @CSTAD_FV_doc_actual_value,
+            N''
+        )
+        <>
+        @CSTAD_FV_doc_expected_value
+        BEGIN
+
+            SET @CSTAD_FV_invalid_documentation += 1;
+
+        END;
+
+
+        SET @CSTAD_FV_doc_current_id += 1;
+
+    END;
+
+
+    IF @CSTAD_FV_invalid_documentation = 0
+    BEGIN
+
+        SET @CSTAD_FV_documentation_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_documentation_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        DEFAULT CONSTRAINTS VALIDATION
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_expected_defaults TABLE
+    (
+        CSTAD_default_id                   tinyint IDENTITY(1,1) NOT NULL,
+        CSTAD_default_column_name          sysname NOT NULL,
+        CSTAD_default_constraint_name      sysname NOT NULL,
+        CSTAD_default_expected_definition  nvarchar(4000) NOT NULL
+    );
+
+
+    DECLARE @CSTAD_FV_default_current_id          tinyint;
+    DECLARE @CSTAD_FV_default_max_id              tinyint;
+    DECLARE @CSTAD_FV_default_column_name         sysname;
+    DECLARE @CSTAD_FV_default_expected_name       sysname;
+    DECLARE @CSTAD_FV_default_actual_name         sysname;
+    DECLARE @CSTAD_FV_default_expected_definition nvarchar(4000);
+    DECLARE @CSTAD_FV_default_actual_definition   nvarchar(4000);
+    DECLARE @CSTAD_FV_default_expected_normalized nvarchar(4000);
+    DECLARE @CSTAD_FV_default_actual_normalized   nvarchar(4000);
+    DECLARE @CSTAD_FV_invalid_defaults            int = 0;
+
+
+    INSERT INTO @CSTAD_FV_expected_defaults
+    (
+        CSTAD_default_column_name,
+        CSTAD_default_constraint_name,
+        CSTAD_default_expected_definition
+    )
+    VALUES
+    (
+        N'CSTAD_is_primary',
+        N'DF_CSTAD_is_primary',
+        N'0'
+    ),
+    (
+        N'CSTAD_is_active',
+        N'DF_CSTAD_is_active',
+        N'1'
+    ),
+    (
+        N'CSTAD_created_at',
+        N'DF_CSTAD_created_at',
+        N'sysdatetime'
+    ),
+    (
+        N'CSTAD_updated_at',
+        N'DF_CSTAD_updated_at',
+        N'sysdatetime'
+    );
+
+
+    SELECT
+        @CSTAD_FV_default_current_id =
+            MIN(CSTAD_default_id),
+
+        @CSTAD_FV_default_max_id =
+            MAX(CSTAD_default_id)
+
+    FROM @CSTAD_FV_expected_defaults;
+
+
+    WHILE @CSTAD_FV_default_current_id <=
+        @CSTAD_FV_default_max_id
+    BEGIN
+
+        SET @CSTAD_FV_default_column_name = NULL;
+        SET @CSTAD_FV_default_expected_name = NULL;
+        SET @CSTAD_FV_default_actual_name = NULL;
+        SET @CSTAD_FV_default_expected_definition = NULL;
+        SET @CSTAD_FV_default_actual_definition = NULL;
+
+
+        SELECT
+            @CSTAD_FV_default_column_name =
+                CSTAD_default_column_name,
+
+            @CSTAD_FV_default_expected_name =
+                CSTAD_default_constraint_name,
+
+            @CSTAD_FV_default_expected_definition =
+                CSTAD_default_expected_definition
+
+        FROM @CSTAD_FV_expected_defaults
+
+        WHERE CSTAD_default_id =
+                @CSTAD_FV_default_current_id;
+
+
+        SELECT
+            @CSTAD_FV_default_actual_name =
+                dc.name,
+
+            @CSTAD_FV_default_actual_definition =
+                dc.definition
+
+        FROM sys.default_constraints AS dc
+
+        INNER JOIN sys.columns AS c
+            ON  c.object_id = dc.parent_object_id
+            AND c.column_id = dc.parent_column_id
+
+        WHERE dc.parent_object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND c.name =
+                @CSTAD_FV_default_column_name;
+
+
+        SET @CSTAD_FV_default_expected_normalized =
+            LOWER
+            (
+                REPLACE
+                (
+                    REPLACE
+                    (
+                        REPLACE
+                        (
+                            @CSTAD_FV_default_expected_definition,
+                            N'(',
+                            N''
+                        ),
+                        N')',
+                        N''
+                    ),
+                    N' ',
+                    N''
+                )
+            );
+
+
+        SET @CSTAD_FV_default_actual_normalized =
+            LOWER
+            (
+                REPLACE
+                (
+                    REPLACE
+                    (
+                        REPLACE
+                        (
+                            @CSTAD_FV_default_actual_definition,
+                            N'(',
+                            N''
+                        ),
+                        N')',
+                        N''
+                    ),
+                    N' ',
+                    N''
+                )
+            );
+
+
+        IF @CSTAD_FV_default_actual_name IS NULL
+
+        OR @CSTAD_FV_default_actual_name <>
+                @CSTAD_FV_default_expected_name
+
+        OR @CSTAD_FV_default_actual_definition IS NULL
+
+        OR @CSTAD_FV_default_actual_normalized <>
+                @CSTAD_FV_default_expected_normalized
+        BEGIN
+
+            SET @CSTAD_FV_invalid_defaults += 1;
+
+        END;
+
+
+        SET @CSTAD_FV_default_current_id += 1;
+
+    END;
+
+
+    IF @CSTAD_FV_invalid_defaults = 0
+    BEGIN
+
+        SET @CSTAD_FV_defaults_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_defaults_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        CHECK CONSTRAINT VALIDATION
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_check_actual_name        sysname;
+    DECLARE @CSTAD_FV_check_actual_definition  nvarchar(4000);
+    DECLARE @CSTAD_FV_check_normalized         nvarchar(4000);
+    DECLARE @CSTAD_FV_check_is_disabled        bit;
+    DECLARE @CSTAD_FV_check_is_not_trusted     bit;
+
+
+    SELECT
+        @CSTAD_FV_check_actual_name =
+            cc.name,
+
+        @CSTAD_FV_check_actual_definition =
+            cc.definition,
+
+        @CSTAD_FV_check_is_disabled =
+            cc.is_disabled,
+
+        @CSTAD_FV_check_is_not_trusted =
+            cc.is_not_trusted
+
+    FROM sys.check_constraints AS cc
+
+    WHERE cc.parent_object_id =
+            OBJECT_ID(N'customer.CustomerAddress')
+
+    AND cc.name =
+            N'CK_CSTAD_primary_active';
+
+
+    SET @CSTAD_FV_check_normalized =
+        LOWER
+        (
+            REPLACE
+            (
+                REPLACE
+                (
+                    REPLACE
+                    (
+                        REPLACE
+                        (
+                            @CSTAD_FV_check_actual_definition,
+                            N'[',
+                            N''
+                        ),
+                        N']',
+                        N''
+                    ),
+                    N' ',
+                    N''
+                ),
+                NCHAR(9),
+                N''
+            )
+        );
+
+
+    IF @CSTAD_FV_check_actual_name =
+            N'CK_CSTAD_primary_active'
+
+    AND @CSTAD_FV_check_normalized LIKE
+            N'%cstad_is_primary=(0)%'
+
+    AND @CSTAD_FV_check_normalized LIKE
+            N'%orcstad_is_active=(1)%'
+
+    AND @CSTAD_FV_check_is_disabled = 0
+
+    AND @CSTAD_FV_check_is_not_trusted = 0
+    BEGIN
+
+        SET @CSTAD_FV_checks_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_checks_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        FOREIGN KEY CONSTRAINT VALIDATION
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_invalid_foreign_keys int = 0;
+
+
+    /*--------------------------------------------------------------------------
+        FK_CSTAD_CST
+    --------------------------------------------------------------------------*/
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM sys.foreign_keys AS fk
+
+        WHERE fk.parent_object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND fk.referenced_object_id =
+                OBJECT_ID(N'customer.Customer')
+
+        AND fk.name =
+                N'FK_CSTAD_CST'
+
+        AND fk.delete_referential_action = 0
+
+        AND fk.update_referential_action = 0
+
+        AND fk.is_disabled = 0
+
+        AND fk.is_not_trusted = 0
+
+        AND
+        (
+            SELECT COUNT(*)
+
+            FROM sys.foreign_key_columns AS fkc
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+        ) = 1
+
+        AND EXISTS
+        (
+            SELECT 1
+
+            FROM sys.foreign_key_columns AS fkc
+
+            INNER JOIN sys.columns AS pc
+                ON  pc.object_id =
+                        fkc.parent_object_id
+
+                AND pc.column_id =
+                        fkc.parent_column_id
+
+            INNER JOIN sys.columns AS rc
+                ON  rc.object_id =
+                        fkc.referenced_object_id
+
+                AND rc.column_id =
+                        fkc.referenced_column_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
+            AND fkc.constraint_column_id = 1
+
+            AND pc.name =
+                    N'CSTAD_CST_id'
+
+            AND rc.name =
+                    N'CST_id'
+        )
+    )
+    BEGIN
+
+        SET @CSTAD_FV_invalid_foreign_keys += 1;
+
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        FK_CSTAD_ADR
+    --------------------------------------------------------------------------*/
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+
+        FROM sys.foreign_keys AS fk
+
+        WHERE fk.parent_object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+
+        AND fk.referenced_object_id =
+                OBJECT_ID(N'reference.Address')
+
+        AND fk.name =
+                N'FK_CSTAD_ADR'
+
+        AND fk.delete_referential_action = 0
+
+        AND fk.update_referential_action = 0
+
+        AND fk.is_disabled = 0
+
+        AND fk.is_not_trusted = 0
+
+        AND
+        (
+            SELECT COUNT(*)
+
+            FROM sys.foreign_key_columns AS fkc
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+        ) = 1
+
+        AND EXISTS
+        (
+            SELECT 1
+
+            FROM sys.foreign_key_columns AS fkc
+
+            INNER JOIN sys.columns AS pc
+                ON  pc.object_id =
+                        fkc.parent_object_id
+
+                AND pc.column_id =
+                        fkc.parent_column_id
+
+            INNER JOIN sys.columns AS rc
+                ON  rc.object_id =
+                        fkc.referenced_object_id
+
+                AND rc.column_id =
+                        fkc.referenced_column_id
+
+            WHERE fkc.constraint_object_id =
+                    fk.object_id
+
+            AND fkc.constraint_column_id = 1
+
+            AND pc.name =
+                    N'CSTAD_ADR_id'
+
+            AND rc.name =
+                    N'ADR_id'
+        )
+    )
+    BEGIN
+
+        SET @CSTAD_FV_invalid_foreign_keys += 1;
+
+    END;
+
+
+    /*--------------------------------------------------------------------------
+        ENSURE EXACT EXPECTED FOREIGN KEY COUNT
+    --------------------------------------------------------------------------*/
+
+    IF
+    (
+        SELECT COUNT(*)
+
+        FROM sys.foreign_keys AS fk
+
+        WHERE fk.parent_object_id =
+                OBJECT_ID(N'customer.CustomerAddress')
+    ) <> 2
+    BEGIN
+
+        SET @CSTAD_FV_invalid_foreign_keys += 1;
+
+    END;
+
+
+    IF @CSTAD_FV_invalid_foreign_keys = 0
+    BEGIN
+
+        SET @CSTAD_FV_foreign_keys_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_foreign_keys_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        ADDITIONAL INDEX VALIDATION
+    ==========================================================================*/
+
+    DECLARE @CSTAD_FV_ix_actual_name           sysname;
+    DECLARE @CSTAD_FV_ix_actual_type           tinyint;
+    DECLARE @CSTAD_FV_ix_actual_is_unique      bit;
+    DECLARE @CSTAD_FV_ix_actual_is_disabled    bit;
+    DECLARE @CSTAD_FV_ix_actual_hypothetical   bit;
+    DECLARE @CSTAD_FV_ix_actual_data_space     sysname;
+    DECLARE @CSTAD_FV_ix_actual_columns        nvarchar(4000);
+    DECLARE @CSTAD_FV_ix_actual_includes       nvarchar(4000);
+    DECLARE @CSTAD_FV_ix_actual_has_filter     bit;
+    DECLARE @CSTAD_FV_ix_actual_filter         nvarchar(4000);
+    DECLARE @CSTAD_FV_ix_normalized_filter     nvarchar(4000);
+
+
+    SELECT
+        @CSTAD_FV_ix_actual_name =
+            i.name,
+
+        @CSTAD_FV_ix_actual_type =
+            i.type,
+
+        @CSTAD_FV_ix_actual_is_unique =
+            i.is_unique,
+
+        @CSTAD_FV_ix_actual_is_disabled =
+            i.is_disabled,
+
+        @CSTAD_FV_ix_actual_hypothetical =
+            i.is_hypothetical,
+
+        @CSTAD_FV_ix_actual_data_space =
+            ds.name,
+
+        @CSTAD_FV_ix_actual_has_filter =
+            i.has_filter,
+
+        @CSTAD_FV_ix_actual_filter =
+            i.filter_definition
+
+    FROM sys.indexes AS i
+
+    INNER JOIN sys.data_spaces AS ds
+        ON ds.data_space_id =
+            i.data_space_id
+
+    WHERE i.object_id =
+            OBJECT_ID(N'customer.CustomerAddress')
+
+    AND i.name =
+            N'UX_CSTAD_primary_active';
+
+
+    SELECT
+        @CSTAD_FV_ix_actual_columns =
+            STRING_AGG
+            (
+                CONVERT
+                (
+                    nvarchar(max),
+
+                    c.name
+
+                    + CASE
+                        WHEN ic.is_descending_key = 1
+                            THEN N' DESC'
+                        ELSE N' ASC'
+                    END
+                ),
+                N'|'
+            )
+            WITHIN GROUP
+            (
+                ORDER BY ic.key_ordinal
+            )
+
+    FROM sys.indexes AS i
+
+    INNER JOIN sys.index_columns AS ic
+        ON  ic.object_id = i.object_id
+        AND ic.index_id = i.index_id
+        AND ic.key_ordinal > 0
+
+    INNER JOIN sys.columns AS c
+        ON  c.object_id = ic.object_id
+        AND c.column_id = ic.column_id
+
+    WHERE i.object_id =
+            OBJECT_ID(N'customer.CustomerAddress')
+
+    AND i.name =
+            N'UX_CSTAD_primary_active';
+
+
+    SELECT
+        @CSTAD_FV_ix_actual_includes =
+            STRING_AGG
+            (
+                CONVERT(nvarchar(max), c.name),
+                N'|'
+            )
+
+    FROM sys.indexes AS i
+
+    INNER JOIN sys.index_columns AS ic
+        ON  ic.object_id = i.object_id
+        AND ic.index_id = i.index_id
+        AND ic.is_included_column = 1
+
+    INNER JOIN sys.columns AS c
+        ON  c.object_id = ic.object_id
+        AND c.column_id = ic.column_id
+
+    WHERE i.object_id =
+            OBJECT_ID(N'customer.CustomerAddress')
+
+    AND i.name =
+            N'UX_CSTAD_primary_active';
+
+
+    SET @CSTAD_FV_ix_normalized_filter =
+        LOWER
+        (
+            REPLACE
+            (
+                REPLACE
+                (
+                    REPLACE
+                    (
+                        REPLACE
+                        (
+                            REPLACE
+                            (
+                                REPLACE
+                                (
+                                    @CSTAD_FV_ix_actual_filter,
+                                    N'[',
+                                    N''
+                                ),
+                                N']',
+                                N''
+                            ),
+                            N'(',
+                            N''
+                        ),
+                        N')',
+                        N''
+                    ),
+                    N' ',
+                    N''
+                ),
+                NCHAR(9),
+                N''
+            )
+        );
+
+
+    IF @CSTAD_FV_ix_actual_name =
+            N'UX_CSTAD_primary_active'
+
+    AND @CSTAD_FV_ix_actual_type = 2
+
+    AND @CSTAD_FV_ix_actual_is_unique = 1
+
+    AND @CSTAD_FV_ix_actual_is_disabled = 0
+
+    AND @CSTAD_FV_ix_actual_hypothetical = 0
+
+    AND @CSTAD_FV_ix_actual_data_space =
+            N'FG_CORE'
+
+    AND @CSTAD_FV_ix_actual_columns =
+            N'CSTAD_CST_id ASC'
+
+    AND @CSTAD_FV_ix_actual_includes IS NULL
+
+    AND @CSTAD_FV_ix_actual_has_filter = 1
+
+    AND
+    (
+        @CSTAD_FV_ix_normalized_filter =
+            N'cstad_is_primary=1andcstad_is_active=1'
+
+        OR
+
+        @CSTAD_FV_ix_normalized_filter =
+            N'cstad_is_active=1andcstad_is_primary=1'
+    )
+    BEGIN
+
+        SET @CSTAD_FV_indexes_status = N'VALID';
+
+    END
+    ELSE
+    BEGIN
+
+        SET @CSTAD_FV_indexes_status = N'FAILED';
+        SET @CSTAD_FV_validation_errors += 1;
+
+    END;
+
+
+    /*==========================================================================
+        FINAL STATE
+    ==========================================================================*/
+
+    PRINT N'';
+    PRINT N'    FINAL STATE';
+    PRINT N'';
+
+    PRINT N'        Table                         : ' + @CSTAD_FV_table_status;
+    PRINT N'        Primary Key                   : ' + @CSTAD_FV_primary_key_status;
+    PRINT N'        Columns                       : ' + @CSTAD_FV_columns_status;
+    PRINT N'        Object Documentation          : ' + @CSTAD_FV_documentation_status;
+    PRINT N'        Seed Data                     : ' + @CSTAD_FV_seed_data_status;
+    PRINT N'        Default Constraints           : ' + @CSTAD_FV_defaults_status;
+    PRINT N'        Check Constraints             : ' + @CSTAD_FV_checks_status;
+    PRINT N'        Unique Constraints            : ' + @CSTAD_FV_uniques_status;
+    PRINT N'        Foreign Key Constraints       : ' + @CSTAD_FV_foreign_keys_status;
+    PRINT N'        Additional Indexes            : ' + @CSTAD_FV_indexes_status;
+    PRINT N'        Temporal Integrity            : ' + @CSTAD_FV_temporal_integrity_status;
+    PRINT N'';
+
+    IF @CSTAD_FV_validation_errors = 0
+    BEGIN
+
+        PRINT N'        Result                        : PASSED';
+
+    END
+    ELSE
+    BEGIN
+
+        PRINT N'        Result                        : FAILED';
+
+        PRINT N'        Validation Errors             : '
+            + CONVERT
+            (
+                nvarchar(10),
+                @CSTAD_FV_validation_errors
+            );
+
+    END;
+
+    PRINT N'';
+    PRINT N'    --------------------------------------------------------------------------';
+    PRINT N'';
+
+    IF @CSTAD_FV_validation_errors > 0
+    BEGIN
+
+        ;THROW 50500,
+            N'Final validation failed for customer.CustomerAddress.',
+            1;
+
+    END;
