@@ -2,7 +2,7 @@
 
 ## Overview
 
-Atlas Engineering is an end-to-end enterprise data platform project designed and implemented from the ground up as a technical engineering portfolio.
+Atlas Engineering is an end-to-end enterprise data platform project designed and developed from the ground up as a technical engineering portfolio.
 
 The platform follows the evolution of data from its operational source through data engineering, analytical modeling, and business intelligence, with an emphasis on architecture, data quality, reproducibility, maintainability, and technical documentation.
 
@@ -10,57 +10,49 @@ The first major platform layer is **AtlasCommerce**, a SQL Server transactional 
 
 AtlasCommerce includes a complete relational data model, deterministic sample data, rerunnable deployment scripts, business and database documentation, cross-domain integrity rules, temporal validation, and automated data certification.
 
-The transactional database layer is complete and provides the certified source data for the next stage of the platform: **Data Engineering**.
+The transactional database layer is complete and provides the certified operational source for the implementation of the Version 1 Data Engineering architecture.
+
+---
+
+## Contents
+
+- [Platform Architecture](#platform-architecture)
+- [Current Project Status](#current-project-status)
+- [AtlasCommerce](#atlascommerce)
+- [Engineering Highlights](#engineering-highlights)
+- [Repository Structure](#repository-structure)
+- [Documentation](#documentation)
+- [Technology Stack](#technology-stack)
+- [Roadmap](#roadmap)
+- [Reproducibility](#reproducibility)
+- [Project Purpose](#project-purpose)
 
 ---
 
 ## Platform Architecture
 
-Atlas Engineering is designed as an end-to-end data platform in which operational data is progressively transformed into analytical information.
+Atlas Engineering is designed as an end-to-end data platform in which operational data is captured, transported, progressively transformed, validated, certified, and made available for analytical consumption.
 
-The platform follows the architecture below:
+The Version 1 Data Engineering architecture follows the flow below:
 
-```text
-┌──────────────────────────────┐
-│        AtlasCommerce         │
-│                              │
-│   Operational SQL Server     │
-│   Transactional Database     │
-│                              │
-│         COMPLETED            │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│       Data Engineering       │
-│                              │
-│   Ingestion · Processing     │
-│   Transformation · Quality   │
-│                              │
-│          NEXT STAGE          │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│        Data Warehouse        │
-│                              │
-│    Analytical Data Model     │
-│                              │
-│           PLANNED            │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│       Analytics Layer        │
-│                              │
-│           Power BI           │
-│                              │
-│           PLANNED            │
-└──────────────────────────────┘
-```
+<p align="center">
+  <img src="06-Assets/Architecture/atlas-engineering-v1-data-flow.png"
+       alt="Atlas Engineering Version 1 Data Engineering Architecture"
+       width="700">
+</p>
 
-The operational database provides the controlled source data for the platform. Each subsequent layer will be developed with the same principles of reproducibility, validation, documentation, and traceability established in AtlasCommerce.
+The architecture preserves explicit boundaries between operational data, change capture, event transport, historical persistence, transformation, analytical modeling, certification, and consumption.
 
+Cross-cutting capabilities support the complete flow:
+
+- **Apicurio Registry** provides schema governance for event contracts;
+- **Apache Airflow** provides orchestration across processing workflows;
+- **Prometheus**, **Grafana**, and structured logging provide the initial observability foundation;
+- security, governance, reliability, recovery, testing, and evidence requirements apply across the platform.
+
+AtlasCommerce remains the operational system of record. Downstream processing is designed to consume committed operational changes without transferring analytical workloads or responsibilities to the transactional source.
+
+The Version 1 architecture is complete and provides the technical baseline for the implementation of the first end-to-end Data Engineering flow.
 
 ---
 
@@ -68,11 +60,11 @@ The operational database provides the controlled source data for the platform. E
 
 | Platform Layer | Status | Description |
 |---|---|---|
-| Operational Database — AtlasCommerce | **Completed** | Transactional SQL Server source system, sample data deployment, validation, and certification |
-| Data Engineering | **Next Stage** | Data ingestion, transformation, processing, and quality pipelines |
-| Data Warehouse | **Planned** | Analytical data model and historical data structures |
-| Analytics — Power BI | **Planned** | Analytical models, dashboards, and business insights |
-
+| Operational Database — AtlasCommerce | **Completed** | Transactional SQL Server source system, deterministic sample data, validation, documentation, and certification |
+| Data Engineering — Architecture V1 | **Completed** | End-to-end architecture covering ingestion, processing, quality, reliability, recovery, security, governance, testing, evidence, and observability |
+| Data Engineering — Implementation V1 | **Next Stage** | Implementation and validation of the first end-to-end flow using the Sales domain and Daily Sales analytical product |
+| Data Warehouse — AtlasWarehouse | **Architecture Defined** | SQL Server analytical serving layer defined as the Gold layer of the V1 Data Engineering architecture |
+| Analytics — Power BI | **Architecture Defined** | Analytical consumption of certified data through the Certified Gold boundary |
 
 ---
 
@@ -204,7 +196,7 @@ Sample data deployment and certification are separate stages, and the dataset is
 
 ## Repository Structure
 
-The repository is organized by platform responsibility, separating source-system assets, database structures, documentation, deployment scripts, and validation resources.
+The repository is organized by platform responsibility, separating source-system assets, database structures, architecture and business documentation, deployment scripts, and validation resources.
 
 ```text
 01-Enterprise-Data-Platform/
@@ -238,7 +230,7 @@ Contains assets related to the operational source systems that provide data to t
 Contains database-related structures and assets used by the platform. Local SQL Server data and log files are excluded from version control.
 
 **`03-Documentation`**  
-Contains the technical, architectural, and business documentation of the platform, including AtlasCommerce database standards, domain definitions, business rules, and data-model documentation.
+Contains the technical, architectural, and business documentation of the platform, including AtlasCommerce documentation and the Version 1 Data Engineering architecture.
 
 **`04-Scripts`**  
 Contains the executable deployment structure for the platform, including SQL Server database creation, schema deployment, data model deployment, deterministic sample data deployment, and data certification.
@@ -246,7 +238,7 @@ Contains the executable deployment structure for the platform, including SQL Ser
 **`05-Tests`**  
 Contains validation and testing resources used to verify platform components and data behavior.
 
-The repository structure will evolve as new Data Engineering, Data Warehouse, and Analytics components are introduced.
+The repository structure will continue to evolve as the Version 1 Data Engineering architecture moves from documented design into implementation and validation.
 
 ---
 
@@ -269,9 +261,24 @@ The current documentation covers:
 
 The documentation is maintained alongside the implementation so that architectural decisions, business rules, and database behavior remain traceable to the deployed solution.
 
+### Data Engineering Architecture Documentation
+
+The Version 1 Data Engineering architecture is documented as a coordinated set of architecture documents covering the complete path from operational change capture to certified analytical consumption.
+
+The documentation set includes:
+
+- **Architecture Overview** — end-to-end architecture, technology boundaries, architectural principles, initial implementation scope, and platform-wide responsibilities;
+- **Data Flow and Processing** — ingestion, event transport, Bronze and Silver processing, Gold modeling, certification, and publication behavior;
+- **Observability** — monitoring, metrics, logging, alerting, pipeline state, certification visibility, and downstream availability;
+- **Reliability and Recovery** — idempotency, replay, restartability, failure isolation, checkpoints, reconciliation, and recovery behavior;
+- **Security and Governance** — identity, access control, secrets, trust boundaries, data protection, privacy governance, and auditable responsibilities;
+- **Testing and Evidence Strategy** — validation strategy, test categories, failure and recovery testing, evidence retention, and boundaries between demonstrated and planned capabilities.
+
+Together, these documents define the technical baseline for implementing and validating the Version 1 Data Engineering flow.
+
 ### Documentation Principles
 
-Atlas Engineering documentation follows the same principles applied to the implementation:
+Atlas Engineering documentation follows the same engineering principles applied across the platform:
 
 - technical accuracy;
 - consistent terminology;
@@ -284,11 +291,11 @@ Atlas Engineering documentation follows the same principles applied to the imple
 
 ## Technology Stack
 
-Atlas Engineering combines database, data engineering, analytics, development, and infrastructure technologies as the platform evolves.
+Atlas Engineering combines database, data engineering, analytics, development, and infrastructure technologies according to the responsibilities of each platform layer.
 
-### Current Stack
+### Current Implemented Stack
 
-The technologies currently used in the implemented platform include:
+The technologies currently used by implemented and validated components of the platform include:
 
 | Technology | Role |
 |---|---|
@@ -301,35 +308,50 @@ The technologies currently used in the implemented platform include:
 | **Markdown** | Version-controlled technical and business documentation |
 | **Schemity Lite** | Entity-relationship diagram design and visualization |
 
-### Technologies Under Consideration
+### Data Engineering V1 Architectural Stack
 
-As the platform evolves, additional technologies may be evaluated according to the architectural and engineering requirements of each subsequent stage.
+The Version 1 Data Engineering architecture defines the following technologies for the next implementation stage:
 
-Potential technologies include:
+| Technology | Architectural Role |
+|---|---|
+| **SQL Server Native CDC** | Capture committed operational changes from AtlasCommerce |
+| **Debezium** | Convert captured database changes into event streams |
+| **Apache Kafka** | Durable event transport, buffering, and ordered processing |
+| **Apicurio Registry** | Schema contract and evolution governance |
+| **Python / PyArrow** | Data processing and transformation |
+| **MinIO** | Bronze and Silver object-storage layers |
+| **SQL Server** | AtlasWarehouse analytical Gold layer |
+| **Apache Airflow** | Workflow orchestration |
+| **Prometheus** | Metrics collection and monitoring |
+| **Grafana** | Operational visualization and observability |
+| **Power BI** | Consumption of certified analytical data |
 
-- **Python** for data engineering and automation;
-- **PostgreSQL** for additional database and data-platform scenarios;
-- **Docker** for reproducible development and service environments;
-- **REST APIs** as external data sources and integration scenarios;
-- **Cloud platforms** for infrastructure and managed data services;
-- **Power BI** for analytical modeling, visualization, and business intelligence.
+These technologies represent the **defined Version 1 architecture**, not completed implementation. Their implementation status will be updated only as components are built, integrated, tested, and supported by evidence.
 
-Technology choices for the Data Engineering and Data Warehouse layers will be made as their architectures are designed, rather than being treated as fixed implementation decisions in advance.
+### Future Technology Expansion
+
+Additional technologies and platform scenarios may be evaluated as Atlas Engineering expands beyond the initial Version 1 scope, including additional database platforms, external data sources, cloud infrastructure, and managed data services.
+
+Technology adoption remains driven by architectural requirements rather than by adding tools independently of a defined engineering responsibility.
 
 ---
 
 ## Roadmap
 
-Atlas Engineering is developed incrementally, with each platform layer becoming the validated foundation for the next stage.
+Atlas Engineering is developed incrementally, with each stage evaluated against the deliverables, validation criteria, and evidence appropriate to its scope before being represented as completed.
 
 | Stage | Status | Scope |
 |---|---|---|
 | **1. Operational Database — AtlasCommerce** | **Completed** | Transactional architecture, data model, deployment, deterministic sample data, validation, documentation, and certification |
-| **2. Data Engineering** | **Next Stage** | Source ingestion, data processing, transformation, quality controls, and pipeline orchestration |
-| **3. Data Warehouse** | **Planned** | Analytical architecture, dimensional modeling, historical data structures, and analytical data preparation |
-| **4. Analytics — Power BI** | **Planned** | Semantic modeling, business metrics, dashboards, and analytical visualization |
+| **2. Data Engineering Architecture V1** | **Completed** | End-to-end architecture from operational change capture through certified analytical consumption, including processing, orchestration, observability, reliability, recovery, security, governance, testing, and evidence |
+| **3. Data Engineering Implementation V1** | **Next Stage** | Implement and validate the first end-to-end flow using the Sales domain and Daily Sales analytical product |
+| **4. Platform Expansion** | **Planned** | Extend validated Data Engineering patterns to additional business domains, analytical products, and platform capabilities |
 
-The roadmap intentionally defines architectural stages without fixing implementation details before their technical requirements are evaluated.
+The immediate next stage is the implementation of the Version 1 Data Engineering architecture.
+
+Sales provides the first end-to-end business slice, with Daily Sales as the first certified analytical product. The objective is to validate the complete architectural pattern before expanding it to additional domains and analytical use cases.
+
+Future stages will be defined from demonstrated platform capabilities and architectural requirements rather than from a fixed technology-driven sequence.
 
 ---
 
@@ -388,7 +410,7 @@ ATLASCOMMERCE DATA CERTIFICATION — PASS
 
 A successful certification confirms that the deployed sample dataset satisfies the expected referential, business, financial, inventory, shipping, and temporal integrity rules required before downstream consumption.
 
-This creates a reproducible boundary between the operational database and the next platform layer: Data Engineering.
+This creates a reproducible and certified boundary between AtlasCommerce and the downstream Data Engineering flow.
 
 ---
 
@@ -409,6 +431,6 @@ Its development emphasizes:
 - data engineering and analytical modeling;
 - progressive integration of technologies according to architectural requirements.
 
-Each platform stage is designed, implemented, validated, and documented before becoming the foundation for the next one.
+Each platform capability progresses from explicit architectural decisions through implementation, validation, and retained evidence before being represented as completed.
 
-As the platform evolves, this repository will preserve both the implemented solution and the engineering decisions that shaped it.
+As the platform evolves, this repository will preserve both the implemented solution and the engineering decisions and evidence that shaped it.

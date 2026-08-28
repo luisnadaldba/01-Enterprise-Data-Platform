@@ -1,5 +1,112 @@
 # AtlasCommerce Database Standards
 
+# Índice
+
+- [1. Purpose](#1-purpose)
+
+- [2. Schema Organization](#2-schema-organization)
+
+- [3. Table Naming](#3-table-naming)
+
+- [4. Column Naming](#4-column-naming)
+
+- [5. Table Prefix Registry](#5-table-prefix-registry)
+
+- [6. Prefix Naming Rules](#6-prefix-naming-rules)
+  - [6.1 Preferred Prefix Length](#61-preferred-prefix-length)
+  - [6.2 Independent Related Entities](#62-independent-related-entities)
+  - [6.3 Prefix Selection](#63-prefix-selection)
+  - [6.4 Prefix Reuse](#64-prefix-reuse)
+  - [6.5 Prefixes in Relationships](#65-prefixes-in-relationships)
+
+- [7. Primary Key Standards](#7-primary-key-standards)
+  - [7.1 Surrogate Primary Keys](#71-surrogate-primary-keys)
+  - [7.2 Primary Key Data Type](#72-primary-key-data-type)
+  - [7.3 Identity](#73-identity)
+  - [7.4 Clustered Primary Keys](#74-clustered-primary-keys)
+  - [7.5 Composite Primary Keys](#75-composite-primary-keys)
+  - [7.6 Primary Key and Foreign Key Roles](#76-primary-key-and-foreign-key-roles)
+  - [7.7 Tables Without a Primary Key](#77-tables-without-a-primary-key)
+
+- [8. Foreign Key Standards](#8-foreign-key-standards)
+  - [8.1 Foreign Key Column Definition](#81-foreign-key-column-definition)
+  - [8.2 Optional Relationships](#82-optional-relationships)
+  - [8.3 Multiple Relationships to the Same Table](#83-multiple-relationships-to-the-same-table)
+  - [8.4 Foreign Key Columns and Constraints](#84-foreign-key-columns-and-constraints)
+  - [8.5 Composite Foreign Keys](#85-composite-foreign-keys)
+  - [8.6 Relationship Semantics](#86-relationship-semantics)
+
+- [9. Object Documentation Standards](#9-object-documentation-standards)
+  - [9.1 Table Documentation](#91-table-documentation)
+  - [9.2 Column Documentation](#92-column-documentation)
+  - [9.3 Primary Key Documentation](#93-primary-key-documentation)
+  - [9.4 Foreign Key Documentation](#94-foreign-key-documentation)
+    - [Composite Foreign Keys](#composite-foreign-keys)
+  - [9.5 Audit Column Documentation](#95-audit-column-documentation)
+  - [9.6 Documentation Maintenance](#96-documentation-maintenance)
+  - [9.7 Documentation Source of Truth](#97-documentation-source-of-truth)
+
+- [10. Constraint Standards](#10-constraint-standards)
+  - [10.1 Primary Keys](#101-primary-keys)
+  - [10.2 Default Constraints](#102-default-constraints)
+    - [NOT NULL and DEFAULT](#not-null-and-default)
+  - [10.3 Check Constraints](#103-check-constraints)
+    - [Appropriate Use of CHECK Constraints](#appropriate-use-of-check-constraints)
+    - [Check Constraint Validation](#check-constraint-validation)
+  - [10.4 Unique Constraints](#104-unique-constraints)
+    - [Single-Column Unique Constraints](#single-column-unique-constraints)
+    - [Composite Unique Constraints](#composite-unique-constraints)
+    - [Natural Business Identifiers](#natural-business-identifiers)
+    - [UQ, IX, and UX](#uq-ix-and-ux)
+    - [Unique Constraint Validation](#unique-constraint-validation)
+  - [10.5 Foreign Keys](#105-foreign-keys)
+    - [Composite Foreign Keys](#composite-foreign-keys-1)
+    - [Referenced Keys](#referenced-keys)
+    - [Column Compatibility](#column-compatibility)
+    - [Referential Actions](#referential-actions)
+    - [Dependency Validation](#dependency-validation)
+    - [Enabled and Trusted State](#enabled-and-trusted-state)
+    - [Foreign Key Divergence](#foreign-key-divergence)
+
+- [11. Index Standards](#11-index-standards)
+  - [11.1 Index Design](#111-index-design)
+  - [11.2 Composite Indexes](#112-composite-indexes)
+  - [11.3 Included Columns](#113-included-columns)
+  - [11.4 Unique Indexes](#114-unique-indexes)
+    - [Filtered Unique Indexes](#filtered-unique-indexes)
+  - [11.5 Index Validation](#115-index-validation)
+  - [11.6 Partitioned Indexes](#116-partitioned-indexes)
+  - [11.7 Overlapping Indexes](#117-overlapping-indexes)
+  - [11.8 Index Lifecycle](#118-index-lifecycle)
+
+- [12. Deployment Standards](#12-deployment-standards)
+  - [12.1 Deployment Status Messages](#121-deployment-status-messages)
+  - [12.2 Validation Before Modification](#122-validation-before-modification)
+  - [12.3 Non-Destructive Deployment](#123-non-destructive-deployment)
+  - [12.4 Explicit Migrations](#124-explicit-migrations)
+  - [12.5 Dependency Validation](#125-dependency-validation)
+  - [12.6 Data Deployment](#126-data-deployment)
+  - [12.7 Deployment Phases](#127-deployment-phases)
+  - [12.8 Final Validation](#128-final-validation)
+  - [12.9 Transactional Deployment](#129-transactional-deployment)
+  - [12.10 Rerun Validation](#1210-rerun-validation)
+
+- [13. Object Ordering Standards](#13-object-ordering-standards)
+  - [13.1 Schema Ordering](#131-schema-ordering)
+  - [13.2 Table Ordering](#132-table-ordering)
+  - [13.3 Technical Ordering Exceptions](#133-technical-ordering-exceptions)
+  - [13.4 Logical Order and Dependency Order](#134-logical-order-and-dependency-order)
+  - [13.5 Ordering Within Deployment Phases](#135-ordering-within-deployment-phases)
+  - [13.6 TablePrefix Registry Ordering](#136-tableprefix-registry-ordering)
+  - [13.7 Column Ordering](#137-column-ordering)
+    - [New NOT NULL Columns](#new-not-null-columns)
+  - [13.8 Constraint and Index Ordering](#138-constraint-and-index-ordering)
+  - [13.9 Ordering Consistency](#139-ordering-consistency)
+
+- [Closing Principle](#closing-principle)
+
+---
+
 ## 1. Purpose
 
 This document defines the database design, naming, documentation, integrity, indexing, ordering, and deployment standards adopted by AtlasCommerce.

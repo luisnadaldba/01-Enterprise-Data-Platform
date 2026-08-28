@@ -1,10 +1,152 @@
-# Dicionário de Dados do AtlasCommerce
+# AtlasCommerce — Dicionário de Dados
 
-## *Status*
+## Índice
 
-Concluído
+- [1. Objetivo](#1-objetivo)
+- [2. Referência Oficial](#2-referência-oficial)
+- [3. Visão Geral do Banco de Dados](#3-visão-geral-do-banco-de-dados)
+- [4. Escopo de Recursos do Banco de Dados](#4-escopo-de-recursos-do-banco-de-dados)
+- [5. Estrutura do Dicionário](#5-estrutura-do-dicionário)
+- [6. Descrições das Tabelas](#6-descrições-das-tabelas)
+  - [6.1. `catalog`](#61-catalog)
+  - [6.2. `customer`](#62-customer)
+  - [6.3. `inventory`](#63-inventory)
+  - [6.4. `metadata`](#64-metadata)
+  - [6.5. `payment`](#65-payment)
+  - [6.6. `reference`](#66-reference)
+  - [6.7. `sales`](#67-sales)
+  - [6.8. `shipping`](#68-shipping)
 
-## Objetivo
+- [7. *Schemas*](#7-schemas)
+  - [7.1. `catalog`](#71-catalog)
+    - [7.1.1. `catalog.Brand`](#711-catalogbrand)
+    - [7.1.2. `catalog.Category`](#712-catalogcategory)
+    - [7.1.3. `catalog.Product`](#713-catalogproduct)
+    - [7.1.4. `catalog.ProductAttribute`](#714-catalogproductattribute)
+    - [7.1.5. `catalog.ProductAttributeValue`](#715-catalogproductattributevalue)
+    - [7.1.6. `catalog.ProductCategory`](#716-catalogproductcategory)
+    - [7.1.7. `catalog.ProductImage`](#717-catalogproductimage)
+    - [7.1.8. `catalog.ProductVariant`](#718-catalogproductvariant)
+    - [7.1.9. `catalog.ProductVariantAttributeValue`](#719-catalogproductvariantattributevalue)
+    - [7.1.10. `catalog.ProductVariantPrice`](#7110-catalogvariantprice)
+  - [7.2. `customer`](#72-customer)
+    - [7.2.1. `customer.Customer`](#721-customercustomer)
+    - [7.2.2. `customer.CustomerAddress`](#722-customercustomeraddress)
+    - [7.2.3. `customer.CustomerContact`](#723-customercustomercontact)
+    - [7.2.4. `customer.CustomerDocument`](#724-customercustomerdocument)
+    - [7.2.5. `customer.CustomerDocumentType`](#725-customercustomerdocumenttype)
+    - [7.2.6. `customer.CustomerEmail`](#726-customercustomeremail)
+    - [7.2.7. `customer.CustomerType`](#727-customercustomertype)
+  - [7.3. `inventory`](#73-inventory)
+    - [7.3.1. `inventory.Inventory`](#731-inventoryinventory)
+    - [7.3.2. `inventory.InventoryMovement`](#732-inventoryinventorymovement)
+    - [7.3.3. `inventory.InventoryMovementNote`](#733-inventoryinventorymovementnote)
+    - [7.3.4. `inventory.InventoryMovementReason`](#734-inventoryinventorymovementreason)
+    - [7.3.5. `inventory.InventoryReservation`](#735-inventoryinventoryreservation)
+    - [7.3.6. `inventory.InventoryReservationStatus`](#736-inventoryinventoryreservationstatus)
+  - [7.4. `metadata`](#74-metadata)
+    - [7.4.1. `metadata.TablePrefix`](#741-metadatatableprefix)
+  - [7.5. `payment`](#75-payment)
+    - [7.5.1. `payment.Payment`](#751-paymentpayment)
+    - [7.5.2. `payment.PaymentMethod`](#752-paymentpaymentmethod)
+    - [7.5.3. `payment.PaymentRefund`](#753-paymentpaymentrefund)
+    - [7.5.4. `payment.PaymentRefundReason`](#754-paymentpaymentrefundreason)
+    - [7.5.5. `payment.PaymentStatus`](#755-paymentpaymentstatus)
+  - [7.6. `reference`](#76-reference)
+    - [7.6.1. `reference.Address`](#761-referenceaddress)
+    - [7.6.2. `reference.AdministrativeDivision`](#762-referenceadministrativedivision)
+    - [7.6.3. `reference.City`](#763-referencecity)
+    - [7.6.4. `reference.ContactType`](#764-referencecontacttype)
+    - [7.6.5. `reference.Country`](#765-referencecountry)
+  - [7.7. `sales`](#77-sales)
+    - [7.7.1. `sales.Transaction`](#771-salestransaction)
+    - [7.7.2. `sales.TransactionChannel`](#772-salestransactionchannel)
+    - [7.7.3. `sales.TransactionItem`](#773-salestransactionitem)
+    - [7.7.4. `sales.TransactionStatus`](#774-salestransactionstatus)
+  - [7.8. `shipping`](#78-shipping)
+    - [7.8.1. `shipping.Shipment`](#781-shippingshipment)
+    - [7.8.2. `shipping.ShipmentMethod`](#782-shipmentmethod)
+    - [7.8.3. `shipping.ShipmentStatus`](#783-shipmentstatus)
+
+- [8. Valores Controlados e Dados Iniciais](#8-valores-controlados-e-dados-iniciais)
+  - [8.1. `customer.CustomerDocumentType`](#81-customercustomerdocumenttype)
+  - [8.2. `customer.CustomerType`](#82-customercustomertype)
+  - [8.3. `inventory.InventoryMovementReason`](#83-inventoryinventorymovementreason)
+  - [8.4. `inventory.InventoryReservationStatus`](#84-inventoryinventoryreservationstatus)
+  - [8.5. `payment.PaymentMethod`](#85-paymentpaymentmethod)
+  - [8.6. `payment.PaymentRefundReason`](#86-paymentpaymentrefundreason)
+  - [8.7. `payment.PaymentStatus`](#87-paymentpaymentstatus)
+  - [8.8. `reference.ContactType`](#88-referencecontacttype)
+  - [8.9. `sales.TransactionChannel`](#89-salestransactionchannel)
+  - [8.10. `sales.TransactionStatus`](#810-salestransactionstatus)
+  - [8.11. `shipping.ShipmentMethod`](#811-shippingshipmentmethod)
+  - [8.12. `shipping.ShipmentStatus`](#812-shipmentstatus)
+
+- [9. Dados Iniciais de Governança Técnica](#9-dados-iniciais-de-governança-técnica)
+  - [9.1. `metadata.TablePrefix`](#91-metadatatableprefix)
+
+- [10. Metadados Estruturais](#10-metadados-estruturais)
+  - [10.1. *Primary Keys*](#101-primary-keys)
+    - [10.1.1. `catalog`](#1011-catalog)
+    - [10.1.2. `customer`](#1012-customer)
+    - [10.1.3. `inventory`](#1013-inventory)
+    - [10.1.4. `metadata`](#1014-metadata)
+    - [10.1.5. `payment`](#1015-payment)
+    - [10.1.6. `reference`](#1016-reference)
+    - [10.1.7. `sales`](#1017-sales)
+    - [10.1.8. `shipping`](#1018-shipping)
+  - [10.2. *UNIQUE Constraints*](#102-unique-constraints)
+    - [10.2.1. `catalog`](#1021-catalog)
+    - [10.2.2. `customer`](#1022-customer)
+    - [10.2.3. `inventory`](#1023-inventory)
+    - [10.2.4. `metadata`](#1024-metadata)
+    - [10.2.5. `payment`](#1025-payment)
+    - [10.2.6. `reference`](#1026-reference)
+    - [10.2.7. `sales`](#1027-sales)
+    - [10.2.8. `shipping`](#1028-shipping)
+  - [10.3. *CHECK Constraints*](#103-check-constraints)
+    - [10.3.1. `catalog`](#1031-catalog)
+    - [10.3.2. `customer`](#1032-customer)
+    - [10.3.3. `inventory`](#1033-inventory)
+    - [10.3.4. `metadata`](#1034-metadata)
+    - [10.3.5. `payment`](#1035-payment)
+    - [10.3.6. `reference`](#1036-reference)
+    - [10.3.7. `sales`](#1037-sales)
+    - [10.3.8. `shipping`](#1038-shipping)
+  - [10.4. *FOREIGN KEY Constraints*](#104-foreign-key-constraints)
+    - [10.4.1. `catalog`](#1041-catalog)
+    - [10.4.2. `customer`](#1042-customer)
+    - [10.4.3. `inventory`](#1043-inventory)
+    - [10.4.4. `payment`](#1044-payment)
+    - [10.4.5. `reference`](#1045-reference)
+    - [10.4.6. `sales`](#1046-sales)
+    - [10.4.7. `shipping`](#1047-shipping)
+  - [10.5. Índices](#105-índices)
+    - [10.5.1. `catalog`](#1051-catalog)
+    - [10.5.2. `customer`](#1052-customer)
+    - [10.5.3. `inventory`](#1053-inventory)
+    - [10.5.4. `payment`](#1054-payment)
+    - [10.5.5. `sales`](#1055-sales)
+      - [Índices Alinhados ao Particionamento](#índices-alinhados-ao-particionamento)
+    - [10.5.6. `shipping`](#1056-shipping)
+  - [10.6. Particionamento](#106-particionamento)
+    - [10.6.1. Mapeamento de Partições](#1061-mapeamento-de-partições)
+    - [10.6.2. Estruturas Alinhadas ao Particionamento](#1062-estruturas-alinhadas-ao-particionamento)
+    - [10.6.3. Próximo Filegroup Utilizado](#1063-próximo-filegroup-utilizado)
+  - [10.7. *DEFAULT Constraints*](#107-default-constraints)
+    - [10.7.1. `catalog`](#1071-catalog)
+    - [10.7.2. `customer`](#1072-customer)
+    - [10.7.3. `inventory`](#1073-inventory)
+    - [10.7.4. `metadata`](#1074-metadata)
+    - [10.7.5. `payment`](#1075-payment)
+    - [10.7.6. `reference`](#1076-reference)
+    - [10.7.7. `sales`](#1077-sales)
+    - [10.7.8. `shipping`](#1078-shipping)
+  - [10.8. *Triggers*](#108-triggers)
+
+---
+
+## 1. Objetivo
 
 Este documento fornece o dicionário de dados técnico do banco de dados transacional AtlasCommerce.
 
@@ -12,7 +154,9 @@ Ele documenta os objetos de banco de dados implementados diretamente a partir de
 
 O documento destina-se a complementar o Modelo de Domínio do AtlasCommerce, a Documentação de Negócio, a documentação de arquitetura e os Diagramas do Modelo de Dados, fornecendo uma visão técnica detalhada do modelo relacional implementado.
 
-## Referência Oficial
+---
+
+## 2. Referência Oficial
 
 A implementação do banco de dados AtlasCommerce é a referência oficial para os metadados técnicos documentados neste Dicionário de Dados.
 
@@ -20,7 +164,9 @@ Os metadados são extraídos diretamente dos catálogos de sistema e das proprie
 
 O Dicionário de Dados deve descrever o modelo de banco de dados implementado e validado, e não versões conceituais obsoletas ou definições reconstruídas manualmente.
 
-## Visão Geral do Banco de Dados
+---
+
+## 3. Visão Geral do Banco de Dados
 
 Atualmente, o AtlasCommerce contém 41 tabelas de aplicação distribuídas entre oito *schemas*.
 
@@ -36,7 +182,9 @@ Atualmente, o AtlasCommerce contém 41 tabelas de aplicação distribuídas entr
 | `shipping` | 3 |
 | **Total** | **41** |
 
-## Escopo de Recursos do Banco de Dados
+---
+
+## 4. Escopo de Recursos do Banco de Dados
 
 A implementação atual do banco de dados AtlasCommerce não utiliza os seguintes recursos ou componentes operacionais do SQL Server:
 
@@ -56,7 +204,9 @@ Esses recursos estão intencionalmente ausentes da implementação atual do banc
 
 A ausência desses recursos não deve ser interpretada como infraestrutura não documentada.
 
-## Estrutura do Dicionário
+---
+
+## 5. Estrutura do Dicionário
 
 O Dicionário de Dados detalhado está organizado por *schema* e tabela.
 
@@ -78,13 +228,15 @@ O Dicionário de Dados documenta as seguintes categorias de metadados:
 
 As categorias de metadados são incorporadas somente após os respectivos metadados do banco de dados terem sido extraídos e validados.
 
-## Descrições das Tabelas
+---
+
+## 6. Descrições das Tabelas
 
 Cada tabela do AtlasCommerce contém uma descrição no nível do objeto que define sua principal responsabilidade dentro do modelo de dados.
 
 Essas descrições complementam os metadados no nível das colunas, apresentando a finalidade de negócio ou técnica de cada entidade antes da análise de sua estrutura interna.
 
-### `catalog`
+### 6.1. `catalog`
 
 | Tabela | Descrição |
 |---|---|
@@ -99,7 +251,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | `catalog.ProductVariantAttributeValue` | Associates sellable product variants with the controlled product attribute values that define their catalog characteristics. |
 | `catalog.ProductVariantPrice` | Maintains the price history and temporal validity of sellable product variants in the Atlas Commerce catalog without overwriting prior commercial prices. |
 
-### `customer`
+### 6.2. `customer`
 
 | Tabela | Descrição |
 |---|---|
@@ -111,7 +263,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | `customer.CustomerEmail` | Maintains email addresses associated with identified customers while allowing shared email addresses across multiple customers. |
 | `customer.CustomerType` | Maintains the controlled customer types supported by Atlas Commerce. |
 
-### `inventory`
+### 6.3. `inventory`
 
 | Tabela | Descrição |
 |---|---|
@@ -122,13 +274,13 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | `inventory.InventoryReservation` | Maintains the current inventory reservation associated with each sales transaction item and its lifecycle in Atlas Commerce. |
 | `inventory.InventoryReservationStatus` | Defines the controlled statuses used to represent the lifecycle of inventory reservations in Atlas Commerce. |
 
-### `metadata`
+### 6.4. `metadata`
 
 | Tabela | Descrição |
 |---|---|
 | `metadata.TablePrefix` | Maintains the authoritative registry of table prefixes used to enforce naming consistency, prevent prefix reuse, and preserve prefix assignment history across Atlas Commerce. |
 
-### `payment`
+### 6.5. `payment`
 
 | Tabela | Descrição |
 |---|---|
@@ -138,7 +290,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | `payment.PaymentRefundReason` | Defines the controlled reasons used to classify payment refunds in Atlas Commerce. |
 | `payment.PaymentStatus` | Defines the controlled payment statuses used to represent the lifecycle of payment attempts in Atlas Commerce. |
 
-### `reference`
+### 6.6. `reference`
 
 | Tabela | Descrição |
 |---|---|
@@ -148,7 +300,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | `reference.ContactType` | Maintains reusable telephone contact type values shared across Atlas Commerce domains. |
 | `reference.Country` | Maintains controlled countries used by Atlas Commerce. |
 
-### `sales`
+### 6.7. `sales`
 
 | Tabela | Descrição |
 |---|---|
@@ -157,7 +309,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | `sales.TransactionItem` | Maintains the individual product items associated with sales transactions in Atlas Commerce, including product variant, quantity, unit price, unit discount, and the originating transaction timestamp. |
 | `sales.TransactionStatus` | Maintains the controlled transaction statuses used by the Atlas Commerce sales transactional model. |
 
-### `shipping`
+### 6.8. `shipping`
 
 | Tabela | Descrição |
 |---|---|
@@ -165,11 +317,13 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | `shipping.ShipmentMethod` | Defines the controlled shipment methods available for Atlas Commerce deliveries. |
 | `shipping.ShipmentStatus` | Defines the controlled statuses used to represent the operational lifecycle of Atlas Commerce shipments. |
 
-# *Schemas*
+---
 
-## `catalog`
+## 7. *Schemas*
 
-### `catalog.Brand`
+### 7.1. `catalog`
+
+#### 7.1.1. `catalog.Brand`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -179,7 +333,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 4 | `BRD_created_at` | `datetime2(0)` | NO | NO | `DF_BRD_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 5 | `BRD_updated_at` | `datetime2(0)` | NO | NO | `DF_BRD_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `catalog.Category`
+#### 7.1.2. `catalog.Category`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -190,7 +344,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `CTG_created_at` | `datetime2(0)` | NO | NO | `DF_CTG_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `CTG_updated_at` | `datetime2(0)` | NO | NO | `DF_CTG_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `catalog.Product`
+#### 7.1.3. `catalog.Product`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -201,7 +355,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `PRD_created_at` | `datetime2(0)` | NO | NO | `DF_PRD_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `PRD_updated_at` | `datetime2(0)` | NO | NO | `DF_PRD_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `catalog.ProductAttribute`
+#### 7.1.4. `catalog.ProductAttribute`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -211,7 +365,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 4 | `PAT_created_at` | `datetime2(0)` | NO | NO | `DF_PAT_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 5 | `PAT_updated_at` | `datetime2(0)` | NO | NO | `DF_PAT_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `catalog.ProductAttributeValue`
+#### 7.1.5. `catalog.ProductAttributeValue`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -222,14 +376,14 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `PATVL_created_at` | `datetime2(0)` | NO | NO | `DF_PATVL_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `PATVL_updated_at` | `datetime2(0)` | NO | NO | `DF_PATVL_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `catalog.ProductCategory`
+#### 7.1.6. `catalog.ProductCategory`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
 | 1 | `PRDCT_PRD_id` | `int` | NO | NO | — | Foreign key referencing `catalog.Product`. |
 | 2 | `PRDCT_CTG_id` | `smallint` | NO | NO | — | Foreign key referencing `catalog.Category`. |
 
-### `catalog.ProductImage`
+#### 7.1.7. `catalog.ProductImage`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -242,7 +396,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 7 | `PRDIM_created_at` | `datetime2(0)` | NO | NO | `DF_PRDIM_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 8 | `PRDIM_updated_at` | `datetime2(0)` | NO | NO | `DF_PRDIM_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `catalog.ProductVariant`
+#### 7.1.8. `catalog.ProductVariant`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -254,14 +408,14 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 6 | `PRDVA_created_at` | `datetime2(0)` | NO | NO | `DF_PRDVA_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 7 | `PRDVA_updated_at` | `datetime2(0)` | NO | NO | `DF_PRDVA_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `catalog.ProductVariantAttributeValue`
+#### 7.1.9. `catalog.ProductVariantAttributeValue`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
 | 1 | `PRDAV_PRDVA_id` | `int` | NO | NO | — | Foreign key referencing `catalog.ProductVariant`. |
 | 2 | `PRDAV_PATVL_id` | `int` | NO | NO | — | Foreign key referencing `catalog.ProductAttributeValue`. |
 
-### `catalog.ProductVariantPrice`
+#### 7.1.10. `catalog.ProductVariantPrice`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -272,9 +426,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `PRDVP_valid_to` | `datetime2(0)` | YES | NO | — | Defines the exclusive upper boundary of the price validity interval. NULL represents an open-ended period with no defined end date. |
 | 6 | `PRDVP_created_at` | `datetime2(0)` | NO | NO | `DF_PRDVP_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 
-## `customer`
+### 7.2. `customer`
 
-### `customer.Customer`
+#### 7.2.1. `customer.Customer`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -286,7 +440,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 6 | `CST_created_at` | `datetime2(0)` | NO | NO | `DF_CST_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 7 | `CST_updated_at` | `datetime2(0)` | NO | NO | `DF_CST_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `customer.CustomerAddress`
+#### 7.2.2. `customer.CustomerAddress`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -300,7 +454,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 8 | `CSTAD_created_at` | `datetime2(0)` | NO | NO | `DF_CSTAD_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 9 | `CSTAD_updated_at` | `datetime2(0)` | NO | NO | `DF_CSTAD_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `customer.CustomerContact`
+#### 7.2.3. `customer.CustomerContact`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -313,7 +467,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 7 | `CSTCN_created_at` | `datetime2(0)` | NO | NO | `DF_CSTCN_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 8 | `CSTCN_updated_at` | `datetime2(0)` | NO | NO | `DF_CSTCN_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `customer.CustomerDocument`
+#### 7.2.4. `customer.CustomerDocument`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -324,7 +478,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `CSTCD_created_at` | `datetime2(0)` | NO | NO | `DF_CSTCD_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `CSTCD_updated_at` | `datetime2(0)` | NO | NO | `DF_CSTCD_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `customer.CustomerDocumentType`
+#### 7.2.5. `customer.CustomerDocumentType`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -333,7 +487,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `DTP_created_at` | `datetime2(0)` | NO | NO | `DF_DTP_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `DTP_updated_at` | `datetime2(0)` | NO | NO | `DF_DTP_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `customer.CustomerEmail`
+#### 7.2.6. `customer.CustomerEmail`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -345,7 +499,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 6 | `CSTEM_created_at` | `datetime2(0)` | NO | NO | `DF_CSTEM_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 7 | `CSTEM_updated_at` | `datetime2(0)` | NO | NO | `DF_CSTEM_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `customer.CustomerType`
+#### 7.2.7. `customer.CustomerType`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -355,9 +509,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 4 | `CSTCT_created_at` | `datetime2(0)` | NO | NO | `DF_CSTCT_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 5 | `CSTCT_updated_at` | `datetime2(0)` | NO | NO | `DF_CSTCT_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-## `inventory`
+### 7.3. `inventory`
 
-### `inventory.Inventory`
+#### 7.3.1. `inventory.Inventory`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -368,7 +522,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `INV_created_at` | `datetime2(0)` | NO | NO | `DF_INV_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `INV_updated_at` | `datetime2(0)` | NO | NO | `DF_INV_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `inventory.InventoryMovement`
+#### 7.3.2. `inventory.InventoryMovement`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -382,7 +536,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 8 | `INVMV_created_at` | `datetime2(0)` | NO | NO | `DF_INVMV_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 9 | `INVMV_updated_at` | `datetime2(0)` | NO | NO | `DF_INVMV_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `inventory.InventoryMovementNote`
+#### 7.3.3. `inventory.InventoryMovementNote`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -392,7 +546,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 4 | `INVMN_created_at` | `datetime2(0)` | NO | NO | `DF_INVMN_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 5 | `INVMN_updated_at` | `datetime2(0)` | NO | NO | `DF_INVMN_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `inventory.InventoryMovementReason`
+#### 7.3.4. `inventory.InventoryMovementReason`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -401,7 +555,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `INVMR_created_at` | `datetime2(0)` | NO | NO | `DF_INVMR_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `INVMR_updated_at` | `datetime2(0)` | NO | NO | `DF_INVMR_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `inventory.InventoryReservation`
+#### 7.3.5. `inventory.InventoryReservation`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -417,7 +571,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 10 | `INVRE_created_at` | `datetime2(0)` | NO | NO | `DF_INVRE_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 11 | `INVRE_updated_at` | `datetime2(0)` | NO | NO | `DF_INVRE_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `inventory.InventoryReservationStatus`
+#### 7.3.6. `inventory.InventoryReservationStatus`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -426,9 +580,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `INVRS_created_at` | `datetime2(0)` | NO | NO | `DF_INVRS_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `INVRS_updated_at` | `datetime2(0)` | NO | NO | `DF_INVRS_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-## `metadata`
+### 7.4. `metadata`
 
-### `metadata.TablePrefix`
+#### 7.4.1. `metadata.TablePrefix`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -440,9 +594,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 6 | `PFX_created_at` | `datetime2(0)` | NO | NO | — | Records the date and time when the row was created. |
 | 7 | `PFX_updated_at` | `datetime2(0)` | NO | NO | — | Records the date and time when the row was last updated. |
 
-## `payment`
+### 7.5. `payment`
 
-### `payment.Payment`
+#### 7.5.1. `payment.Payment`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -459,7 +613,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 11 | `PAY_created_at` | `datetime2(0)` | NO | NO | `DF_PAY_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 12 | `PAY_updated_at` | `datetime2(0)` | NO | NO | `DF_PAY_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `payment.PaymentMethod`
+#### 7.5.2. `payment.PaymentMethod`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -468,7 +622,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `PAYME_created_at` | `datetime2(0)` | NO | NO | `DF_PAYME_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `PAYME_updated_at` | `datetime2(0)` | NO | NO | `DF_PAYME_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `payment.PaymentRefund`
+#### 7.5.3. `payment.PaymentRefund`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -480,7 +634,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 6 | `PAYRF_created_at` | `datetime2(0)` | NO | NO | `DF_PAYRF_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 7 | `PAYRF_updated_at` | `datetime2(0)` | NO | NO | `DF_PAYRF_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `payment.PaymentRefundReason`
+#### 7.5.4. `payment.PaymentRefundReason`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -489,7 +643,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `PAYRR_created_at` | `datetime2(0)` | NO | NO | `DF_PAYRR_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `PAYRR_updated_at` | `datetime2(0)` | NO | NO | `DF_PAYRR_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `payment.PaymentStatus`
+#### 7.5.5. `payment.PaymentStatus`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -498,9 +652,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `PAYST_created_at` | `datetime2(0)` | NO | NO | `DF_PAYST_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `PAYST_updated_at` | `datetime2(0)` | NO | NO | `DF_PAYST_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-## `reference`
+### 7.6. `reference`
 
-### `reference.Address`
+#### 7.6.1. `reference.Address`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -511,7 +665,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `ADR_created_at` | `datetime2(0)` | NO | NO | `DF_ADR_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `ADR_updated_at` | `datetime2(0)` | NO | NO | `DF_ADR_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `reference.AdministrativeDivision`
+#### 7.6.2. `reference.AdministrativeDivision`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -522,7 +676,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `ADV_created_at` | `datetime2(0)` | NO | NO | `DF_ADV_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `ADV_updated_at` | `datetime2(0)` | NO | NO | `DF_ADV_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `reference.City`
+#### 7.6.3. `reference.City`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -532,7 +686,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 4 | `CTY_created_at` | `datetime2(0)` | NO | NO | `DF_CTY_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 5 | `CTY_updated_at` | `datetime2(0)` | NO | NO | `DF_CTY_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `reference.ContactType`
+#### 7.6.4. `reference.ContactType`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -541,7 +695,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `CTP_created_at` | `datetime2(0)` | NO | NO | `DF_CTP_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `CTP_updated_at` | `datetime2(0)` | NO | NO | `DF_CTP_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `reference.Country`
+#### 7.6.5. `reference.Country`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -550,9 +704,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `CTR_created_at` | `datetime2(0)` | NO | NO | `DF_CTR_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `CTR_updated_at` | `datetime2(0)` | NO | NO | `DF_CTR_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-## `sales`
+### 7.7. `sales`
 
-### `sales.Transaction`
+#### 7.7.1. `sales.Transaction`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -566,7 +720,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 8 | `TRN_created_at` | `datetime2(0)` | NO | NO | `DF_TRN_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 9 | `TRN_updated_at` | `datetime2(0)` | NO | NO | `DF_TRN_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `sales.TransactionChannel`
+#### 7.7.2. `sales.TransactionChannel`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -577,7 +731,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `TRNCH_created_at` | `datetime2(0)` | NO | NO | `DF_TRNCH_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `TRNCH_updated_at` | `datetime2(0)` | NO | NO | `DF_TRNCH_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `sales.TransactionItem`
+#### 7.7.3. `sales.TransactionItem`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -591,7 +745,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 8 | `TRNIT_created_at` | `datetime2(0)` | NO | NO | `DF_TRNIT_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 9 | `TRNIT_updated_at` | `datetime2(0)` | NO | NO | `DF_TRNIT_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `sales.TransactionStatus`
+#### 7.7.4. `sales.TransactionStatus`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -602,9 +756,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 5 | `TRNST_created_at` | `datetime2(0)` | NO | NO | `DF_TRNST_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 6 | `TRNST_updated_at` | `datetime2(0)` | NO | NO | `DF_TRNST_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-## `shipping`
+### 7.8. `shipping`
 
-### `shipping.Shipment`
+#### 7.8.1. `shipping.Shipment`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -622,7 +776,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 12 | `SHP_created_at` | `datetime2(0)` | NO | NO | `DF_SHP_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 13 | `SHP_updated_at` | `datetime2(0)` | NO | NO | `DF_SHP_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `shipping.ShipmentMethod`
+#### 7.8.2. `shipping.ShipmentMethod`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -631,7 +785,7 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `SHPMT_created_at` | `datetime2(0)` | NO | NO | `DF_SHPMT_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `SHPMT_updated_at` | `datetime2(0)` | NO | NO | `DF_SHPMT_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-### `shipping.ShipmentStatus`
+#### 7.8.3. `shipping.ShipmentStatus`
 
 | # | Coluna | Tipo de Dados | Aceita NULL | *IDENTITY* | *DEFAULT* | Descrição |
 |---:|---|---|:---:|:---:|---|---|
@@ -640,7 +794,9 @@ Essas descrições complementam os metadados no nível das colunas, apresentando
 | 3 | `SHPST_created_at` | `datetime2(0)` | NO | NO | `DF_SHPST_created_at` → `(sysdatetime())` | Records the date and time when the row was created. |
 | 4 | `SHPST_updated_at` | `datetime2(0)` | NO | NO | `DF_SHPST_updated_at` → `(sysdatetime())` | Records the date and time when the row was last updated. |
 
-# Valores Controlados e Dados Iniciais
+---
+
+## 8. Valores Controlados e Dados Iniciais
 
 O AtlasCommerce utiliza dados iniciais controlados para estabelecer classificações de negócio, status, métodos, canais e outros valores necessários ao modelo transacional.
 
@@ -650,7 +806,7 @@ Os identificadores e valores controlados são documentados exatamente como estã
 
 Os dados de governança técnica mantidos em `metadata.TablePrefix` são documentados separadamente, pois representam a governança da nomenclatura do banco de dados, e não valores controlados de negócio.
 
-## `customer.CustomerDocumentType`
+### 8.1. `customer.CustomerDocumentType`
 
 | ID | Nome |
 |---:|---|
@@ -660,14 +816,14 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 4 | `CNH` |
 | 5 | `PASSPORT` |
 
-## `customer.CustomerType`
+### 8.2. `customer.CustomerType`
 
 | ID | Código | Nome |
 |---:|---|---|
 | 1 | `INDIVIDUAL` | Pessoa Física |
 | 2 | `COMPANY` | Pessoa Jurídica |
 
-## `inventory.InventoryMovementReason`
+### 8.3. `inventory.InventoryMovementReason`
 
 | ID | Nome |
 |---:|---|
@@ -682,7 +838,7 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 9 | `INVENTORY_ADJUSTMENT_IN` |
 | 10 | `INVENTORY_ADJUSTMENT_OUT` |
 
-## `inventory.InventoryReservationStatus`
+### 8.4. `inventory.InventoryReservationStatus`
 
 | ID | Nome |
 |---:|---|
@@ -691,7 +847,7 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 3 | `RELEASED` |
 | 4 | `EXPIRED` |
 
-## `payment.PaymentMethod`
+### 8.5. `payment.PaymentMethod`
 
 | ID | Nome |
 |---:|---|
@@ -700,7 +856,7 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 3 | `DEBIT_CARD` |
 | 4 | `CASH` |
 
-## `payment.PaymentRefundReason`
+### 8.6. `payment.PaymentRefundReason`
 
 | ID | Nome |
 |---:|---|
@@ -710,7 +866,7 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 4 | `OPERATIONAL_ERROR` |
 | 5 | `ORDER_CANCELLATION` |
 
-## `payment.PaymentStatus`
+### 8.7. `payment.PaymentStatus`
 
 | ID | Nome |
 |---:|---|
@@ -721,21 +877,21 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 5 | `PARTIALLY_REFUNDED` |
 | 6 | `REFUNDED` |
 
-## `reference.ContactType`
+### 8.8. `reference.ContactType`
 
 | ID | Nome |
 |---:|---|
 | 1 | `PHONE` |
 | 2 | `MOBILE` |
 
-## `sales.TransactionChannel`
+### 8.9. `sales.TransactionChannel`
 
 | ID | Código | Nome |
 |---:|---|---|
 | 1 | `ONLINE` | Online transaction |
 | 2 | `STORE` | Physical store transaction |
 
-## `sales.TransactionStatus`
+### 8.10. `sales.TransactionStatus`
 
 | ID | Código | Nome |
 |---:|---|---|
@@ -745,14 +901,14 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 4 | `CANCELLED` | Cancelled |
 | 5 | `FAILED` | Failed |
 
-## `shipping.ShipmentMethod`
+### 8.11. `shipping.ShipmentMethod`
 
 | ID | Nome |
 |---:|---|
 | 1 | `PAC` |
 | 2 | `SEDEX` |
 
-## `shipping.ShipmentStatus`
+### 8.12. `shipping.ShipmentStatus`
 
 | ID | Nome |
 |---:|---|
@@ -762,7 +918,9 @@ Os dados de governança técnica mantidos em `metadata.TablePrefix` são documen
 | 4 | `CANCELLED` |
 | 5 | `RETURNED` |
 
-# Dados Iniciais de Governança Técnica
+---
+
+## 9. Dados Iniciais de Governança Técnica
 
 Diferentemente dos valores controlados de negócio documentados anteriormente, `metadata.TablePrefix` contém dados de governança técnica utilizados pelo modelo de banco de dados AtlasCommerce.
 
@@ -780,7 +938,7 @@ No momento desta documentação:
 
 Portanto, o registro fornece cobertura completa de prefixos para o modelo relacional do AtlasCommerce atualmente implementado.
 
-## `metadata.TablePrefix`
+### 9.1. `metadata.TablePrefix`
 
 | ID | *Schema* | Tabela | Prefixo | Ativo |
 |---:|---|---|---|:---:|
@@ -832,9 +990,11 @@ Os valores dos prefixos são restritos a caracteres alfabéticos maiúsculos, co
 
 As atribuições de prefixos são mantidas como metadados de governança técnica, permitindo que a consistência da nomenclatura seja validada independentemente das definições individuais das tabelas.
 
-# Metadados Estruturais
+---
 
-## *Primary Keys*
+## 10. Metadados Estruturais
+
+### 10.1. *Primary Keys*
 
 Atualmente, o AtlasCommerce contém uma *primary key* para cada uma de suas 41 tabelas de aplicação.
 
@@ -842,7 +1002,7 @@ Todas as *primary keys* implementadas utilizam estruturas físicas *clustered*.
 
 As *primary keys* compostas preservam a ordem das colunas conforme implementada no SQL Server.
 
-### `catalog`
+#### 10.1.1. `catalog`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
@@ -857,7 +1017,7 @@ As *primary keys* compostas preservam a ordem das colunas conforme implementada 
 | `catalog.ProductVariantAttributeValue` | `PK_PRDAV` | CLUSTERED | `PRDAV_PRDVA_id`, `PRDAV_PATVL_id` |
 | `catalog.ProductVariantPrice` | `PK_PRDVP` | CLUSTERED | `PRDVP_id` |
 
-### `customer`
+#### 10.1.2. `customer`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
@@ -869,7 +1029,7 @@ As *primary keys* compostas preservam a ordem das colunas conforme implementada 
 | `customer.CustomerEmail` | `PK_CSTEM` | CLUSTERED | `CSTEM_id` |
 | `customer.CustomerType` | `PK_CSTCT` | CLUSTERED | `CSTCT_id` |
 
-### `inventory`
+#### 10.1.3. `inventory`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
@@ -880,13 +1040,13 @@ As *primary keys* compostas preservam a ordem das colunas conforme implementada 
 | `inventory.InventoryReservation` | `PK_INVRE` | CLUSTERED | `INVRE_id` |
 | `inventory.InventoryReservationStatus` | `PK_INVRS` | CLUSTERED | `INVRS_id` |
 
-### `metadata`
+#### 10.1.4. `metadata`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
 | `metadata.TablePrefix` | `PK_PFX` | CLUSTERED | `PFX_id` |
 
-### `payment`
+#### 10.1.5. `payment`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
@@ -896,7 +1056,7 @@ As *primary keys* compostas preservam a ordem das colunas conforme implementada 
 | `payment.PaymentRefundReason` | `PK_PAYRR` | CLUSTERED | `PAYRR_id` |
 | `payment.PaymentStatus` | `PK_PAYST` | CLUSTERED | `PAYST_id` |
 
-### `reference`
+#### 10.1.6. `reference`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
@@ -906,7 +1066,7 @@ As *primary keys* compostas preservam a ordem das colunas conforme implementada 
 | `reference.ContactType` | `PK_CTP` | CLUSTERED | `CTP_id` |
 | `reference.Country` | `PK_CTR` | CLUSTERED | `CTR_id` |
 
-### `sales`
+#### 10.1.7. `sales`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
@@ -915,7 +1075,7 @@ As *primary keys* compostas preservam a ordem das colunas conforme implementada 
 | `sales.TransactionItem` | `PK_TRNIT` | CLUSTERED | `TRNIT_id`, `TRNIT_transaction_at` |
 | `sales.TransactionStatus` | `PK_TRNST` | CLUSTERED | `TRNST_id` |
 
-### `shipping`
+#### 10.1.8. `shipping`
 
 | Tabela | *Primary Key* | Tipo | Colunas |
 |---|---|---|---|
@@ -923,7 +1083,7 @@ As *primary keys* compostas preservam a ordem das colunas conforme implementada 
 | `shipping.ShipmentMethod` | `PK_SHPMT` | CLUSTERED | `SHPMT_id` |
 | `shipping.ShipmentStatus` | `PK_SHPST` | CLUSTERED | `SHPST_id` |
 
-## *UNIQUE Constraints*
+### 10.2. *UNIQUE Constraints*
 
 O AtlasCommerce utiliza *UNIQUE Constraints* para aplicar regras de unicidade de negócio e estruturais que devem ser garantidas pelo modelo relacional.
 
@@ -931,7 +1091,7 @@ Todas as *UNIQUE Constraints* atualmente implementadas utilizam estruturas físi
 
 As *UNIQUE Constraints* compostas preservam a ordem das colunas conforme implementada no SQL Server.
 
-### `catalog`
+### 10.2.1. `catalog`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
@@ -942,7 +1102,7 @@ As *UNIQUE Constraints* compostas preservam a ordem das colunas conforme impleme
 | `catalog.ProductAttributeValue` | `UQ_PATVL_attribute_value` | NONCLUSTERED | `PATVL_PAT_id`, `PATVL_value` |
 | `catalog.ProductVariant` | `UQ_PRDVA_sku` | NONCLUSTERED | `PRDVA_sku` |
 
-### `customer`
+### 10.2.2. `customer`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
@@ -950,7 +1110,7 @@ As *UNIQUE Constraints* compostas preservam a ordem das colunas conforme impleme
 | `customer.CustomerDocumentType` | `UQ_DTP_name` | NONCLUSTERED | `DTP_name` |
 | `customer.CustomerType` | `UQ_CSTCT_code` | NONCLUSTERED | `CSTCT_code` |
 
-### `inventory`
+### 10.2.3. `inventory`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
@@ -959,14 +1119,14 @@ As *UNIQUE Constraints* compostas preservam a ordem das colunas conforme impleme
 | `inventory.InventoryReservation` | `UQ_INVRE_TRNIT` | NONCLUSTERED | `INVRE_TRNIT_id`, `INVRE_TRNIT_transaction_at` |
 | `inventory.InventoryReservationStatus` | `UQ_INVRS_name` | NONCLUSTERED | `INVRS_name` |
 
-### `metadata`
+### 10.2.4. `metadata`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
 | `metadata.TablePrefix` | `UQ_PFX_prefix` | NONCLUSTERED | `PFX_prefix` |
 | `metadata.TablePrefix` | `UQ_PFX_table` | NONCLUSTERED | `PFX_schema_name`, `PFX_table_name` |
 
-### `payment`
+### 10.2.5. `payment`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
@@ -974,7 +1134,7 @@ As *UNIQUE Constraints* compostas preservam a ordem das colunas conforme impleme
 | `payment.PaymentRefundReason` | `UQ_PAYRR_name` | NONCLUSTERED | `PAYRR_name` |
 | `payment.PaymentStatus` | `UQ_PAYST_name` | NONCLUSTERED | `PAYST_name` |
 
-### `reference`
+### 10.2.6. `reference`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
@@ -984,14 +1144,14 @@ As *UNIQUE Constraints* compostas preservam a ordem das colunas conforme impleme
 | `reference.ContactType` | `UQ_CTP_name` | NONCLUSTERED | `CTP_name` |
 | `reference.Country` | `UQ_CTR_name` | NONCLUSTERED | `CTR_name` |
 
-### `sales`
+### 10.2.7. `sales`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
 | `sales.TransactionChannel` | `UQ_TRNCH_code` | NONCLUSTERED | `TRNCH_code` |
 | `sales.TransactionStatus` | `UQ_TRNST_code` | NONCLUSTERED | `TRNST_code` |
 
-### `shipping`
+### 10.2.8. `shipping`
 
 | Tabela | *UNIQUE Constraint* | Tipo | Colunas |
 |---|---|---|---|
@@ -999,7 +1159,7 @@ As *UNIQUE Constraints* compostas preservam a ordem das colunas conforme impleme
 | `shipping.ShipmentMethod` | `UQ_SHPMT_name` | NONCLUSTERED | `SHPMT_name` |
 | `shipping.ShipmentStatus` | `UQ_SHPST_name` | NONCLUSTERED | `SHPST_name` |
 
-## *CHECK Constraints*
+### 10.3. *CHECK Constraints*
 
 O AtlasCommerce utiliza *CHECK Constraints* para impor regras de domínio, consistência, integridade temporal e integridade entre colunas diretamente no modelo relacional.
 
@@ -1007,7 +1167,7 @@ A coluna identifica a coluna à qual a *constraint* está associada quando o SQL
 
 Todas as *CHECK Constraints* atualmente implementadas estão habilitadas e são confiáveis.
 
-### `catalog`
+#### 10.3.1. `catalog`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
@@ -1017,7 +1177,7 @@ Todas as *CHECK Constraints* atualmente implementadas estão habilitadas e são 
 | `catalog.ProductVariantPrice` | `CK_PRDVP_price` | `PRDVP_price` | `([PRDVP_price]>(0.00))` | YES | YES |
 | `catalog.ProductVariantPrice` | `CK_PRDVP_valid_period` | — | `([PRDVP_valid_to] IS NULL OR [PRDVP_valid_to]>[PRDVP_valid_from])` | YES | YES |
 
-### `customer`
+#### 10.3.2. `customer`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
@@ -1026,7 +1186,7 @@ Todas as *CHECK Constraints* atualmente implementadas estão habilitadas e são 
 | `customer.CustomerContact` | `CK_CSTCN_primary_active` | — | `([CSTCN_is_primary]=(0) OR [CSTCN_is_active]=(1))` | YES | YES |
 | `customer.CustomerEmail` | `CK_CSTEM_primary_active` | — | `([CSTEM_is_primary]=(0) OR [CSTEM_is_active]=(1))` | YES | YES |
 
-### `inventory`
+#### 10.3.3. `inventory`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
@@ -1038,14 +1198,14 @@ Todas as *CHECK Constraints* atualmente implementadas estão habilitadas e são 
 | `inventory.InventoryReservation` | `CK_INVRE_expires_at` | — | `([INVRE_expires_at]>[INVRE_reserved_at])` | YES | YES |
 | `inventory.InventoryReservation` | `CK_INVRE_quantity` | `INVRE_quantity` | `([INVRE_quantity]>(0))` | YES | YES |
 
-### `metadata`
+#### 10.3.4. `metadata`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
 | `metadata.TablePrefix` | `CK_PFX_prefix_format` | `PFX_prefix` | `(NOT ([PFX_prefix]) collate Latin1_General_100_BIN2 like N'%[^A-Z]%')` | YES | YES |
 | `metadata.TablePrefix` | `CK_PFX_prefix_length` | `PFX_prefix` | `(len([PFX_prefix])>=(2) AND len([PFX_prefix])<=(5))` | YES | YES |
 
-### `payment`
+#### 10.3.5. `payment`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
@@ -1056,13 +1216,13 @@ Todas as *CHECK Constraints* atualmente implementadas estão habilitadas e são 
 | `payment.Payment` | `CK_PAY_installment_count` | `PAY_installment_count` | `([PAY_installment_count] IS NULL OR [PAY_installment_count]>(1))` | YES | YES |
 | `payment.PaymentRefund` | `CK_PAYRF_amount` | `PAYRF_amount` | `([PAYRF_amount]>(0))` | YES | YES |
 
-### `reference`
+#### 10.3.6. `reference`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
 | `reference.Address` | `CK_ADR_postal_code` | `ADR_postal_code` | `(len([ADR_postal_code])=(8) AND NOT [ADR_postal_code] like '%[^0-9]%')` | YES | YES |
 
-### `sales`
+#### 10.3.7. `sales`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
@@ -1074,7 +1234,7 @@ Todas as *CHECK Constraints* atualmente implementadas estão habilitadas e são 
 | `sales.TransactionItem` | `CK_TRNIT_unit_discount` | `TRNIT_unit_discount` | `([TRNIT_unit_discount]>=(0.00))` | YES | YES |
 | `sales.TransactionItem` | `CK_TRNIT_unit_price` | `TRNIT_unit_price` | `([TRNIT_unit_price]>=(0.00))` | YES | YES |
 
-### `shipping`
+#### 10.3.8. `shipping`
 
 | Tabela | *CHECK Constraint* | Coluna | Definição | Habilitada | Confiável |
 |---|---|---|---|---|---|
@@ -1083,7 +1243,7 @@ Todas as *CHECK Constraints* atualmente implementadas estão habilitadas e são 
 | `shipping.Shipment` | `CK_SHP_posted_at` | — | `([SHP_posted_at] IS NULL OR [SHP_posted_at]>=[SHP_transaction_at])` | YES | YES |
 | `shipping.Shipment` | `CK_SHP_shipping_amount` | `SHP_shipping_amount` | `([SHP_shipping_amount]>=(0))` | YES | YES |
 
-## *FOREIGN KEY Constraints*
+### 10.4. *FOREIGN KEY Constraints*
 
 O AtlasCommerce utiliza *FOREIGN KEY* para preservar a integridade referencial dentro dos domínios do banco de dados e entre eles.
 
@@ -1093,7 +1253,7 @@ Todas as *FOREIGN KEY* atualmente implementadas estão habilitadas e são confi�
 
 Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION` e `ON UPDATE NO ACTION`.
 
-### `catalog`
+#### 10.4.1. `catalog`
 
 | Tabela de Origem | *FOREIGN KEY* | Colunas de Origem | Tabela Referenciada | Colunas Referenciadas | *ON DELETE* | *ON UPDATE* | Habilitada | Confiável |
 |---|---|---|---|---|---|---|:---:|:---:|
@@ -1108,7 +1268,7 @@ Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION`
 | `catalog.ProductVariantAttributeValue` | `FK_PRDAV_PRDVA` | `PRDAV_PRDVA_id` | `catalog.ProductVariant` | `PRDVA_id` | NO ACTION | NO ACTION | YES | YES |
 | `catalog.ProductVariantPrice` | `FK_PRDVP_PRDVA` | `PRDVP_PRDVA_id` | `catalog.ProductVariant` | `PRDVA_id` | NO ACTION | NO ACTION | YES | YES |
 
-### `customer`
+#### 10.4.2. `customer`
 
 | Tabela de Origem | *FOREIGN KEY* | Colunas de Origem | Tabela Referenciada | Colunas Referenciadas | *ON DELETE* | *ON UPDATE* | Habilitada | Confiável |
 |---|---|---|---|---|---|---|:---:|:---:|
@@ -1121,7 +1281,7 @@ Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION`
 | `customer.CustomerDocument` | `FK_CSTCD_DTP` | `CSTCD_DTP_id` | `customer.CustomerDocumentType` | `DTP_id` | NO ACTION | NO ACTION | YES | YES |
 | `customer.CustomerEmail` | `FK_CSTEM_CST` | `CSTEM_CST_id` | `customer.Customer` | `CST_id` | NO ACTION | NO ACTION | YES | YES |
 
-### `inventory`
+#### 10.4.3. `inventory`
 
 | Tabela de Origem | *FOREIGN KEY* | Colunas de Origem | Tabela Referenciada | Colunas Referenciadas | *ON DELETE* | *ON UPDATE* | Habilitada | Confiável |
 |---|---|---|---|---|---|---|:---:|:---:|
@@ -1134,7 +1294,7 @@ Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION`
 | `inventory.InventoryReservation` | `FK_INVRE_PRDVA` | `INVRE_PRDVA_id` | `catalog.ProductVariant` | `PRDVA_id` | NO ACTION | NO ACTION | YES | YES |
 | `inventory.InventoryReservation` | `FK_INVRE_TRNIT` | `INVRE_TRNIT_id`, `INVRE_TRNIT_transaction_at` | `sales.TransactionItem` | `TRNIT_id`, `TRNIT_transaction_at` | NO ACTION | NO ACTION | YES | YES |
 
-### `payment`
+#### 10.4.4. `payment`
 
 | Tabela de Origem | *FOREIGN KEY* | Colunas de Origem | Tabela Referenciada | Colunas Referenciadas | *ON DELETE* | *ON UPDATE* | Habilitada | Confiável |
 |---|---|---|---|---|---|---|:---:|:---:|
@@ -1144,7 +1304,7 @@ Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION`
 | `payment.PaymentRefund` | `FK_PAYRF_PAY` | `PAYRF_PAY_id` | `payment.Payment` | `PAY_id` | NO ACTION | NO ACTION | YES | YES |
 | `payment.PaymentRefund` | `FK_PAYRF_PAYRR` | `PAYRF_PAYRR_id` | `payment.PaymentRefundReason` | `PAYRR_id` | NO ACTION | NO ACTION | YES | YES |
 
-### `reference`
+#### 10.4.5. `reference`
 
 | Tabela de Origem | *FOREIGN KEY* | Colunas de Origem | Tabela Referenciada | Colunas Referenciadas | *ON DELETE* | *ON UPDATE* | Habilitada | Confiável |
 |---|---|---|---|---|---|---|:---:|:---:|
@@ -1152,7 +1312,7 @@ Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION`
 | `reference.AdministrativeDivision` | `FK_ADV_CTR` | `ADV_CTR_id` | `reference.Country` | `CTR_id` | NO ACTION | NO ACTION | YES | YES |
 | `reference.City` | `FK_CTY_ADV` | `CTY_ADV_id` | `reference.AdministrativeDivision` | `ADV_id` | NO ACTION | NO ACTION | YES | YES |
 
-### `sales`
+#### 10.4.6. `sales`
 
 | Tabela de Origem | *FOREIGN KEY* | Colunas de Origem | Tabela Referenciada | Colunas Referenciadas | *ON DELETE* | *ON UPDATE* | Habilitada | Confiável |
 |---|---|---|---|---|---|---|:---:|:---:|
@@ -1162,7 +1322,7 @@ Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION`
 | `sales.TransactionItem` | `FK_TRNIT_PRDVA` | `TRNIT_PRDVA_id` | `catalog.ProductVariant` | `PRDVA_id` | NO ACTION | NO ACTION | YES | YES |
 | `sales.TransactionItem` | `FK_TRNIT_TRN` | `TRNIT_TRN_id`, `TRNIT_transaction_at` | `sales.Transaction` | `TRN_id`, `TRN_transaction_at` | CASCADE | NO ACTION | YES | YES |
 
-### `shipping`
+#### 10.4.7. `shipping`
 
 | Tabela de Origem | *FOREIGN KEY* | Colunas de Origem | Tabela Referenciada | Colunas Referenciadas | *ON DELETE* | *ON UPDATE* | Habilitada | Confiável |
 |---|---|---|---|---|---|---|:---:|:---:|
@@ -1171,7 +1331,7 @@ Salvo indicação em contrário, as *FOREIGN KEY* utilizam `ON DELETE NO ACTION`
 | `shipping.Shipment` | `FK_SHP_SHPST` | `SHP_SHPST_id` | `shipping.ShipmentStatus` | `SHPST_id` | NO ACTION | NO ACTION | YES | YES |
 | `shipping.Shipment` | `FK_SHP_TRN` | `SHP_TRN_id`, `SHP_transaction_at` | `sales.Transaction` | `TRN_id`, `TRN_transaction_at` | NO ACTION | NO ACTION | YES | YES |
 
-## Índices
+### 10.5. Índices
 
 O AtlasCommerce utiliza índices adicionais para dar suporte aos padrões de acesso das consultas, às regras de unicidade de negócio que não podem ser representadas por *UNIQUE Constraints* e aos requisitos de alinhamento físico das tabelas particionadas.
 
@@ -1183,7 +1343,7 @@ Os índices relacionados abaixo representam índices de banco de dados definidos
 
 Para tabelas particionadas, `PS_SALES_MONTHLY` identifica os índices alinhados à arquitetura de particionamento mensal de vendas. As colunas de particionamento incluídas automaticamente pelo SQL Server são identificadas separadamente das colunas-chave explicitamente definidas no índice.
 
-### `catalog`
+#### 10.5.1. `catalog`
 
 | Tabela | Índice | Tipo | Único | Colunas-Chave | Colunas Incluídas | Filtro | Espaço de Dados |
 |---|---|---|:---:|---|---|---|---|
@@ -1193,7 +1353,7 @@ Para tabelas particionadas, `PS_SALES_MONTHLY` identifica os índices alinhados 
 | `catalog.ProductVariantPrice` | `IX_PRDVP_PRDVA_valid_from` | NONCLUSTERED | NO | `PRDVP_PRDVA_id`, `PRDVP_valid_from` | `PRDVP_valid_to`, `PRDVP_price` | — | `FG_CORE` |
 | `catalog.ProductVariantPrice` | `UX_PRDVP_open_period` | NONCLUSTERED | YES | `PRDVP_PRDVA_id` | — | `PRDVP_valid_to IS NULL` | `FG_CORE` |
 
-### `customer`
+#### 10.5.2. `customer`
 
 | Tabela | Índice | Tipo | Único | Colunas-Chave | Colunas Incluídas | Filtro | Espaço de Dados |
 |---|---|---|:---:|---|---|---|---|
@@ -1202,7 +1362,7 @@ Para tabelas particionadas, `PS_SALES_MONTHLY` identifica os índices alinhados 
 | `customer.CustomerContact` | `UX_CSTCN_primary_active` | NONCLUSTERED | YES | `CSTCN_CST_id` | — | `CSTCN_is_primary = 1 AND CSTCN_is_active = 1` | `FG_CORE` |
 | `customer.CustomerEmail` | `UX_CSTEM_primary_active` | NONCLUSTERED | YES | `CSTEM_CST_id` | — | `CSTEM_is_primary = 1 AND CSTEM_is_active = 1` | `FG_CORE` |
 
-### `inventory`
+#### 10.5.3. `inventory`
 
 | Tabela | Índice | Tipo | Único | Colunas-Chave | Colunas Incluídas | Filtro | Espaço de Dados |
 |---|---|---|:---:|---|---|---|---|
@@ -1211,7 +1371,7 @@ Para tabelas particionadas, `PS_SALES_MONTHLY` identifica os índices alinhados 
 | `inventory.InventoryReservation` | `IX_INVRE_INVRS_expires_at` | NONCLUSTERED | NO | `INVRE_INVRS_id`, `INVRE_expires_at` | — | — | `FG_CORE` |
 | `inventory.InventoryReservation` | `IX_INVRE_PRDVA_INVRS` | NONCLUSTERED | NO | `INVRE_PRDVA_id`, `INVRE_INVRS_id` | — | — | `FG_CORE` |
 
-### `payment`
+#### 10.5.4. `payment`
 
 | Tabela | Índice | Tipo | Único | Colunas-Chave | Colunas Incluídas | Filtro | Espaço de Dados |
 |---|---|---|:---:|---|---|---|---|
@@ -1220,7 +1380,7 @@ Para tabelas particionadas, `PS_SALES_MONTHLY` identifica os índices alinhados 
 | `payment.PaymentRefund` | `IX_PAYRF_PAY` | NONCLUSTERED | NO | `PAYRF_PAY_id`, `PAYRF_refunded_at` | `PAYRF_amount` | — | `FG_CORE` |
 | `payment.PaymentRefund` | `IX_PAYRF_updated_at` | NONCLUSTERED | NO | `PAYRF_updated_at` | — | — | `FG_CORE` |
 
-### `sales`
+#### 10.5.5. `sales`
 
 | Tabela | Índice | Tipo | Único | Colunas-Chave | Coluna de Particionamento | Colunas Incluídas | Filtro | Espaço de Dados |
 |---|---|---|:---:|---|---|---|---|---|
@@ -1231,14 +1391,7 @@ Para tabelas particionadas, `PS_SALES_MONTHLY` identifica os índices alinhados 
 | `sales.TransactionItem` | `IX_TRNIT_TRN_transaction_at` | NONCLUSTERED | NO | `TRNIT_TRN_id`, `TRNIT_transaction_at` | — | — | — | `PS_SALES_MONTHLY` |
 | `sales.TransactionItem` | `IX_TRNIT_updated_at` | NONCLUSTERED | NO | `TRNIT_updated_at` | `TRNIT_transaction_at` | — | — | `PS_SALES_MONTHLY` |
 
-### `shipping`
-
-| Tabela | Índice | Tipo | Único | Colunas-Chave | Colunas Incluídas | Filtro | Espaço de Dados |
-|---|---|---|:---:|---|---|---|---|
-| `shipping.Shipment` | `IX_SHP_updated_at` | NONCLUSTERED | NO | `SHP_updated_at` | — | — | `FG_CORE` |
-| `shipping.Shipment` | `UX_SHP_tracking_code` | NONCLUSTERED | YES | `SHP_tracking_code` | — | `SHP_tracking_code IS NOT NULL` | `FG_CORE` |
-
-### Índices Alinhados ao Particionamento
+##### Índices Alinhados ao Particionamento
 
 `sales.Transaction` e `sales.TransactionItem` são particionadas por meio de `PS_SALES_MONTHLY`.
 
@@ -1256,7 +1409,14 @@ Isso ocorre na implementação atual para:
 
 A coluna de particionamento, portanto, faz parte da estrutura física do índice necessária para o alinhamento ao particionamento, mas não deve ser interpretada como uma coluna-chave adicional declarada explicitamente.
 
-## Particionamento
+#### 10.5.6. `shipping`
+
+| Tabela | Índice | Tipo | Único | Colunas-Chave | Colunas Incluídas | Filtro | Espaço de Dados |
+|---|---|---|:---:|---|---|---|---|
+| `shipping.Shipment` | `IX_SHP_updated_at` | NONCLUSTERED | NO | `SHP_updated_at` | — | — | `FG_CORE` |
+| `shipping.Shipment` | `UX_SHP_tracking_code` | NONCLUSTERED | YES | `SHP_tracking_code` | — | `SHP_tracking_code IS NOT NULL` | `FG_CORE` |
+
+### 10.6. Particionamento
 
 O AtlasCommerce utiliza particionamento baseado em tempo para as estruturas transacionais de alto volume do *schema* `sales`.
 
@@ -1297,7 +1457,7 @@ Partição 38
     valores >= 2028-01-01
 ```
 
-### Mapeamento de Partições
+#### 10.6.1. Mapeamento de Partições
 
 | Partição | Limite Inferior | Limite Superior | *Filegroup* |
 |---:|---|---|---|
@@ -1348,7 +1508,7 @@ A primeira e a última partições representam intervalos sem limite em uma das 
 
 Os *filegroups* numerados `FG_SALES_PART_*` representam posições estruturais de armazenamento e seus nomes não vinculam permanentemente cada *filegroup* a um período específico de negócio.
 
-### Estruturas Alinhadas ao Particionamento
+#### 10.6.2. Estruturas Alinhadas ao Particionamento
 
 As seguintes estruturas atualmente implementadas estão alinhadas a `PS_SALES_MONTHLY`:
 
@@ -1365,7 +1525,7 @@ As seguintes estruturas atualmente implementadas estão alinhadas a `PS_SALES_MO
 
 Todas essas estruturas utilizam a mesma *partition function* (função de particionamento), o mesmo *partition scheme* (esquema de particionamento), os mesmos limites de partição e o mesmo mapeamento das partições para os *filegroups* de destino.
 
-### Próximo Filegroup Utilizado
+#### 10.6.3. Próximo Filegroup Utilizado
 
 `PS_SALES_MONTHLY` contém atualmente um destino adicional além das 38 partições definidas por `PF_SALES_MONTHLY`.
 
@@ -1399,13 +1559,13 @@ Próximo destino preparado
     FG_SALES_PART_37
 ```
 
-## *DEFAULT Constraints*
+### 10.7. *DEFAULT Constraints*
 
 O AtlasCommerce utiliza *DEFAULT Constraints* para fornecer valores iniciais determinísticos às colunas cujo valor pode ser estabelecido automaticamente quando uma linha é criada.
 
 As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convenção de nomenclatura do banco de dados.
 
-### `catalog`
+#### 10.7.1. `catalog`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
@@ -1433,7 +1593,7 @@ As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convençã
 | `catalog.ProductVariant` | `DF_PRDVA_updated_at` | `PRDVA_updated_at` | `(sysdatetime())` |
 | `catalog.ProductVariantPrice` | `DF_PRDVP_created_at` | `PRDVP_created_at` | `(sysdatetime())` |
 
-### `customer`
+#### 10.7.2. `customer`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
@@ -1459,7 +1619,7 @@ As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convençã
 | `customer.CustomerType` | `DF_CSTCT_created_at` | `CSTCT_created_at` | `(sysdatetime())` |
 | `customer.CustomerType` | `DF_CSTCT_updated_at` | `CSTCT_updated_at` | `(sysdatetime())` |
 
-### `inventory`
+#### 10.7.3. `inventory`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
@@ -1479,13 +1639,13 @@ As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convençã
 | `inventory.InventoryReservationStatus` | `DF_INVRS_created_at` | `INVRS_created_at` | `(sysdatetime())` |
 | `inventory.InventoryReservationStatus` | `DF_INVRS_updated_at` | `INVRS_updated_at` | `(sysdatetime())` |
 
-### `metadata`
+#### 10.7.4. `metadata`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
 | `metadata.TablePrefix` | `DF_PFX_is_active` | `PFX_is_active` | `((1))` |
 
-### `payment`
+#### 10.7.5. `payment`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
@@ -1500,7 +1660,7 @@ As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convençã
 | `payment.PaymentStatus` | `DF_PAYST_created_at` | `PAYST_created_at` | `(sysdatetime())` |
 | `payment.PaymentStatus` | `DF_PAYST_updated_at` | `PAYST_updated_at` | `(sysdatetime())` |
 
-### `reference`
+#### 10.7.6. `reference`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
@@ -1515,7 +1675,7 @@ As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convençã
 | `reference.Country` | `DF_CTR_created_at` | `CTR_created_at` | `(sysdatetime())` |
 | `reference.Country` | `DF_CTR_updated_at` | `CTR_updated_at` | `(sysdatetime())` |
 
-### `sales`
+#### 10.7.7. `sales`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
@@ -1532,7 +1692,7 @@ As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convençã
 | `sales.TransactionStatus` | `DF_TRNST_created_at` | `TRNST_created_at` | `(sysdatetime())` |
 | `sales.TransactionStatus` | `DF_TRNST_updated_at` | `TRNST_updated_at` | `(sysdatetime())` |
 
-### `shipping`
+#### 10.7.8. `shipping`
 
 | Tabela | *DEFAULT Constraint* | Coluna | Definição *DEFAULT* |
 |---|---|---|---|
@@ -1543,7 +1703,7 @@ As *DEFAULT Constraints* são nomeadas explicitamente de acordo com a convençã
 | `shipping.ShipmentStatus` | `DF_SHPST_created_at` | `SHPST_created_at` | `(sysdatetime())` |
 | `shipping.ShipmentStatus` | `DF_SHPST_updated_at` | `SHPST_updated_at` | `(sysdatetime())` |
 
-## *Triggers*
+### 10.8. *Triggers*
 
 O AtlasCommerce utiliza *DML triggers* seletivamente quando uma regra de integridade exige uma validação que não pode ser representada adequadamente apenas por *constraints* declarativas.
 

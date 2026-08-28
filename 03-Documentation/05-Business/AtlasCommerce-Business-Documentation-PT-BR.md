@@ -12,11 +12,11 @@
 
 ## Índice
 
-1. [Visão Geral do AtlasCommerce](#1-visão-geral-do-atlascommerce)
+[1. Visão Geral do AtlasCommerce](#1-visão-geral-do-atlascommerce)
 
-2. [Escopo de Negócio e Modelo Operacional](#2-escopo-de-negócio-e-modelo-operacional)
+[2. Escopo de Negócio e Modelo Operacional](#2-escopo-de-negócio-e-modelo-operacional)
 
-3. [Catálogo de Produtos e Comercialização](#3-catálogo-de-produtos-e-comercialização)
+[3. Catálogo de Produtos e Comercialização](#3-catálogo-de-produtos-e-comercialização)
    - [3.1 Produtos e Marcas](#31-produtos-e-marcas)
    - [3.2 Variantes de Produto](#32-variantes-de-produto)
    - [3.3 Atributos de Produto](#33-atributos-de-produto)
@@ -24,7 +24,7 @@
    - [3.5 Imagens de Produto](#35-imagens-de-produto)
    - [3.6 Preços de Produto](#36-preços-de-produto)
 
-4. [Gestão de Clientes](#4-gestão-de-clientes)
+[4. Gestão de Clientes](#4-gestão-de-clientes)
    - [4.1 Clientes Identificados e Não Identificados](#41-clientes-identificados-e-não-identificados)
    - [4.2 Tipos de Cliente](#42-tipos-de-cliente)
    - [4.3 Documentos do Cliente](#43-documentos-do-cliente)
@@ -32,35 +32,35 @@
    - [4.5 Endereços de E-mail](#45-endereços-de-e-mail)
    - [4.6 Endereços do Cliente](#46-endereços-do-cliente)
 
-5. [Vendas e Ciclo de Vida da Transação](#5-vendas-e-ciclo-de-vida-da-transação)
+[5. Vendas e Ciclo de Vida da Transação](#5-vendas-e-ciclo-de-vida-da-transação)
    - [5.1 Transação](#51-transação)
    - [5.2 Canais de Venda](#52-canais-de-venda)
    - [5.3 Status da Transação](#53-status-da-transação)
    - [5.4 Itens da Transação](#54-itens-da-transação)
    - [5.5 Valores da Transação](#55-valores-da-transação)
 
-6. [Gestão de Estoque](#6-gestão-de-estoque)
+[6. Gestão de Estoque](#6-gestão-de-estoque)
    - [6.1 Posição Atual do Estoque](#61-posição-atual-do-estoque)
    - [6.2 Movimentações de Estoque](#62-movimentações-de-estoque)
    - [6.3 Motivos de Movimentação de Estoque](#63-motivos-de-movimentação-de-estoque)
 
-7. [Ciclo de Vida da Reserva de Estoque](#7-ciclo-de-vida-da-reserva-de-estoque)
+[7. Ciclo de Vida da Reserva de Estoque](#7-ciclo-de-vida-da-reserva-de-estoque)
    - [7.1 Finalidade de uma Reserva](#71-finalidade-de-uma-reserva)
    - [7.2 Período de Reserva](#72-período-de-reserva)
    - [7.3 Status da Reserva](#73-status-da-reserva)
 
-8. [Processamento de Pagamentos](#8-processamento-de-pagamentos)
+[8. Processamento de Pagamentos](#8-processamento-de-pagamentos)
    - [8.1 Pagamentos e Tentativas de Pagamento](#81-pagamentos-e-tentativas-de-pagamento)
    - [8.2 Métodos de Pagamento](#82-métodos-de-pagamento)
    - [8.3 Parcelamento](#83-parcelamento)
    - [8.4 Status do Pagamento](#84-status-do-pagamento)
 
-9. [Processamento de Estornos](#9-processamento-de-estornos)
+[9. Processamento de Estornos](#9-processamento-de-estornos)
    - [9.1 Eventos de Estorno](#91-eventos-de-estorno)
    - [9.2 Estornos Parciais e Totais](#92-estornos-parciais-e-totais)
    - [9.3 Motivos de Estorno](#93-motivos-de-estorno)
 
-10. [Entrega e Expedição](#10-entrega-e-expedição)
+[10. Entrega e Expedição](#10-entrega-e-expedição)
     - [10.1 Quando Existe Entrega](#101-quando-existe-entrega)
     - [10.2 Uma Transação, Uma Entrega](#102-uma-transação-uma-entrega)
     - [10.3 Endereço de Entrega](#103-endereço-de-entrega)
@@ -69,14 +69,14 @@
     - [10.6 Previsão de Entrega e Rastreamento](#106-previsão-de-entrega-e-rastreamento)
     - [10.7 Status da Entrega](#107-status-da-entrega)
 
-11. [Regras de Negócio entre Domínios](#11-regras-de-negócio-entre-domínios)
+[11. Regras de Negócio entre Domínios](#11-regras-de-negócio-entre-domínios)
     - [11.1 Status da Transação Não É Status do Pagamento](#111-status-da-transação-não-é-status-do-pagamento)
     - [11.2 Status da Transação Não É Status da Reserva](#112-status-da-transação-não-é-status-da-reserva)
     - [11.3 Status da Transação Não É Status da Entrega](#113-status-da-transação-não-é-status-da-entrega)
     - [11.4 Status do Pagamento Não É Histórico de Estornos](#114-status-do-pagamento-não-é-histórico-de-estornos)
     - [11.5 Estoque Atual Não É Histórico de Estoque](#115-estoque-atual-não-é-histórico-de-estoque)
 
-12. [Informações Históricas de Negócio](#12-informações-históricas-de-negócio)
+[12. Informações Históricas de Negócio](#12-informações-históricas-de-negócio)
     - [12.1 Histórico de Preços de Venda](#121-histórico-de-preços-de-venda)
     - [12.2 Histórico de Preços de Catálogo](#122-histórico-de-preços-de-catálogo)
     - [12.3 Histórico de Endereços do Cliente](#123-histórico-de-endereços-do-cliente)
@@ -84,7 +84,7 @@
     - [12.5 Histórico de Pagamentos e Estornos](#125-histórico-de-pagamentos-e-estornos)
     - [12.6 Por Que a Verdade Histórica É Importante](#126-por-que-a-verdade-histórica-é-importante)
 
-13. [Cenários de Negócio Ponta a Ponta](#13-cenários-de-negócio-ponta-a-ponta)
+[13. Cenários de Negócio Ponta a Ponta](#13-cenários-de-negócio-ponta-a-ponta)
     - [13.1 Compra Online Entregue com Sucesso](#131-compra-online-entregue-com-sucesso)
     - [13.2 Compra em Loja com Retirada Imediata](#132-compra-em-loja-com-retirada-imediata)
     - [13.3 Tentativa de Pagamento Recusada e Repetida](#133-tentativa-de-pagamento-recusada-e-repetida)
@@ -93,9 +93,9 @@
     - [13.6 Estorno Parcial Seguido de Outro Estorno](#136-estorno-parcial-seguido-de-outro-estorno)
     - [13.7 Cliente Altera um Endereço Após uma Compra](#137-cliente-altera-um-endereço-após-uma-compra)
 
-14. [Resumo das Regras de Negócio](#14-resumo-das-regras-de-negócio)
+[14. Resumo das Regras de Negócio](#14-resumo-das-regras-de-negócio)
 
-15. [Limites do Escopo Atual](#15-limites-do-escopo-atual)
+[15. Limites do Escopo Atual](#15-limites-do-escopo-atual)
 
 ---
 

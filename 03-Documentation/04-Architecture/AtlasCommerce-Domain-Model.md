@@ -1,5 +1,83 @@
 # AtlasCommerce Domain Model
 
+## Table of Contents
+
+- [1. Purpose](#1-purpose)
+
+- [2. Architecture Context](#2-architecture-context)
+  - [2.1 Transactional Responsibility](#21-transactional-responsibility)
+  - [2.2 Analytical Responsibility](#22-analytical-responsibility)
+  - [2.3 Architectural Boundary](#23-architectural-boundary)
+  - [2.4 Architectural Independence](#24-architectural-independence)
+
+- [3. AtlasCommerce Database Architecture](#3-atlascommerce-database-architecture)
+  - [3.1 Data Model Overview](#31-data-model-overview)
+  - [3.2 Single Transactional Database](#32-single-transactional-database)
+  - [3.3 Domain-Oriented Schema Organization](#33-domain-oriented-schema-organization)
+  - [3.4 Technical Governance Domain](#34-technical-governance-domain)
+  - [3.5 Shared Reference Domain](#35-shared-reference-domain)
+  - [3.6 Cross-Domain Relationships](#36-cross-domain-relationships)
+  - [3.7 Domain Boundaries and Business Processes](#37-domain-boundaries-and-business-processes)
+  - [3.8 Architectural Separation from Object Standards](#38-architectural-separation-from-object-standards)
+
+- [4. Physical Database Architecture](#4-physical-database-architecture)
+  - [4.1 Structural Storage](#41-structural-storage)
+  - [4.2 Partitioning Architecture](#42-partitioning-architecture)
+  - [4.3 Time-Based Partitioning](#43-time-based-partitioning)
+  - [4.4 Partition Alignment](#44-partition-alignment)
+  - [4.5 Physical Design and Relational Integrity](#45-physical-design-and-relational-integrity)
+  - [4.6 Physical Architecture Validation](#46-physical-architecture-validation)
+  - [4.7 Controlled Evolution of Physical Design](#47-controlled-evolution-of-physical-design)
+
+- [5. Data Integrity Architecture](#5-data-integrity-architecture)
+  - [5.1 Layered Integrity Model](#51-layered-integrity-model)
+  - [5.2 Entity Identity](#52-entity-identity)
+  - [5.3 Referential Integrity](#53-referential-integrity)
+  - [5.4 Persistent Invariants](#54-persistent-invariants)
+  - [5.5 Uniqueness Architecture](#55-uniqueness-architecture)
+  - [5.6 Time-Based and Partition-Aware Integrity](#56-time-based-and-partition-aware-integrity)
+  - [5.7 Integrity and Performance](#57-integrity-and-performance)
+  - [5.8 Integrity Validation](#58-integrity-validation)
+  - [5.9 Controlled Integrity Evolution](#59-controlled-integrity-evolution)
+
+- [6. Deployment and Validation Architecture](#6-deployment-and-validation-architecture)
+  - [6.1 Coordinated Deployment](#61-coordinated-deployment)
+  - [6.2 Dependency-Aware Execution](#62-dependency-aware-execution)
+  - [6.3 Rerunnable Architecture](#63-rerunnable-architecture)
+  - [6.4 Non-Destructive Behavior](#64-non-destructive-behavior)
+  - [6.5 Explicit Migration Boundary](#65-explicit-migration-boundary)
+  - [6.6 Transactional Coordination](#66-transactional-coordination)
+  - [6.7 Independent Final Validation](#67-independent-final-validation)
+  - [6.8 Clean Deployment and Rerun Validation](#68-clean-deployment-and-rerun-validation)
+  - [6.9 Deployment Evidence and Traceability](#69-deployment-evidence-and-traceability)
+  - [6.10 Controlled Evolution of Deployment Architecture](#610-controlled-evolution-of-deployment-architecture)
+
+- [7. Data Extraction Architecture](#7-data-extraction-architecture)
+  - [7.1 Transactional Workload Protection](#71-transactional-workload-protection)
+  - [7.2 Decoupled Extraction](#72-decoupled-extraction)
+  - [7.3 Controlled Source Access](#73-controlled-source-access)
+  - [7.4 Initial Data Loads](#74-initial-data-loads)
+  - [7.5 Incremental Extraction](#75-incremental-extraction)
+  - [7.6 Restartability and Extraction Boundaries](#76-restartability-and-extraction-boundaries)
+  - [7.7 Source Data Semantics](#77-source-data-semantics)
+  - [7.8 Historical Interpretation](#78-historical-interpretation)
+  - [7.9 Extraction Consistency](#79-extraction-consistency)
+  - [7.10 Extraction Security and Scope](#710-extraction-security-and-scope)
+  - [7.11 Extraction Observability](#711-extraction-observability)
+  - [7.12 Extraction Technology Selection](#712-extraction-technology-selection)
+
+- [8. Architectural Evolution and Boundaries](#8-architectural-evolution-and-boundaries)
+  - [8.1 Controlled Architectural Evolution](#81-controlled-architectural-evolution)
+  - [8.2 Architectural Boundaries](#82-architectural-boundaries)
+  - [8.3 Implemented Architecture and Architectural Direction](#83-implemented-architecture-and-architectural-direction)
+  - [8.4 Documentation Boundaries](#84-documentation-boundaries)
+  - [8.5 Source of Truth and Synchronization](#85-source-of-truth-and-synchronization)
+  - [8.6 Future Atlas Engineering Evolution](#86-future-atlas-engineering-evolution)
+
+- [Closing Principle](#closing-principle)
+
+---
+
 ## 1. Purpose
 
 This document defines the logical domain model of AtlasCommerce.

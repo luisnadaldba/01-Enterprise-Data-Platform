@@ -1,4 +1,82 @@
-# Arquitetura do AtlasCommerce
+# AtlasCommerce — Arquitetura
+
+## Índice
+
+- [1. Propósito](#1-propósito)
+
+- [2. Contexto da Arquitetura](#2-contexto-da-arquitetura)
+  - [2.1 Responsabilidade Transacional](#21-responsabilidade-transacional)
+  - [2.2 Responsabilidade Analítica](#22-responsabilidade-analítica)
+  - [2.3 Limite Arquitetural](#23-limite-arquitetural)
+  - [2.4 Independência Arquitetural](#24-independência-arquitetural)
+
+- [3. Arquitetura de Banco de Dados do AtlasCommerce](#3-arquitetura-de-banco-de-dados-do-atlascommerce)
+  - [3.1 Visão Geral do Modelo de Dados](#31-visão-geral-do-modelo-de-dados)
+  - [3.2 Banco de Dados Transacional Único](#32-banco-de-dados-transacional-único)
+  - [3.3 Organização de Schemas Orientada a Domínios](#33-organização-de-schemas-orientada-a-domínios)
+  - [3.4 Domínio de Governança Técnica](#34-domínio-de-governança-técnica)
+  - [3.5 Domínio de Referência Compartilhada](#35-domínio-de-referência-compartilhada)
+  - [3.6 Relacionamentos entre Domínios](#36-relacionamentos-entre-domínios)
+  - [3.7 Limites dos Domínios e Processos de Negócio](#37-limites-dos-domínios-e-processos-de-negócio)
+  - [3.8 Separação Arquitetural dos Padrões de Objetos](#38-separação-arquitetural-dos-padrões-de-objetos)
+
+- [4. Arquitetura Física do Banco de Dados](#4-arquitetura-física-do-banco-de-dados)
+  - [4.1 Armazenamento Estrutural](#41-armazenamento-estrutural)
+  - [4.2 Arquitetura de Particionamento](#42-arquitetura-de-particionamento)
+  - [4.3 Particionamento Baseado em Tempo](#43-particionamento-baseado-em-tempo)
+  - [4.4 Alinhamento de Particionamento](#44-alinhamento-de-particionamento)
+  - [4.5 Projeto Físico e Integridade Relacional](#45-projeto-físico-e-integridade-relacional)
+  - [4.6 Validação da Arquitetura Física](#46-validação-da-arquitetura-física)
+  - [4.7 Evolução Controlada do Projeto Físico](#47-evolução-controlada-do-projeto-físico)
+
+- [5. Arquitetura de Integridade de Dados](#5-arquitetura-de-integridade-de-dados)
+  - [5.1 Modelo de Integridade em Camadas](#51-modelo-de-integridade-em-camadas)
+  - [5.2 Identidade das Entidades](#52-identidade-das-entidades)
+  - [5.3 Integridade Referencial](#53-integridade-referencial)
+  - [5.4 Invariantes Persistentes](#54-invariantes-persistentes)
+  - [5.5 Arquitetura de Unicidade](#55-arquitetura-de-unicidade)
+  - [5.6 Integridade Baseada em Tempo e Consciente do Particionamento](#56-integridade-baseada-em-tempo-e-consciente-do-particionamento)
+  - [5.7 Integridade e Desempenho](#57-integridade-e-desempenho)
+  - [5.8 Validação da Integridade](#58-validação-da-integridade)
+  - [5.9 Evolução Controlada da Integridade](#59-evolução-controlada-da-integridade)
+
+- [6. Arquitetura de Deployment e Validação](#6-arquitetura-de-deployment-e-validação)
+  - [6.1 Deployment Coordenado](#61-deployment-coordenado)
+  - [6.2 Execução Consciente das Dependências](#62-execução-consciente-das-dependências)
+  - [6.3 Arquitetura Reexecutável](#63-arquitetura-reexecutável)
+  - [6.4 Comportamento Não Destrutivo](#64-comportamento-não-destrutivo)
+  - [6.5 Limite de Migração Explícita](#65-limite-de-migração-explícita)
+  - [6.6 Coordenação Transacional](#66-coordenação-transacional)
+  - [6.7 Final Validation Independente](#67-final-validation-independente)
+  - [6.8 Deployment Limpo e Validação de Reexecução](#68-deployment-limpo-e-validação-de-reexecução)
+  - [6.9 Evidências e Rastreabilidade do Deployment](#69-evidências-e-rastreabilidade-do-deployment)
+  - [6.10 Evolução Controlada da Arquitetura de Deployment](#610-evolução-controlada-da-arquitetura-de-deployment)
+
+- [7. Arquitetura de Extração de Dados](#7-arquitetura-de-extração-de-dados)
+  - [7.1 Proteção da Carga de Trabalho Transacional](#71-proteção-da-carga-de-trabalho-transacional)
+  - [7.2 Extração Desacoplada](#72-extração-desacoplada)
+  - [7.3 Acesso Controlado à Origem](#73-acesso-controlado-à-origem)
+  - [7.4 Cargas Iniciais de Dados](#74-cargas-iniciais-de-dados)
+  - [7.5 Extração Incremental](#75-extração-incremental)
+  - [7.6 Capacidade de Reinício e Limites de Extração](#76-capacidade-de-reinício-e-limites-de-extração)
+  - [7.7 Semântica dos Dados de Origem](#77-semântica-dos-dados-de-origem)
+  - [7.8 Interpretação Histórica](#78-interpretação-histórica)
+  - [7.9 Consistência da Extração](#79-consistência-da-extração)
+  - [7.10 Segurança e Escopo da Extração](#710-segurança-e-escopo-da-extração)
+  - [7.11 Observabilidade da Extração](#711-observabilidade-da-extração)
+  - [7.12 Seleção da Tecnologia de Extração](#712-seleção-da-tecnologia-de-extração)
+
+- [8. Evolução Arquitetural e Limites](#8-evolução-arquitetural-e-limites)
+  - [8.1 Evolução Arquitetural Controlada](#81-evolução-arquitetural-controlada)
+  - [8.2 Limites Arquiteturais](#82-limites-arquiteturais)
+  - [8.3 Arquitetura Implementada e Direção Arquitetural](#83-arquitetura-implementada-e-direção-arquitetural)
+  - [8.4 Limites da Documentação](#84-limites-da-documentação)
+  - [8.5 Fonte da Verdade e Sincronização](#85-fonte-da-verdade-e-sincronização)
+  - [8.6 Evolução Futura do Atlas Engineering](#86-evolução-futura-do-atlas-engineering)
+
+- [Princípio Final](#princípio-final)
+
+---
 
 ## 1. Propósito
 
