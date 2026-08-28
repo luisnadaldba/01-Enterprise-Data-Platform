@@ -1,5 +1,112 @@
 # Padrões de Banco de Dados do AtlasCommerce
 
+# Índice
+
+- [1. Propósito](#1-propósito)
+
+- [2. Organização de Schemas](#2-organização-de-schemas)
+
+- [3. Nomenclatura de Tabelas](#3-nomenclatura-de-tabelas)
+
+- [4. Nomenclatura de Colunas](#4-nomenclatura-de-colunas)
+
+- [5. Registro de Prefixos de Tabelas](#5-registro-de-prefixos-de-tabelas)
+
+- [6. Regras de Nomenclatura de Prefixos](#6-regras-de-nomenclatura-de-prefixos)
+  - [6.1 Comprimento Preferencial do Prefixo](#61-comprimento-preferencial-do-prefixo)
+  - [6.2 Entidades Relacionadas Independentes](#62-entidades-relacionadas-independentes)
+  - [6.3 Seleção de Prefixos](#63-seleção-de-prefixos)
+  - [6.4 Reutilização de Prefixos](#64-reutilização-de-prefixos)
+  - [6.5 Prefixos em Relacionamentos](#65-prefixos-em-relacionamentos)
+
+- [7. Padrões de Primary Key](#7-padrões-de-primary-key)
+  - [7.1 Primary Keys Substitutas](#71-primary-keys-substitutas)
+  - [7.2 Tipo de Dados da Primary Key](#72-tipo-de-dados-da-primary-key)
+  - [7.3 Identity](#73-identity)
+  - [7.4 Primary Keys Clustered](#74-primary-keys-clustered)
+  - [7.5 Primary Keys Compostas](#75-primary-keys-compostas)
+  - [7.6 Funções de Primary Key e Foreign Key](#76-funções-de-primary-key-e-foreign-key)
+  - [7.7 Tabelas sem Primary Key](#77-tabelas-sem-primary-key)
+
+- [8. Padrões de Foreign Key](#8-padrões-de-foreign-key)
+  - [8.1 Definição de Coluna de Foreign Key](#81-definição-de-coluna-de-foreign-key)
+  - [8.2 Relacionamentos Opcionais](#82-relacionamentos-opcionais)
+  - [8.3 Múltiplos Relacionamentos com a Mesma Tabela](#83-múltiplos-relacionamentos-com-a-mesma-tabela)
+  - [8.4 Colunas e Constraints de Foreign Key](#84-colunas-e-constraints-de-foreign-key)
+  - [8.5 Foreign Keys Compostas](#85-foreign-keys-compostas)
+  - [8.6 Semântica dos Relacionamentos](#86-semântica-dos-relacionamentos)
+
+- [9. Padrões de Documentação de Objetos](#9-padrões-de-documentação-de-objetos)
+  - [9.1 Documentação de Tabelas](#91-documentação-de-tabelas)
+  - [9.2 Documentação de Colunas](#92-documentação-de-colunas)
+  - [9.3 Documentação de Primary Key](#93-documentação-de-primary-key)
+  - [9.4 Documentação de Foreign Key](#94-documentação-de-foreign-key)
+    - [Foreign Keys Compostas](#foreign-keys-compostas)
+  - [9.5 Documentação de Colunas de Auditoria](#95-documentação-de-colunas-de-auditoria)
+  - [9.6 Manutenção da Documentação](#96-manutenção-da-documentação)
+  - [9.7 Fonte da Verdade da Documentação](#97-fonte-da-verdade-da-documentação)
+
+- [10. Padrões de Constraints](#10-padrões-de-constraints)
+  - [10.1 Primary Keys](#101-primary-keys)
+  - [10.2 Default Constraints](#102-default-constraints)
+    - [NOT NULL e DEFAULT](#not-null-e-default)
+  - [10.3 Check Constraints](#103-check-constraints)
+    - [Uso Apropriado de CHECK Constraints](#uso-apropriado-de-check-constraints)
+    - [Validação de Check Constraint](#validação-de-check-constraint)
+  - [10.4 Unique Constraints](#104-unique-constraints)
+    - [Unique Constraints de Uma Única Coluna](#unique-constraints-de-uma-única-coluna)
+    - [Unique Constraints Compostas](#unique-constraints-compostas)
+    - [Identificadores Naturais de Negócio](#identificadores-naturais-de-negócio)
+    - [UQ, IX e UX](#uq-ix-e-ux)
+    - [Validação de Unique Constraint](#validação-de-unique-constraint)
+  - [10.5 Foreign Keys](#105-foreign-keys)
+    - [Foreign Keys Compostas](#foreign-keys-compostas-1)
+    - [Chaves Referenciadas](#chaves-referenciadas)
+    - [Compatibilidade de Colunas](#compatibilidade-de-colunas)
+    - [Ações Referenciais](#ações-referenciais)
+    - [Validação de Dependências](#validação-de-dependências)
+    - [Estado Enabled e Trusted](#estado-enabled-e-trusted)
+    - [Divergência de Foreign Key](#divergência-de-foreign-key)
+
+- [11. Padrões de Índices](#11-padrões-de-índices)
+  - [11.1 Projeto de Índices](#111-projeto-de-índices)
+  - [11.2 Índices Compostos](#112-índices-compostos)
+  - [11.3 Colunas Incluídas](#113-colunas-incluídas)
+  - [11.4 Unique Indexes](#114-unique-indexes)
+    - [Filtered Unique Indexes](#filtered-unique-indexes)
+  - [11.5 Validação de Índices](#115-validação-de-índices)
+  - [11.6 Índices Particionados](#116-índices-particionados)
+  - [11.7 Índices Sobrepostos](#117-índices-sobrepostos)
+  - [11.8 Ciclo de Vida dos Índices](#118-ciclo-de-vida-dos-índices)
+
+- [12. Padrões de Deployment](#12-padrões-de-deployment)
+  - [12.1 Mensagens de Status do Deployment](#121-mensagens-de-status-do-deployment)
+  - [12.2 Validação Antes da Modificação](#122-validação-antes-da-modificação)
+  - [12.3 Deployment Não Destrutivo](#123-deployment-não-destrutivo)
+  - [12.4 Migrações Explícitas](#124-migrações-explícitas)
+  - [12.5 Validação de Dependências](#125-validação-de-dependências)
+  - [12.6 Deployment de Dados](#126-deployment-de-dados)
+  - [12.7 Fases de Deployment](#127-fases-de-deployment)
+  - [12.8 Final Validation](#128-final-validation)
+  - [12.9 Deployment Transacional](#129-deployment-transacional)
+  - [12.10 Validação de Reexecução](#1210-validação-de-reexecução)
+
+- [13. Padrões de Ordenação de Objetos](#13-padrões-de-ordenação-de-objetos)
+  - [13.1 Ordenação de Schemas](#131-ordenação-de-schemas)
+  - [13.2 Ordenação de Tabelas](#132-ordenação-de-tabelas)
+  - [13.3 Exceções Técnicas de Ordenação](#133-exceções-técnicas-de-ordenação)
+  - [13.4 Ordem Lógica e Ordem de Dependências](#134-ordem-lógica-e-ordem-de-dependências)
+  - [13.5 Ordenação Dentro das Fases de Deployment](#135-ordenação-dentro-das-fases-de-deployment)
+  - [13.6 Ordenação do Registro TablePrefix](#136-ordenação-do-registro-tableprefix)
+  - [13.7 Ordenação de Colunas](#137-ordenação-de-colunas)
+    - [Novas Colunas NOT NULL](#novas-colunas-not-null)
+  - [13.8 Ordenação de Constraints e Índices](#138-ordenação-de-constraints-e-índices)
+  - [13.9 Consistência de Ordenação](#139-consistência-de-ordenação)
+
+- [Princípio Final](#princípio-final)
+
+---
+
 ## 1. Propósito
 
 Este documento define os padrões de projeto, nomenclatura, documentação, integridade, indexação, ordenação e *deployment* (implantação) de banco de dados adotados pelo AtlasCommerce.
