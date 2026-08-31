@@ -2,11 +2,11 @@
 
 ## Table of Contents
 
-[1. Purpose](#1-purpose)
+- [1. Purpose](#1-purpose)
 
-[2. Security and Governance Context](#2-security-and-governance-context)
+- [2. Security and Governance Context](#2-security-and-governance-context)
 
-[3. Security Principles](#3-security-principles)
+- [3. Security Principles](#3-security-principles)
    - [3.1 Security by Design](#31-security-by-design)
    - [3.2 Deny by Default](#32-deny-by-default)
    - [3.3 Least Privilege](#33-least-privilege)
@@ -23,7 +23,7 @@
    - [3.14 Security Claims Must Match Evidence](#314-security-claims-must-match-evidence)
    - [3.15 Security Must Evolve Without Breaking Architectural Boundaries](#315-security-must-evolve-without-breaking-architectural-boundaries)
 
-[4. Identity and Access Management](#4-identity-and-access-management)
+- [4. Identity and Access Management](#4-identity-and-access-management)
    - [4.1 Identity Types](#41-identity-types)
    - [4.2 Human Identities](#42-human-identities)
    - [4.3 Service Identities](#43-service-identities)
@@ -42,7 +42,7 @@
    - [4.16 Enterprise Evolution](#416-enterprise-evolution)
    - [4.17 Identity and Access Guarantees](#417-identity-and-access-guarantees)
 
-[5. Authentication and Authorization](#5-authentication-and-authorization)
+- [5. Authentication and Authorization](#5-authentication-and-authorization)
    - [5.1 Authentication](#51-authentication)
    - [5.2 Human Authentication](#52-human-authentication)
    - [5.3 Service Authentication](#53-service-authentication)
@@ -62,7 +62,7 @@
    - [5.17 Laboratory and Enterprise Authentication](#517-laboratory-and-enterprise-authentication)
    - [5.18 Authentication and Authorization Guarantees](#518-authentication-and-authorization-guarantees)
 
-[6. Secrets and Credential Management](#6-secrets-and-credential-management)
+- [6. Secrets and Credential Management](#6-secrets-and-credential-management)
    - [6.1 Secret Classification](#61-secret-classification)
    - [6.2 Secrets Must Not Be Committed](#62-secrets-must-not-be-committed)
    - [6.3 Secret References](#63-secret-references)
@@ -89,7 +89,7 @@
    - [6.24 Secrets and Credential Evidence](#624-secrets-and-credential-evidence)
    - [6.25 Secrets and Credential Guarantees](#625-secrets-and-credential-guarantees)
 
-[7. Network and Service Communication Security](#7-network-and-service-communication-security)
+- [7. Network and Service Communication Security](#7-network-and-service-communication-security)
    - [7.1 Network Exposure](#71-network-exposure)
    - [7.2 Service Communication Paths](#72-service-communication-paths)
    - [7.3 Explicit Trust Boundaries](#73-explicit-trust-boundaries)
@@ -115,7 +115,7 @@
    - [7.23 Network and Communication Evidence](#723-network-and-communication-evidence)
    - [7.24 Network and Service Communication Guarantees](#724-network-and-service-communication-guarantees)
 
-[8. Data Protection and Encryption](#8-data-protection-and-encryption)
+- [8. Data Protection and Encryption](#8-data-protection-and-encryption)
    - [8.1 Data Protection Scope](#81-data-protection-scope)
    - [8.2 Protection According to Data Classification](#82-protection-according-to-data-classification)
    - [8.3 Encryption in Transit](#83-encryption-in-transit)
@@ -149,7 +149,7 @@
    - [8.31 Data Protection Evidence](#831-data-protection-evidence)
    - [8.32 Data Protection and Encryption Guarantees](#832-data-protection-and-encryption-guarantees)
 
-[9. Data Classification and Sensitive Data](#9-data-classification-and-sensitive-data)
+- [9. Data Classification and Sensitive Data](#9-data-classification-and-sensitive-data)
    - [9.1 Classification Model](#91-classification-model)
    - [9.2 Public Data](#92-public-data)
    - [9.3 Internal Data](#93-internal-data)
@@ -184,7 +184,7 @@
    - [9.32 Classification Evidence](#932-classification-evidence)
    - [9.33 Data Classification and Sensitive Data Guarantees](#933-data-classification-and-sensitive-data-guarantees)
 
-[10. LGPD and Privacy Governance](#10-lgpd-and-privacy-governance)
+- [10. LGPD and Privacy Governance](#10-lgpd-and-privacy-governance)
     - [10.1 Personal Data Identification](#101-personal-data-identification)
     - [10.2 Sensitive Personal Data](#102-sensitive-personal-data)
     - [10.3 Processing Purpose](#103-processing-purpose)
@@ -222,7 +222,7 @@
     - [10.35 Privacy Evidence](#1035-privacy-evidence)
     - [10.36 LGPD and Privacy Governance Guarantees](#1036-lgpd-and-privacy-governance-guarantees)
 
-[11. Data Access by Architectural Layer](#11-data-access-by-architectural-layer)
+- [11. Data Access by Architectural Layer](#11-data-access-by-architectural-layer)
     - [11.1 Operational Source Access](#111-operational-source-access)
     - [11.2 CDC Access](#112-cdc-access)
     - [11.3 Debezium Access](#113-debezium-access)
@@ -258,7 +258,7 @@
     - [11.33 Layer Access Evidence](#1133-layer-access-evidence)
     - [11.34 Data Access by Architectural Layer Guarantees](#1134-data-access-by-architectural-layer-guarantees)
 
-[12. Schema, Contract, and Metadata Governance](#12-schema-contract-and-metadata-governance)
+- [12. Schema, Contract, and Metadata Governance](#12-schema-contract-and-metadata-governance)
     - [12.1 Governed Definitions](#121-governed-definitions)
     - [12.2 Source Schema Governance](#122-source-schema-governance)
     - [12.3 Event Contract Governance](#123-event-contract-governance)
@@ -299,7 +299,7 @@
     - [12.38 Governance Evidence](#1238-governance-evidence)
     - [12.39 Schema, Contract, and Metadata Governance Guarantees](#1239-schema-contract-and-metadata-governance-guarantees)
 
-[13. Retention, Archival, and Disposal](#13-retention-archival-and-disposal)
+- [13. Retention, Archival, and Disposal](#13-retention-archival-and-disposal)
     - [13.1 Retention Principles](#131-retention-principles)
     - [13.2 Retention by Architectural Layer](#132-retention-by-architectural-layer)
     - [13.3 Kafka Retention](#133-kafka-retention)
@@ -344,7 +344,7 @@
     - [13.42 Retention and Disposal Evidence](#1342-retention-and-disposal-evidence)
     - [13.43 Retention, Archival, and Disposal Guarantees](#1343-retention-archival-and-disposal-guarantees)
 
-[14. Auditability and Security Observability](#14-auditability-and-security-observability)
+- [14. Auditability and Security Observability](#14-auditability-and-security-observability)
     - [14.1 Auditability](#141-auditability)
     - [14.2 Security Observability](#142-security-observability)
     - [14.3 Identity Attribution](#143-identity-attribution)
@@ -383,7 +383,7 @@
     - [14.36 Auditability Evidence](#1436-auditability-evidence)
     - [14.37 Auditability and Security Observability Guarantees](#1437-auditability-and-security-observability-guarantees)
 
-[15. Security Incident and Recovery Considerations](#15-security-incident-and-recovery-considerations)
+- [15. Security Incident and Recovery Considerations](#15-security-incident-and-recovery-considerations)
     - [15.1 Security Incident Classification](#151-security-incident-classification)
     - [15.2 Detection](#152-detection)
     - [15.3 Initial Assessment](#153-initial-assessment)
@@ -417,7 +417,7 @@
     - [15.31 Enterprise Evolution](#1531-enterprise-evolution)
     - [15.32 Security Incident and Recovery Guarantees](#1532-security-incident-and-recovery-guarantees)
 
-[16. Roles and Responsibilities](#16-roles-and-responsibilities)
+- [16. Roles and Responsibilities](#16-roles-and-responsibilities)
     - [16.1 Responsibility Model](#161-responsibility-model)
     - [16.2 Data Engineering](#162-data-engineering)
     - [16.3 Data Engineering and Source Ownership](#163-data-engineering-and-source-ownership)
@@ -462,7 +462,7 @@
     - [16.42 Roles and Responsibilities Evidence](#1642-roles-and-responsibilities-evidence)
     - [16.43 Roles and Responsibilities Guarantees](#1643-roles-and-responsibilities-guarantees)
 
-[17. Security Validation Strategy](#17-security-validation-strategy)
+- [17. Security Validation Strategy](#17-security-validation-strategy)
     - [17.1 Validation Scope](#171-validation-scope)
     - [17.2 Positive Security Tests](#172-positive-security-tests)
     - [17.3 Negative Security Tests](#173-negative-security-tests)
@@ -502,7 +502,7 @@
     - [17.37 Security Validation Review](#1737-security-validation-review)
     - [17.38 Security Validation Guarantees](#1738-security-validation-guarantees)
 
-[18. Laboratory and Enterprise Security Boundaries](#18-laboratory-and-enterprise-security-boundaries)
+- [18. Laboratory and Enterprise Security Boundaries](#18-laboratory-and-enterprise-security-boundaries)
     - [18.1 Laboratory Purpose](#181-laboratory-purpose)
     - [18.2 Laboratory Physical Constraints](#182-laboratory-physical-constraints)
     - [18.3 Logical Boundary Preservation](#183-logical-boundary-preservation)
@@ -541,7 +541,7 @@
     - [18.36 Laboratory and Enterprise Validation](#1836-laboratory-and-enterprise-validation)
     - [18.37 Laboratory and Enterprise Security Guarantees](#1837-laboratory-and-enterprise-security-guarantees)
 
-[19. Security and Governance Guarantees](#19-security-and-governance-guarantees)
+- [19. Security and Governance Guarantees](#19-security-and-governance-guarantees)
     - [19.1 Identity and Access](#191-identity-and-access)
     - [19.2 Deny by Default](#192-deny-by-default)
     - [19.3 Service Isolation](#193-service-isolation)

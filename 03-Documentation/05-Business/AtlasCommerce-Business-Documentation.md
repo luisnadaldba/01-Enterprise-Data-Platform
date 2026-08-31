@@ -12,11 +12,11 @@
 
 ## Table of Contents
 
-[1. AtlasCommerce Overview](#1-atlascommerce-overview)
+- [1. AtlasCommerce Overview](#1-atlascommerce-overview)
 
-[2. Business Scope and Operating Model](#2-business-scope-and-operating-model)
+- [2. Business Scope and Operating Model](#2-business-scope-and-operating-model)
 
-[3. Product Catalog and Merchandising](#3-product-catalog-and-merchandising)
+- [3. Product Catalog and Merchandising](#3-product-catalog-and-merchandising)
    - [3.1 Products and Brands](#31-products-and-brands)
    - [3.2 Product Variants](#32-product-variants)
    - [3.3 Product Attributes](#33-product-attributes)
@@ -24,7 +24,7 @@
    - [3.5 Product Images](#35-product-images)
    - [3.6 Product Pricing](#36-product-pricing)
 
-[4. Customer Management](#4-customer-management)
+- [4. Customer Management](#4-customer-management)
    - [4.1 Identified and Unidentified Customers](#41-identified-and-unidentified-customers)
    - [4.2 Customer Types](#42-customer-types)
    - [4.3 Customer Documents](#43-customer-documents)
@@ -32,35 +32,35 @@
    - [4.5 Email Addresses](#45-email-addresses)
    - [4.6 Customer Addresses](#46-customer-addresses)
 
-[5. Sales and Transaction Lifecycle](#5-sales-and-transaction-lifecycle)
+- [5. Sales and Transaction Lifecycle](#5-sales-and-transaction-lifecycle)
    - [5.1 Transaction](#51-transaction)
    - [5.2 Sales Channels](#52-sales-channels)
    - [5.3 Transaction Statuses](#53-transaction-statuses)
    - [5.4 Transaction Items](#54-transaction-items)
    - [5.5 Transaction Amounts](#55-transaction-amounts)
 
-[6. Inventory Management](#6-inventory-management)
+- [6. Inventory Management](#6-inventory-management)
    - [6.1 Current Inventory Position](#61-current-inventory-position)
    - [6.2 Inventory Movements](#62-inventory-movements)
    - [6.3 Inventory Movement Reasons](#63-inventory-movement-reasons)
 
-[7. Inventory Reservation Lifecycle](#7-inventory-reservation-lifecycle)
+- [7. Inventory Reservation Lifecycle](#7-inventory-reservation-lifecycle)
    - [7.1 Purpose of a Reservation](#71-purpose-of-a-reservation)
    - [7.2 Reservation Period](#72-reservation-period)
    - [7.3 Reservation Statuses](#73-reservation-statuses)
 
-[8. Payment Processing](#8-payment-processing)
+- [8. Payment Processing](#8-payment-processing)
    - [8.1 Payments and Payment Attempts](#81-payments-and-payment-attempts)
    - [8.2 Payment Methods](#82-payment-methods)
    - [8.3 Installments](#83-installments)
    - [8.4 Payment Statuses](#84-payment-statuses)
 
-[9. Refund Processing](#9-refund-processing)
+- [9. Refund Processing](#9-refund-processing)
    - [9.1 Refund Events](#91-refund-events)
    - [9.2 Partial and Full Refunds](#92-partial-and-full-refunds)
    - [9.3 Refund Reasons](#93-refund-reasons)
 
-[10. Shipping and Fulfillment](#10-shipping-and-fulfillment)
+- [10. Shipping and Fulfillment](#10-shipping-and-fulfillment)
     - [10.1 When Shipping Exists](#101-when-shipping-exists)
     - [10.2 One Transaction, One Delivery](#102-one-transaction-one-delivery)
     - [10.3 Delivery Address](#103-delivery-address)
@@ -69,14 +69,14 @@
     - [10.6 Delivery Estimate and Tracking](#106-delivery-estimate-and-tracking)
     - [10.7 Shipment Statuses](#107-shipment-statuses)
 
-[11. Cross-Domain Business Rules](#11-cross-domain-business-rules)
+- [11. Cross-Domain Business Rules](#11-cross-domain-business-rules)
     - [11.1 Transaction Status Is Not Payment Status](#111-transaction-status-is-not-payment-status)
     - [11.2 Transaction Status Is Not Reservation Status](#112-transaction-status-is-not-reservation-status)
     - [11.3 Transaction Status Is Not Shipment Status](#113-transaction-status-is-not-shipment-status)
     - [11.4 Payment Status Is Not Refund History](#114-payment-status-is-not-refund-history)
     - [11.5 Current Inventory Is Not Inventory History](#115-current-inventory-is-not-inventory-history)
 
-[12. Historical Business Information](#12-historical-business-information)
+- [12. Historical Business Information](#12-historical-business-information)
     - [12.1 Historical Sale Prices](#121-historical-sale-prices)
     - [12.2 Historical Catalog Prices](#122-historical-catalog-prices)
     - [12.3 Historical Customer Addresses](#123-historical-customer-addresses)
@@ -84,7 +84,7 @@
     - [12.5 Historical Payment and Refund Events](#125-historical-payment-and-refund-events)
     - [12.6 Why Historical Truth Matters](#126-why-historical-truth-matters)
 
-[13. End-to-End Business Scenarios](#13-end-to-end-business-scenarios)
+- [13. End-to-End Business Scenarios](#13-end-to-end-business-scenarios)
     - [13.1 Online Purchase Successfully Delivered](#131-online-purchase-successfully-delivered)
     - [13.2 In-Store Purchase with Immediate Pickup](#132-in-store-purchase-with-immediate-pickup)
     - [13.3 Payment Attempt Declined and Retried](#133-payment-attempt-declined-and-retried)
@@ -93,9 +93,9 @@
     - [13.6 Partial Refund Followed by Additional Refund](#136-partial-refund-followed-by-additional-refund)
     - [13.7 Customer Changes an Address After a Purchase](#137-customer-changes-an-address-after-a-purchase)
 
-[14. Business Rules Summary](#14-business-rules-summary)
+- [14. Business Rules Summary](#14-business-rules-summary)
 
-[15. Current Scope Boundaries](#15-current-scope-boundaries)
+- [15. Current Scope Boundaries](#15-current-scope-boundaries)
 
 ---
 

@@ -2,9 +2,9 @@
 
 ## Índice
 
-[1. Propósito](#1-propósito)
+- [1. Propósito](#1-propósito)
 
-[2. Contexto de Confiabilidade e Recuperação](#2-contexto-de-confiabilidade-e-recuperação)
+- [2. Contexto de Confiabilidade e Recuperação](#2-contexto-de-confiabilidade-e-recuperação)
     - [2.1 Falha como Condição Esperada](#21-falha-como-condição-esperada)
     - [2.2 Confiabilidade](#22-confiabilidade)
     - [2.3 Recuperação](#23-recuperação)
@@ -21,7 +21,7 @@
     - [2.14 Recuperação e Evidências](#214-recuperação-e-evidências)
     - [2.15 Princípio do Contexto de Confiabilidade](#215-princípio-do-contexto-de-confiabilidade)
 
-[3. Princípios de Confiabilidade](#3-princípios-de-confiabilidade)
+- [3. Princípios de Confiabilidade](#3-princípios-de-confiabilidade)
     - [3.1 Falha É Esperada](#31-falha-é-esperada)
     - [3.2 Preservar Antes de Avançar](#32-preservar-antes-de-avançar)
     - [3.3 Capacidade de Reinicialização](#33-capacidade-de-reinicialização)
@@ -47,7 +47,7 @@
     - [3.23 A Confiabilidade Evolui com as Evidências](#323-a-confiabilidade-evolui-com-as-evidências)
     - [3.24 Princípio de Confiabilidade](#324-princípio-de-confiabilidade)
 
-[4. Domínios de Falha e Classificação de Falhas](#4-domínios-de-falha-e-classificação-de-falhas)
+- [4. Domínios de Falha e Classificação de Falhas](#4-domínios-de-falha-e-classificação-de-falhas)
     - [4.1 Domínio de Falha](#41-domínio-de-falha)
     - [4.2 Escopo da Falha](#42-escopo-da-falha)
     - [4.3 Falha Transitória](#43-falha-transitória)
@@ -85,7 +85,7 @@
     - [4.35 Registro de Classificação da Falha](#435-registro-de-classificação-da-falha)
     - [4.36 Princípio de Classificação de Falhas](#436-princípio-de-classificação-de-falhas)
 
-[5. Estado Durável e Limites de Recuperação](#5-estado-durável-e-limites-de-recuperação)
+- [5. Estado Durável e Limites de Recuperação](#5-estado-durável-e-limites-de-recuperação)
     - [5.1 Estado Durável](#51-estado-durável)
     - [5.2 Estado Efêmero](#52-estado-efêmero)
     - [5.3 Estado Autoritativo e Derivado](#53-estado-autoritativo-e-derivado)
@@ -118,7 +118,7 @@
     - [5.30 Estado Durável e Evidências de Recuperação](#530-estado-durável-e-evidências-de-recuperação)
     - [5.31 Garantias de Estado Durável e Limites de Recuperação](#531-garantias-de-estado-durável-e-limites-de-recuperação)
 
-[6. Checkpoints, Progresso e Capacidade de Reinicialização](#6-checkpoints-progresso-e-capacidade-de-reinicialização)
+- [6. Checkpoints, Progresso e Capacidade de Reinicialização](#6-checkpoints-progresso-e-capacidade-de-reinicialização)
     - [6.1 Progresso do Processamento](#61-progresso-do-processamento)
     - [6.2 Checkpoint](#62-checkpoint)
     - [6.3 Consistência entre Checkpoint e Saída](#63-consistência-entre-checkpoint-e-saída)
@@ -151,7 +151,7 @@
     - [6.30 Evidências de Reinicialização](#630-evidências-de-reinicialização)
     - [6.31 Garantias de Checkpoint e Capacidade de Reinicialização](#631-garantias-de-checkpoint-e-capacidade-de-reinicialização)
 
-[7. Novas Tentativas e Nova Entrega](#7-novas-tentativas-e-nova-entrega)
+- [7. Novas Tentativas e Nova Entrega](#7-novas-tentativas-e-nova-entrega)
     - [7.1 Objetivo das Novas Tentativas](#71-objetivo-das-novas-tentativas)
     - [7.2 Falhas que Permitem e que Não Permitem Nova Tentativa](#72-falhas-que-permitem-e-que-não-permitem-nova-tentativa)
     - [7.3 Nova Tentativa Limitada](#73-nova-tentativa-limitada)
@@ -188,7 +188,7 @@
     - [7.34 Evidências de Novas Tentativas](#734-evidências-de-novas-tentativas)
     - [7.35 Garantias de Novas Tentativas e Novas Entregas](#735-garantias-de-novas-tentativas-e-novas-entregas)
 
-[8. Estratégia de Fontes de Recuperação](#8-estratégia-de-fontes-de-recuperação)
+- [8. Estratégia de Fontes de Recuperação](#8-estratégia-de-fontes-de-recuperação)
     - [8.1 Objetivos da Fonte de Recuperação](#81-objetivos-da-fonte-de-recuperação)
     - [8.2 Elegibilidade da Fonte de Recuperação](#82-elegibilidade-da-fonte-de-recuperação)
     - [8.3 Princípio da Fonte de Recuperação Preferencial](#83-princípio-da-fonte-de-recuperação-preferencial)
@@ -224,7 +224,7 @@
     - [8.33 Evidências da Fonte de Recuperação](#833-evidências-da-fonte-de-recuperação)
     - [8.34 Garantias da Estratégia de Fontes de Recuperação](#834-garantias-da-estratégia-de-fontes-de-recuperação)
 
-[9. Replay](#9-replay)
+- [9. Replay](#9-replay)
     - [9.1 Objetivo do Replay](#91-objetivo-do-replay)
     - [9.2 Fonte do Replay](#92-fonte-do-replay)
     - [9.3 Limite Inicial do Replay](#93-limite-inicial-do-replay)
@@ -264,7 +264,7 @@
     - [9.37 Cenários de Teste de Replay](#937-cenários-de-teste-de-replay)
     - [9.38 Garantias do Replay](#938-garantias-do-replay)
 
-[10. Reprocessamento](#10-reprocessamento)
+- [10. Reprocessamento](#10-reprocessamento)
     - [10.1 Propósito do Reprocessamento](#101-propósito-do-reprocessamento)
     - [10.2 Reprocessamento versus Replay](#102-reprocessamento-versus-replay)
     - [10.3 Reprocessamento versus Reinicialização](#103-reprocessamento-versus-reinicialização)
@@ -305,7 +305,7 @@
     - [10.38 Cenários de Teste de Reprocessamento](#1038-cenários-de-teste-de-reprocessamento)
     - [10.39 Garantias de Reprocessamento](#1039-garantias-de-reprocessamento)
 
-[11. Backfill](#11-backfill)
+- [11. Backfill](#11-backfill)
     - [11.1 Propósito do Backfill](#111-propósito-do-backfill)
     - [11.2 Backfill versus Replay](#112-backfill-versus-replay)
     - [11.3 Backfill versus Reprocessamento](#113-backfill-versus-reprocessamento)
@@ -353,7 +353,7 @@
     - [11.45 Cenários de Teste de Backfill](#1145-cenários-de-teste-de-backfill)
     - [11.46 Garantias de Backfill](#1146-garantias-de-backfill)
 
-[12. Rebuild](#12-rebuild)
+- [12. Rebuild](#12-rebuild)
     - [12.1 Propósito do Rebuild](#121-propósito-do-rebuild)
     - [12.2 Rebuild versus Reinicialização](#122-rebuild-versus-reinicialização)
     - [12.3 Rebuild versus Nova Tentativa](#123-rebuild-versus-nova-tentativa)
@@ -404,7 +404,7 @@
     - [12.48 Cenários de Teste de Rebuild](#1248-cenários-de-teste-de-rebuild)
     - [12.49 Garantias de Rebuild](#1249-garantias-de-rebuild)
 
-[13. Falha e Recuperação de Componentes](#13-falha-e-recuperação-de-componentes)
+- [13. Falha e Recuperação de Componentes](#13-falha-e-recuperação-de-componentes)
     - [13.1 Falha do AtlasCommerce](#131-falha-do-atlascommerce)
     - [13.2 Recuperação do AtlasCommerce](#132-recuperação-do-atlascommerce)
     - [13.3 Falha do CDC](#133-falha-do-cdc)
@@ -452,7 +452,7 @@
     - [13.45 Evidências de Recuperação de Componentes](#1345-evidências-de-recuperação-de-componentes)
     - [13.46 Garantias de Falha e Recuperação de Componentes](#1346-garantias-de-falha-e-recuperação-de-componentes)
 
-[14. Falha Parcial e Isolamento de Falhas](#14-falha-parcial-e-isolamento-de-falhas)
+- [14. Falha Parcial e Isolamento de Falhas](#14-falha-parcial-e-isolamento-de-falhas)
     - [14.1 Falha Parcial](#141-falha-parcial)
     - [14.2 Isolamento de Falhas](#142-isolamento-de-falhas)
     - [14.3 Isolamento e Análise de Dependências](#143-isolamento-e-análise-de-dependências)
@@ -490,7 +490,7 @@
     - [14.35 Cenários de Teste de Falha Parcial](#1435-cenários-de-teste-de-falha-parcial)
     - [14.36 Garantias de Falha Parcial e Isolamento](#1436-garantias-de-falha-parcial-e-isolamento)
 
-[15. Poison Records e Falhas Persistentes de Processamento](#15-poison-records-e-falhas-persistentes-de-processamento)
+- [15. Poison Records e Falhas Persistentes de Processamento](#15-poison-records-e-falhas-persistentes-de-processamento)
     - [15.1 Poison Record](#151-poison-record)
     - [15.2 Falha Persistente de Processamento](#152-falha-persistente-de-processamento)
     - [15.3 Poison Record versus Falha Transitória](#153-poison-record-versus-falha-transitória)
@@ -542,7 +542,7 @@
     - [15.49 Cenários de Teste de Poison Records](#1549-cenários-de-teste-de-poison-records)
     - [15.50 Garantias de Poison Records e Falhas Persistentes](#1550-garantias-de-poison-records-e-falhas-persistentes)
 
-[16. Recuperação de Backlog e Catch-Up](#16-recuperação-de-backlog-e-catch-up)
+- [16. Recuperação de Backlog e Catch-Up](#16-recuperação-de-backlog-e-catch-up)
     - [16.1 Backlog](#161-backlog)
     - [16.2 Causas do Backlog](#162-causas-do-backlog)
     - [16.3 Catch-Up](#163-catch-up)
@@ -592,7 +592,7 @@
     - [16.47 Cenários de Teste do Catch-Up](#1647-cenários-de-teste-do-catch-up)
     - [16.48 Garantias de Recuperação de Backlog e Catch-Up](#1648-garantias-de-recuperação-de-backlog-e-catch-up)
 
-[17. Disponibilidade da Certified Gold e Rollback](#17-disponibilidade-da-certified-gold-e-rollback)
+- [17. Disponibilidade da Certified Gold e Rollback](#17-disponibilidade-da-certified-gold-e-rollback)
     - [17.1 Certified Gold como Limite de Disponibilidade](#171-certified-gold-como-limite-de-disponibilidade)
     - [17.2 Versão Certificada Reconhecidamente Confiável](#172-versão-certificada-reconhecidamente-confiável)
     - [17.3 Certificação Não Garante Confiança Permanente](#173-certificação-não-garante-confiança-permanente)
@@ -642,7 +642,7 @@
     - [17.47 Cenários de Teste da Certified Gold](#1747-cenários-de-teste-da-certified-gold)
     - [17.48 Garantias de Disponibilidade e Rollback da Certified Gold](#1748-garantias-de-disponibilidade-e-rollback-da-certified-gold)
 
-[18. Recuperação e Versões Históricas](#18-recuperação-e-versões-históricas)
+- [18. Recuperação e Versões Históricas](#18-recuperação-e-versões-históricas)
     - [18.1 Contexto de Versão Histórica](#181-contexto-de-versão-histórica)
     - [18.2 Identidade de Versão](#182-identidade-de-versão)
     - [18.3 Contratos Históricos de Eventos](#183-contratos-históricos-de-eventos)
@@ -693,7 +693,7 @@
     - [18.48 Cenários de Teste de Versões Históricas](#1848-cenários-de-teste-de-versões-históricas)
     - [18.49 Garantias de Recuperação e Versões Históricas](#1849-garantias-de-recuperação-e-versões-históricas)
 
-[19. Validação e Evidências de Recuperação](#19-validação-e-evidências-de-recuperação)
+- [19. Validação e Evidências de Recuperação](#19-validação-e-evidências-de-recuperação)
     - [19.1 Validação da Recuperação](#191-validação-da-recuperação)
     - [19.2 Evidências de Recuperação](#192-evidências-de-recuperação)
     - [19.3 Evidências Antes da Recuperação](#193-evidências-antes-da-recuperação)
@@ -753,7 +753,7 @@
     - [19.57 Cenários de Teste de Validação da Recuperação](#1957-cenários-de-teste-de-validação-da-recuperação)
     - [19.58 Garantias de Validação e Evidências de Recuperação](#1958-garantias-de-validação-e-evidências-de-recuperação)
 
-[20. Estratégia de Testes de Recuperação](#20-estratégia-de-testes-de-recuperação)
+- [20. Estratégia de Testes de Recuperação](#20-estratégia-de-testes-de-recuperação)
     - [20.1 Objetivos dos Testes](#201-objetivos-dos-testes)
     - [20.2 Injeção Controlada de Falhas](#202-injeção-controlada-de-falhas)
     - [20.3 Escopo do Laboratório](#203-escopo-do-laboratório)
@@ -813,7 +813,7 @@
     - [20.57 Laboratório versus Chaos Engineering](#2057-laboratório-versus-chaos-engineering)
     - [20.58 Garantias dos Testes de Recuperação](#2058-garantias-dos-testes-de-recuperação)
 
-[21. Observabilidade da Recuperação](#21-observabilidade-da-recuperação)
+- [21. Observabilidade da Recuperação](#21-observabilidade-da-recuperação)
     - [21.1 Escopo da Observabilidade da Recuperação](#211-escopo-da-observabilidade-da-recuperação)
     - [21.2 Saúde do Serviço](#212-saúde-do-serviço)
     - [21.3 Saúde das Dependências](#213-saúde-das-dependências)
@@ -868,7 +868,7 @@
     - [21.52 Evidências da Observabilidade da Recuperação](#2152-evidências-da-observabilidade-da-recuperação)
     - [21.53 Garantias da Observabilidade da Recuperação](#2153-garantias-da-observabilidade-da-recuperação)
 
-[22. Objetivos de Recuperação e Expectativas de Nível de Serviço](#22-objetivos-de-recuperação-e-expectativas-de-nível-de-serviço)
+- [22. Objetivos de Recuperação e Expectativas de Nível de Serviço](#22-objetivos-de-recuperação-e-expectativas-de-nível-de-serviço)
     - [22.1 Objetivos de Recuperação](#221-objetivos-de-recuperação)
     - [22.2 Recovery Point Objective](#222-recovery-point-objective)
     - [22.3 RPO por Limite Arquitetural](#223-rpo-por-limite-arquitetural)
@@ -922,7 +922,7 @@
     - [22.51 Cenários de Teste dos Objetivos de Recuperação](#2251-cenários-de-teste-dos-objetivos-de-recuperação)
     - [22.52 Garantias dos Objetivos de Recuperação e Nível de Serviço](#2252-garantias-dos-objetivos-de-recuperação-e-nível-de-serviço)
 
-[23. Disponibilidade, Alta Disponibilidade e Recuperação de Desastre](#23-disponibilidade-alta-disponibilidade-e-recuperação-de-desastre)
+- [23. Disponibilidade, Alta Disponibilidade e Recuperação de Desastre](#23-disponibilidade-alta-disponibilidade-e-recuperação-de-desastre)
     - [23.1 Disponibilidade](#231-disponibilidade)
     - [23.2 Disponibilidade do Componente](#232-disponibilidade-do-componente)
     - [23.3 Disponibilidade do Processamento](#233-disponibilidade-do-processamento)
@@ -975,7 +975,7 @@
     - [23.50 Evidências de Disponibilidade, HA e DR](#2350-evidências-de-disponibilidade-ha-e-dr)
     - [23.51 Garantias de Disponibilidade, Alta Disponibilidade e Recuperação de Desastre](#2351-garantias-de-disponibilidade-alta-disponibilidade-e-recuperação-de-desastre)
 
-[24. Limites de Confiabilidade do Laboratório e do Ambiente Corporativo](#24-limites-de-confiabilidade-do-laboratório-e-do-ambiente-corporativo)
+- [24. Limites de Confiabilidade do Laboratório e do Ambiente Corporativo](#24-limites-de-confiabilidade-do-laboratório-e-do-ambiente-corporativo)
     - [24.1 Propósito de Confiabilidade do Laboratório](#241-propósito-de-confiabilidade-do-laboratório)
     - [24.2 Topologia Física do Laboratório](#242-topologia-física-do-laboratório)
     - [24.3 Domínio de Falha de Host Único](#243-domínio-de-falha-de-host-único)
@@ -1025,7 +1025,7 @@
     - [24.47 Evidências de Confiabilidade do Laboratório e do Ambiente Corporativo](#2447-evidências-de-confiabilidade-do-laboratório-e-do-ambiente-corporativo)
     - [24.48 Garantias de Confiabilidade do Laboratório e do Ambiente Corporativo](#2448-garantias-de-confiabilidade-do-laboratório-e-do-ambiente-corporativo)
 
-[25. Garantias de Confiabilidade e Recuperação](#25-garantias-de-confiabilidade-e-recuperação)
+- [25. Garantias de Confiabilidade e Recuperação](#25-garantias-de-confiabilidade-e-recuperação)
     - [25.1 A Falha É Esperada](#251-a-falha-é-esperada)
     - [25.2 Estado Durável Precede o Progresso](#252-estado-durável-precede-o-progresso)
     - [25.3 Capacidade de Reinicialização](#253-capacidade-de-reinicialização)
