@@ -1470,7 +1470,7 @@ Quando o volume de dados ou o impacto sobre a origem exigir, a extração inicia
 
 - Intervalos de chaves.
 
-- *Batches* (lotes) determinísticos.
+- Lotes determinísticos.
 
 - Outros limites de extração que permitam reinício controlado.
 

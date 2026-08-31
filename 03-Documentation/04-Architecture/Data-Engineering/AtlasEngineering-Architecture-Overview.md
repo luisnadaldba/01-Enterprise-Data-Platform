@@ -2,11 +2,11 @@
 
 ## Table of Contents
 
-[1. Purpose](#1-purpose)
+- [1. Purpose](#1-purpose)
 
-[2. Architectural Context](#2-architectural-context)
+- [2. Architectural Context](#2-architectural-context)
 
-[3. Architecture Principles](#3-architecture-principles)
+- [3. Architecture Principles](#3-architecture-principles)
    - [3.1 Decoupled Architecture](#31-decoupled-architecture)
    - [3.2 Incremental and Event-Driven Processing](#32-incremental-and-event-driven-processing)
    - [3.3 Immutable Raw History](#33-immutable-raw-history)
@@ -20,20 +20,20 @@
    - [3.11 Evidence-Based Validation](#311-evidence-based-validation)
    - [3.12 Laboratory Constraints Must Not Define the Architecture](#312-laboratory-constraints-must-not-define-the-architecture)
 
-[4. Scope](#4-scope)
+- [4. Scope](#4-scope)
    - [4.1 Architectural Scope](#41-architectural-scope)
    - [4.2 Initial Implementation Scope](#42-initial-implementation-scope)
    - [4.3 Incremental Expansion](#43-incremental-expansion)
    - [4.4 Scope Boundaries](#44-scope-boundaries)
 
-[5. Workload Profile](#5-workload-profile)
+- [5. Workload Profile](#5-workload-profile)
    - [5.1 Initial Data Volume](#51-initial-data-volume)
    - [5.2 Daily Change Volume](#52-daily-change-volume)
    - [5.3 Peak Workload](#53-peak-workload)
    - [5.4 Growth and Retention](#54-growth-and-retention)
    - [5.5 Baseline Recalibration](#55-baseline-recalibration)
 
-[6. Service Level Objective](#6-service-level-objective)
+- [6. Service Level Objective](#6-service-level-objective)
    - [6.1 End-to-End Freshness Objective](#61-end-to-end-freshness-objective)
    - [6.2 Percentile-Based Measurement](#62-percentile-based-measurement)
    - [6.3 Latency Decomposition](#63-latency-decomposition)
@@ -41,7 +41,7 @@
    - [6.5 No-Event Detection](#65-no-event-detection)
    - [6.6 Initial Objective and Recalibration](#66-initial-objective-and-recalibration)
 
-[7. High-Level Architecture](#7-high-level-architecture)
+- [7. High-Level Architecture](#7-high-level-architecture)
    - [7.1 Operational Source](#71-operational-source)
    - [7.2 Change Data Capture](#72-change-data-capture)
    - [7.3 Schema Governance](#73-schema-governance)
@@ -55,7 +55,7 @@
    - [7.11 Orchestration](#711-orchestration)
    - [7.12 Observability](#712-observability)
 
-[8. Data Flow](#8-data-flow)
+- [8. Data Flow](#8-data-flow)
    - [8.1 Source Transaction Commit](#81-source-transaction-commit)
    - [8.2 CDC Capture](#82-cdc-capture)
    - [8.3 Event Creation](#83-event-creation)
@@ -69,7 +69,7 @@
    - [8.11 Analytical Consumption](#811-analytical-consumption)
    - [8.12 End-to-End Traceability](#812-end-to-end-traceability)
 
-[9. Data Layers](#9-data-layers)
+- [9. Data Layers](#9-data-layers)
    - [9.1 Source — AtlasCommerce](#91-source-atlascommerce)
    - [9.2 Bronze](#92-bronze)
    - [9.3 Silver](#93-silver)
@@ -78,14 +78,14 @@
    - [9.6 Analytical Consumption](#96-analytical-consumption)
    - [9.7 Layer Progression](#97-layer-progression)
 
-[10. Cross-Cutting Capabilities](#10-cross-cutting-capabilities)
+- [10. Cross-Cutting Capabilities](#10-cross-cutting-capabilities)
     - [10.1 Orchestration](#101-orchestration)
     - [10.2 Observability](#102-observability)
     - [10.3 Security](#103-security)
     - [10.4 Governance and Metadata](#104-governance-and-metadata)
     - [10.5 Versioning](#105-versioning)
 
-[11. Initial Data Product](#11-initial-data-product)
+- [11. Initial Data Product](#11-initial-data-product)
     - [11.1 Business Purpose](#111-business-purpose)
     - [11.2 End-to-End Validation Path](#112-end-to-end-validation-path)
     - [11.3 Certification](#113-certification)
@@ -95,7 +95,7 @@
     - [11.7 Evidence](#117-evidence)
     - [11.8 Role in Platform Evolution](#118-role-in-platform-evolution)
 
-[12. Incremental Domain Strategy](#12-incremental-domain-strategy)
+- [12. Incremental Domain Strategy](#12-incremental-domain-strategy)
     - [12.1 First-Domain Validation](#121-first-domain-validation)
     - [12.2 Domain Onboarding](#122-domain-onboarding)
     - [12.3 Reuse Before Duplication](#123-reuse-before-duplication)
@@ -104,7 +104,7 @@
     - [12.6 Independent Validation](#126-independent-validation)
     - [12.7 Documentation Evolution](#127-documentation-evolution)
 
-[13. Laboratory and Enterprise Architecture](#13-laboratory-and-enterprise-architecture)
+- [13. Laboratory and Enterprise Architecture](#13-laboratory-and-enterprise-architecture)
     - [13.1 Laboratory Purpose](#131-laboratory-purpose)
     - [13.2 Physical Laboratory Constraints](#132-physical-laboratory-constraints)
     - [13.3 Logical Separation](#133-logical-separation)
@@ -115,7 +115,7 @@
     - [13.8 From Laboratory Evidence to Enterprise Decisions](#138-from-laboratory-evidence-to-enterprise-decisions)
     - [13.9 Typical Enterprise Responsibilities](#139-typical-enterprise-responsibilities)
 
-[14. Architecture Evolution](#14-architecture-evolution)
+- [14. Architecture Evolution](#14-architecture-evolution)
     - [14.1 Drivers for Architectural Change](#141-drivers-for-architectural-change)
     - [14.2 Evidence-Based Evolution](#142-evidence-based-evolution)
     - [14.3 Controlled Change](#143-controlled-change)
@@ -125,7 +125,7 @@
     - [14.7 Documentation as Part of Architecture](#147-documentation-as-part-of-architecture)
     - [14.8 Version 1 Baseline](#148-version-1-baseline)
 
-[15. Related Documentation](#15-related-documentation)
+- [15. Related Documentation](#15-related-documentation)
     - [15.1 Architecture Documentation](#151-architecture-documentation)
     - [15.2 Architecture Decisions](#152-architecture-decisions)
     - [15.3 Standards](#153-standards)

@@ -2,9 +2,9 @@
 
 ## Table of Contents
 
-[1. Purpose](#1-purpose)
+- [1. Purpose](#1-purpose)
 
-[2. Reliability and Recovery Context](#2-reliability-and-recovery-context)
+- [2. Reliability and Recovery Context](#2-reliability-and-recovery-context)
    - [2.1 Failure as an Expected Condition](#21-failure-as-an-expected-condition)
    - [2.2 Reliability](#22-reliability)
    - [2.3 Recovery](#23-recovery)
@@ -21,7 +21,7 @@
    - [2.14 Recovery and Evidence](#214-recovery-and-evidence)
    - [2.15 Reliability Context Principle](#215-reliability-context-principle)
 
-[3. Reliability Principles](#3-reliability-principles)
+- [3. Reliability Principles](#3-reliability-principles)
    - [3.1 Failure Is Expected](#31-failure-is-expected)
    - [3.2 Preserve Before Advancing](#32-preserve-before-advancing)
    - [3.3 Restartability](#33-restartability)
@@ -47,7 +47,7 @@
    - [3.23 Reliability Evolves With Evidence](#323-reliability-evolves-with-evidence)
    - [3.24 Reliability Principle](#324-reliability-principle)
 
-[4. Failure Domains and Failure Classification](#4-failure-domains-and-failure-classification)
+- [4. Failure Domains and Failure Classification](#4-failure-domains-and-failure-classification)
    - [4.1 Failure Domain](#41-failure-domain)
    - [4.2 Failure Scope](#42-failure-scope)
    - [4.3 Transient Failure](#43-transient-failure)
@@ -85,7 +85,7 @@
    - [4.35 Failure Classification Record](#435-failure-classification-record)
    - [4.36 Failure Classification Principle](#436-failure-classification-principle)
 
-[5. Durable State and Recovery Boundaries](#5-durable-state-and-recovery-boundaries)
+- [5. Durable State and Recovery Boundaries](#5-durable-state-and-recovery-boundaries)
    - [5.1 Durable State](#51-durable-state)
    - [5.2 Ephemeral State](#52-ephemeral-state)
    - [5.3 Authoritative and Derived State](#53-authoritative-and-derived-state)
@@ -118,7 +118,7 @@
    - [5.30 Durable State and Recovery Evidence](#530-durable-state-and-recovery-evidence)
    - [5.31 Durable State and Recovery Boundary Guarantees](#531-durable-state-and-recovery-boundary-guarantees)
 
-[6. Checkpoints, Progress, and Restartability](#6-checkpoints-progress-and-restartability)
+- [6. Checkpoints, Progress, and Restartability](#6-checkpoints-progress-and-restartability)
    - [6.1 Processing Progress](#61-processing-progress)
    - [6.2 Checkpoint](#62-checkpoint)
    - [6.3 Checkpoint and Output Consistency](#63-checkpoint-and-output-consistency)
@@ -151,7 +151,7 @@
    - [6.30 Restart Evidence](#630-restart-evidence)
    - [6.31 Checkpoint and Restartability Guarantees](#631-checkpoint-and-restartability-guarantees)
 
-[7. Retry and Redelivery](#7-retry-and-redelivery)
+- [7. Retry and Redelivery](#7-retry-and-redelivery)
    - [7.1 Retry Purpose](#71-retry-purpose)
    - [7.2 Retryable and Non-Retryable Failures](#72-retryable-and-non-retryable-failures)
    - [7.3 Bounded Retry](#73-bounded-retry)
@@ -188,7 +188,7 @@
    - [7.34 Retry Evidence](#734-retry-evidence)
    - [7.35 Retry and Redelivery Guarantees](#735-retry-and-redelivery-guarantees)
 
-[8. Recovery Source Strategy](#8-recovery-source-strategy)
+- [8. Recovery Source Strategy](#8-recovery-source-strategy)
    - [8.1 Recovery Source Objectives](#81-recovery-source-objectives)
    - [8.2 Recovery Source Eligibility](#82-recovery-source-eligibility)
    - [8.3 Preferred Recovery Principle](#83-preferred-recovery-principle)
@@ -224,7 +224,7 @@
    - [8.33 Recovery Source Evidence](#833-recovery-source-evidence)
    - [8.34 Recovery Source Strategy Guarantees](#834-recovery-source-strategy-guarantees)
 
-[9. Replay](#9-replay)
+- [9. Replay](#9-replay)
    - [9.1 Replay Purpose](#91-replay-purpose)
    - [9.2 Replay Source](#92-replay-source)
    - [9.3 Replay Boundary](#93-replay-boundary)
@@ -264,7 +264,7 @@
    - [9.37 Replay Test Scenarios](#937-replay-test-scenarios)
    - [9.38 Replay Guarantees](#938-replay-guarantees)
 
-[10. Reprocessing](#10-reprocessing)
+- [10. Reprocessing](#10-reprocessing)
     - [10.1 Reprocessing Purpose](#101-reprocessing-purpose)
     - [10.2 Reprocessing Versus Replay](#102-reprocessing-versus-replay)
     - [10.3 Reprocessing Versus Restart](#103-reprocessing-versus-restart)
@@ -305,7 +305,7 @@
     - [10.38 Reprocessing Test Scenarios](#1038-reprocessing-test-scenarios)
     - [10.39 Reprocessing Guarantees](#1039-reprocessing-guarantees)
 
-[11. Backfill](#11-backfill)
+- [11. Backfill](#11-backfill)
     - [11.1 Backfill Purpose](#111-backfill-purpose)
     - [11.2 Backfill Versus Replay](#112-backfill-versus-replay)
     - [11.3 Backfill Versus Reprocessing](#113-backfill-versus-reprocessing)
@@ -353,7 +353,7 @@
     - [11.45 Backfill Test Scenarios](#1145-backfill-test-scenarios)
     - [11.46 Backfill Guarantees](#1146-backfill-guarantees)
 
-[12. Rebuild](#12-rebuild)
+- [12. Rebuild](#12-rebuild)
     - [12.1 Rebuild Purpose](#121-rebuild-purpose)
     - [12.2 Rebuild Versus Restart](#122-rebuild-versus-restart)
     - [12.3 Rebuild Versus Retry](#123-rebuild-versus-retry)
@@ -404,7 +404,7 @@
     - [12.48 Rebuild Test Scenarios](#1248-rebuild-test-scenarios)
     - [12.49 Rebuild Guarantees](#1249-rebuild-guarantees)
 
-[13. Component Failure and Recovery](#13-component-failure-and-recovery)
+- [13. Component Failure and Recovery](#13-component-failure-and-recovery)
     - [13.1 AtlasCommerce Failure](#131-atlascommerce-failure)
     - [13.2 AtlasCommerce Recovery](#132-atlascommerce-recovery)
     - [13.3 CDC Failure](#133-cdc-failure)
@@ -452,7 +452,7 @@
     - [13.45 Component Recovery Evidence](#1345-component-recovery-evidence)
     - [13.46 Component Failure and Recovery Guarantees](#1346-component-failure-and-recovery-guarantees)
 
-[14. Partial Failure and Failure Isolation](#14-partial-failure-and-failure-isolation)
+- [14. Partial Failure and Failure Isolation](#14-partial-failure-and-failure-isolation)
     - [14.1 Partial Failure](#141-partial-failure)
     - [14.2 Failure Isolation](#142-failure-isolation)
     - [14.3 Isolation and Dependency Analysis](#143-isolation-and-dependency-analysis)
@@ -490,7 +490,7 @@
     - [14.35 Partial Failure Test Scenarios](#1435-partial-failure-test-scenarios)
     - [14.36 Partial Failure and Isolation Guarantees](#1436-partial-failure-and-isolation-guarantees)
 
-[15. Poison Records and Persistent Processing Failures](#15-poison-records-and-persistent-processing-failures)
+- [15. Poison Records and Persistent Processing Failures](#15-poison-records-and-persistent-processing-failures)
     - [15.1 Poison Record](#151-poison-record)
     - [15.2 Persistent Processing Failure](#152-persistent-processing-failure)
     - [15.3 Poison Record Versus Transient Failure](#153-poison-record-versus-transient-failure)
@@ -542,7 +542,7 @@
     - [15.49 Persistent Failure Test Scenarios](#1549-persistent-failure-test-scenarios)
     - [15.50 Poison Records and Persistent Failure Guarantees](#1550-poison-records-and-persistent-failure-guarantees)
 
-[16. Backlog Recovery and Catch-Up](#16-backlog-recovery-and-catch-up)
+- [16. Backlog Recovery and Catch-Up](#16-backlog-recovery-and-catch-up)
     - [16.1 Backlog](#161-backlog)
     - [16.2 Backlog Causes](#162-backlog-causes)
     - [16.3 Catch-Up](#163-catch-up)
@@ -592,7 +592,7 @@
     - [16.47 Catch-Up Test Scenarios](#1647-catch-up-test-scenarios)
     - [16.48 Backlog Recovery and Catch-Up Guarantees](#1648-backlog-recovery-and-catch-up-guarantees)
 
-[17. Certified Gold Availability and Rollback](#17-certified-gold-availability-and-rollback)
+- [17. Certified Gold Availability and Rollback](#17-certified-gold-availability-and-rollback)
     - [17.1 Certified Gold as an Availability Boundary](#171-certified-gold-as-an-availability-boundary)
     - [17.2 Known-Good Certified Version](#172-known-good-certified-version)
     - [17.3 Certification Does Not Guarantee Permanent Trust](#173-certification-does-not-guarantee-permanent-trust)
@@ -642,7 +642,7 @@
     - [17.47 Certified Gold Test Scenarios](#1747-certified-gold-test-scenarios)
     - [17.48 Certified Gold Availability and Rollback Guarantees](#1748-certified-gold-availability-and-rollback-guarantees)
 
-[18. Recovery and Historical Versions](#18-recovery-and-historical-versions)
+- [18. Recovery and Historical Versions](#18-recovery-and-historical-versions)
     - [18.1 Historical Version Context](#181-historical-version-context)
     - [18.2 Version Identity](#182-version-identity)
     - [18.3 Historical Event Contracts](#183-historical-event-contracts)
@@ -693,7 +693,7 @@
     - [18.48 Historical Version Test Scenarios](#1848-historical-version-test-scenarios)
     - [18.49 Recovery and Historical Version Guarantees](#1849-recovery-and-historical-version-guarantees)
 
-[19. Recovery Validation and Evidence](#19-recovery-validation-and-evidence)
+- [19. Recovery Validation and Evidence](#19-recovery-validation-and-evidence)
     - [19.1 Recovery Validation](#191-recovery-validation)
     - [19.2 Recovery Evidence](#192-recovery-evidence)
     - [19.3 Evidence Before Recovery](#193-evidence-before-recovery)
@@ -753,7 +753,7 @@
     - [19.57 Recovery Validation Test Scenarios](#1957-recovery-validation-test-scenarios)
     - [19.58 Recovery Validation and Evidence Guarantees](#1958-recovery-validation-and-evidence-guarantees)
 
-[20. Recovery Testing Strategy](#20-recovery-testing-strategy)
+- [20. Recovery Testing Strategy](#20-recovery-testing-strategy)
     - [20.1 Testing Objectives](#201-testing-objectives)
     - [20.2 Controlled Failure Injection](#202-controlled-failure-injection)
     - [20.3 Laboratory Scope](#203-laboratory-scope)
@@ -813,7 +813,7 @@
     - [20.57 Laboratory Versus Chaos Engineering](#2057-laboratory-versus-chaos-engineering)
     - [20.58 Recovery Testing Guarantees](#2058-recovery-testing-guarantees)
 
-[21. Recovery Observability](#21-recovery-observability)
+- [21. Recovery Observability](#21-recovery-observability)
     - [21.1 Recovery Observability Scope](#211-recovery-observability-scope)
     - [21.2 Service Health](#212-service-health)
     - [21.3 Dependency Health](#213-dependency-health)
@@ -868,7 +868,7 @@
     - [21.52 Recovery Observability Evidence](#2152-recovery-observability-evidence)
     - [21.53 Recovery Observability Guarantees](#2153-recovery-observability-guarantees)
 
-[22. Recovery Objectives and Service-Level Expectations](#22-recovery-objectives-and-service-level-expectations)
+- [22. Recovery Objectives and Service-Level Expectations](#22-recovery-objectives-and-service-level-expectations)
     - [22.1 Recovery Objectives](#221-recovery-objectives)
     - [22.2 Recovery Point Objective](#222-recovery-point-objective)
     - [22.3 RPO by Architectural Boundary](#223-rpo-by-architectural-boundary)
@@ -922,7 +922,7 @@
     - [22.51 Recovery Objective Test Scenarios](#2251-recovery-objective-test-scenarios)
     - [22.52 Recovery Objectives and Service-Level Guarantees](#2252-recovery-objectives-and-service-level-guarantees)
 
-[23. Availability, High Availability, and Disaster Recovery](#23-availability-high-availability-and-disaster-recovery)
+- [23. Availability, High Availability, and Disaster Recovery](#23-availability-high-availability-and-disaster-recovery)
     - [23.1 Availability](#231-availability)
     - [23.2 Component Availability](#232-component-availability)
     - [23.3 Processing Availability](#233-processing-availability)
@@ -975,7 +975,7 @@
     - [23.50 Availability, HA, and DR Evidence](#2350-availability-ha-and-dr-evidence)
     - [23.51 Availability, High Availability, and Disaster Recovery Guarantees](#2351-availability-high-availability-and-disaster-recovery-guarantees)
 
-[24. Laboratory and Enterprise Reliability Boundaries](#24-laboratory-and-enterprise-reliability-boundaries)
+- [24. Laboratory and Enterprise Reliability Boundaries](#24-laboratory-and-enterprise-reliability-boundaries)
     - [24.1 Laboratory Reliability Purpose](#241-laboratory-reliability-purpose)
     - [24.2 Laboratory Physical Topology](#242-laboratory-physical-topology)
     - [24.3 Single-Host Failure Domain](#243-single-host-failure-domain)
@@ -1025,7 +1025,7 @@
     - [24.47 Laboratory and Enterprise Reliability Evidence](#2447-laboratory-and-enterprise-reliability-evidence)
     - [24.48 Laboratory and Enterprise Reliability Guarantees](#2448-laboratory-and-enterprise-reliability-guarantees)
 
-[25. Reliability and Recovery Guarantees](#25-reliability-and-recovery-guarantees)
+- [25. Reliability and Recovery Guarantees](#25-reliability-and-recovery-guarantees)
     - [25.1 Failure Is Expected](#251-failure-is-expected)
     - [25.2 Durable State Precedes Progress](#252-durable-state-precedes-progress)
     - [25.3 Restartability](#253-restartability)
